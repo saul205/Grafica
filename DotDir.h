@@ -18,11 +18,11 @@ class DotDir {
      }
 
      int mod() {
-         return sqrt(x * x + y * y + z * z);
+         return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
      }
 
      string ToString(){
-       return to_string(x) + ", " + to_string(y) + ", " + to_string(z) + ", " + to_string(w); 
+       return to_string(c[0]) + ", " + to_string(c[1]) + ", " + to_string(c[2]) + ", " + to_string(c[3]); 
      }
 };
 
@@ -31,7 +31,7 @@ DotDir operator+(const DotDir& dd1, const DotDir& dd2){
   // Punto + Punto = NO HACER NO OK, w = 0
   // Dirección + Punto = Punto OK, w = 1
   // Punto + Dirección = Punto OK, w = 1
-  return DotDir(dd1.x + dd2.x, dd1.y + dd2.y, dd1.z + dd2.z, dd1.w + dd2.w);
+  return DotDir(dd1.c[0] + dd2.c[0], dd1.c[1] + dd2.c[1], dd1.c[2] + dd2.c[2], dd1.c[3] + dd2.c[3]);
 }
 
 DotDir operator-(const DotDir& dd1, const DotDir& dd2){
@@ -39,5 +39,5 @@ DotDir operator-(const DotDir& dd1, const DotDir& dd2){
   // Punto - Punto = Dirección OK, w = 0
   // Dirección - Punto = NO HACER NO OK, w = - 1
   // Punto - Dirección = Punto OK, w = 1
-  return DotDir(dd1.x - dd2.x, dd1.y - dd2.y, dd1.z - dd2.z, dd1.w - dd2.w);
+  return DotDir(dd1.c[0] - dd2.c[0], dd1.c[1] - dd2.c[1], dd1.c[2] - dd2.c[2], dd1.c[3] - dd2.c[3]);
 }
