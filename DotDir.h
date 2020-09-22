@@ -27,19 +27,19 @@ class DotDir {
          c[3] = w;
      }
 
-     float getX(){
+     float getX() const {
        return c[0];
      }
 
-     float getY(){
+     float getY() const {
        return c[1];
      }
 
-     float getZ(){
+     float getZ() const {
        return c[2];
      }
 
-     float getW(){
+     float getW() const {
        return c[3];
      }
 
@@ -137,10 +137,11 @@ class Transformation{
 
     // Set de la matriz a la matriz identidad
     void identidad(){
-      matriz = {1,0,0,0,
-                0,1,0,0,
-                0,0,1,0,
-                0,0,0,1};
+      for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+          matriz[i][j] = i == j ? 1 : 0;
+        }
+      }
     }
 
     // Set de la  matriz de traslacion
@@ -201,12 +202,9 @@ class Transformation{
 
 Transformation operator*(const Transformation& t1, const Transformation& t2){
   Transformation producto(true);
-  for(int i = 0; i < 4; ++i)
-	{
-		for(int j = 0; j < 4; ++j)
-		{
-			for(int k=0; k < 4; ++k)
-			{
+  for(int i = 0; i < 4; ++i) {
+		for(int j = 0; j < 4; ++j) {
+			for(int k=0; k < 4; ++k) {
 				producto.matriz[i][j] += t1.matriz[i][k] * t2.matriz[k][j];
 			}
 		}

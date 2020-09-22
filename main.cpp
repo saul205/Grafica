@@ -23,7 +23,10 @@ int main(){
 
     esf.getBase(base);
     
-    cout << base[0].ToString() << endl << base[1].ToString() << endl << base[2].ToString() << endl;
+    cout << "Base: " << endl <<
+        base[0].ToString() << endl << 
+        base[1].ToString() << endl << 
+        base[2].ToString() << endl << endl;
 
     cout << "Hola "  << punto.ToString() << endl;
 
