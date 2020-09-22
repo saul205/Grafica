@@ -201,11 +201,11 @@ class Transformation{
 
 Transformation operator*(const Transformation& t1, const Transformation& t2){
   Transformation producto(true);
-  for(i = 0; i < 4; ++i)
+  for(int i = 0; i < 4; ++i)
 	{
-		for(j = 0; j < 4; ++j)
+		for(int j = 0; j < 4; ++j)
 		{
-			for(k=0; k < 4; ++k)
+			for(int k=0; k < 4; ++k)
 			{
 				producto.matriz[i][j] += t1.matriz[i][k] * t2.matriz[k][j];
 			}
