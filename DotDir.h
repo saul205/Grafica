@@ -26,6 +26,22 @@ class DotDir {
          c[3] = w;
      }
 
+     float getX(){
+       return c[0];
+     }
+
+     float getY(){
+       return c[1];
+     }
+
+     float getZ(){
+       return c[2];
+     }
+
+     float getW(){
+       return c[3];
+     }
+
      int mod() {
          return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
      }
@@ -56,9 +72,9 @@ DotDir dotProduct(const DotDir d1, const DotDir d2){
 }
 
 DotDir crossProduct(const DotDir d1, const DotDir d2){
-  return DotDir(d1.c[1]*d2.c[2] - d1.c[2]-d2.c[1], 
-                d1.c[2]*d2.c[0] - d1.c[0]-d2.c[2], 
-                d1.c[0]*d2.c[1] - d1.c[1]-d2.c[0], d1.c[3] * d2.c[3]);
+  return DotDir(d1.c[1]*d2.c[2] - d1.c[2]*d2.c[1], 
+                d1.c[2]*d2.c[0] - d1.c[0]*d2.c[2], 
+                d1.c[0]*d2.c[1] - d1.c[1]*d2.c[0], d1.c[3] * d2.c[3]);
 }
 
 class Sphere{
@@ -73,6 +89,12 @@ class Sphere{
       sphereCenter = center;
       sphereAxis = axis;
       sphereCity = city;
+    }
+
+    void getBase(DotDir base[3]){
+      base[0] = sphereAxis;
+      base[1] = crossProduct(sphereAxis, sphereCity - sphereCenter);
+      base[2] = crossProduct(base[0], base[1]);
     }
 };
 
