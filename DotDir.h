@@ -77,15 +77,9 @@ DotDir dotProduct(const DotDir d1, const DotDir d2){
 // Devuelve el producto vectorial de los vectores d1 y d2. Obviamente, d1 y d2
 // deben ser vectores
 DotDir crossProduct(const DotDir d1, const DotDir d2){
-<<<<<<< HEAD
-  return DotDir(d1.c[1]*d2.c[2] - d1.c[2]*d2.c[1], 
-                d1.c[2]*d2.c[0] - d1.c[0]*d2.c[2], 
+  return DotDir(d1.c[1]*d2.c[2] - d1.c[2]*d2.c[1],
+                d1.c[2]*d2.c[0] - d1.c[0]*d2.c[2],
                 d1.c[0]*d2.c[1] - d1.c[1]*d2.c[0], d1.c[3] * d2.c[3]);
-=======
-  return DotDir(d1.c[1]*d2.c[2] - d1.c[2]-d2.c[1],
-                d1.c[2]*d2.c[0] - d1.c[0]-d2.c[2],
-                d1.c[0]*d2.c[1] - d1.c[1]-d2.c[0], d1.c[3] * d2.c[3]);
->>>>>>> 448514668ffb943b561159a90e70c0bb62afe1d4
 }
 
 class Sphere{
@@ -130,6 +124,16 @@ class Transformation{
   public:
 
     Transformation() {}
+
+    Transformation(bool empty){
+      if(empty){
+        for(int i = 0; i < 4; ++i){
+          matriz[i][i] = 0;
+        }
+      }
+    }
+
+    friend Transformation operator*(const Transformation& t1, const Transformation& t2);
 
     // Set de la matriz a la matriz identidad
     void identidad(){
@@ -196,23 +200,17 @@ class Transformation{
 };
 
 Transformation operator*(const Transformation& t1, const Transformation& t2){
-  Transformation producto;
-  producto[0][0] = t1[0][0]*t2[0][0] + t1[0][1]*t2[1][0] + t1[0][2]*t2[2][0] + t1[0][3]*t2[3][0];
-  producto[0][1] = t1[0][0]*t2[0][1] + t1[0][1]*t2[1][1] + t1[0][2]*t2[2][1] + t1[0][3]*t2[3][1];
-  producto[0][2] = t1[0][0]*t2[0][2] + t1[0][1]*t2[1][2] + t1[0][2]*t2[2][2] + t1[0][3]*t2[3][2];
-  producto[0][3] = t1[0][0]*t2[0][3] + t1[0][1]*t2[1][3] + t1[0][2]*t2[2][3] + t1[0][3]*t2[3][3];
-  producto[1][0] = t1[1][0]*t2[0][0] + t1[1][1]*t2[1][0] + t1[1][2]*t2[2][0] + t1[1][3]*t2[3][0];
-  producto[1][1] = t1[1][0]*t2[0][1] + t1[1][1]*t2[1][1] + t1[1][2]*t2[2][1] + t1[1][3]*t2[3][1];
-  producto[1][2] = t1[1][0]*t2[0][2] + t1[1][1]*t2[1][2] + t1[1][2]*t2[2][2] + t1[1][3]*t2[3][2];
-  producto[1][3] = t1[1][0]*t2[0][3] + t1[1][1]*t2[1][3] + t1[1][2]*t2[2][3] + t1[1][3]*t2[3][3];
-  producto[2][0] = t1[2][0]*t2[0][0] + t1[2][1]*t2[1][0] + t1[2][2]*t2[2][0] + t1[2][3]*t2[3][0];
-  producto[2][1] = t1[2][0]*t2[0][1] + t1[2][1]*t2[1][1] + t1[2][2]*t2[2][1] + t1[2][3]*t2[3][1];
-  producto[2][2] = t1[2][0]*t2[0][2] + t1[2][1]*t2[1][2] + t1[2][2]*t2[2][2] + t1[2][3]*t2[3][2];
-  producto[2][3] = t1[2][0]*t2[0][3] + t1[2][1]*t2[1][3] + t1[2][2]*t2[2][3] + t1[2][3]*t2[3][3];
-  producto[3][0] = t1[3][0]*t2[0][0] + t1[3][1]*t2[1][0] + t1[3][2]*t2[2][0] + t1[3][3]*t2[3][0];
-  producto[3][1] = t1[3][0]*t2[0][1] + t1[3][1]*t2[1][1] + t1[3][2]*t2[2][1] + t1[3][3]*t2[3][1];
-  producto[3][2] = t1[3][0]*t2[0][2] + t1[3][1]*t2[1][2] + t1[3][2]*t2[2][2] + t1[3][3]*t2[3][2];
-  producto[3][3] = t1[3][0]*t2[0][3] + t1[3][1]*t2[1][3] + t1[3][2]*t2[2][3] + t1[3][3]*t2[3][3];
+  Transformation producto(true);
+  for(i = 0; i < 4; ++i)
+	{
+		for(j = 0; j < 4; ++j)
+		{
+			for(k=0; k < 4; ++k)
+			{
+				producto.matriz[i][j] += t1.matriz[i][k] * t2.matriz[k][j];
+			}
+		}
+	}
   return producto;
 }
 
