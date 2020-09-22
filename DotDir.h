@@ -27,19 +27,19 @@ class DotDir {
          c[3] = w;
      }
 
-     float getX(){
+     float getX() const {
        return c[0];
      }
 
-     float getY(){
+     float getY() const {
        return c[1];
      }
 
-     float getZ(){
+     float getZ() const {
        return c[2];
      }
 
-     float getW(){
+     float getW() const {
        return c[3];
      }
 
@@ -73,15 +73,9 @@ DotDir dotProduct(const DotDir d1, const DotDir d2){
 }
 
 DotDir crossProduct(const DotDir d1, const DotDir d2){
-<<<<<<< HEAD
   return DotDir(d1.c[1]*d2.c[2] - d1.c[2]*d2.c[1], 
                 d1.c[2]*d2.c[0] - d1.c[0]*d2.c[2], 
                 d1.c[0]*d2.c[1] - d1.c[1]*d2.c[0], d1.c[3] * d2.c[3]);
-=======
-  return DotDir(d1.c[1]*d2.c[2] - d1.c[2]-d2.c[1],
-                d1.c[2]*d2.c[0] - d1.c[0]-d2.c[2],
-                d1.c[0]*d2.c[1] - d1.c[1]-d2.c[0], d1.c[3] * d2.c[3]);
->>>>>>> 448514668ffb943b561159a90e70c0bb62afe1d4
 }
 
 class Sphere{
@@ -128,10 +122,11 @@ class Transformation{
     Transformation() {}
 
     void identidad(){
-      matriz = {1,0,0,0,
-                0,1,0,0,
-                0,0,1,0,
-                0,0,0,1};
+      for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+          matriz[i][j] = i == j ? 1 : 0;
+        }
+      }
     }
 
     void translation(float x, float y, float z){
