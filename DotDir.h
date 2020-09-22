@@ -5,16 +5,16 @@ using namespace std;
 
 class DotDir {
   private:
-    float x, y, z, w;
+    float c[4];
   public:
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
 
      DotDir(float x, float y, float z, float w){
-         this->x = x;
-         this->y = y;
-         this->z = z;
-         this->w = w;
+         c[0] = x;
+         c[1] = y;
+         c[2] = z;
+         c[3] = w;
      }
 
      int mod() {
