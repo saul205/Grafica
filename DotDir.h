@@ -1,4 +1,5 @@
-#include <math.h>
+#include<math.h>
+#include<string>
 
 using namespace std;
 
@@ -9,15 +10,19 @@ class DotDir {
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
 
-     DotDir(float x,y,z,w){
-         this.x = x;
-         this.y = y;
-         this.z = z;
-         this.w = w;
+     DotDir(float x, float y, float z, float w){
+         this->x = x;
+         this->y = y;
+         this->z = z;
+         this->w = w;
      }
 
      int mod() {
-         return sqrt(x ^ 2 + y ^ 2 + z ^ 2);
+         return sqrt(x * x + y * y + z * z);
+     }
+
+     string ToString(){
+       return to_string(x) + ", " + to_string(y) + ", " + to_string(z) + ", " + to_string(w); 
      }
 };
 
