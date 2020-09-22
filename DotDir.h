@@ -52,10 +52,14 @@ DotDir operator-(const DotDir& dd1, const DotDir& dd2){
   return DotDir(dd1.c[0] - dd2.c[0], dd1.c[1] - dd2.c[1], dd1.c[2] - dd2.c[2], dd1.c[3] - dd2.c[3]);
 }
 
+// Devuelve el producto escalar de los vectores d1 y d2. Obviamente, d1 y d2
+// deben ser vectores
 DotDir dotProduct(const DotDir d1, const DotDir d2){
   return DotDir(d1.c[0]*d2.c[0], d1.c[1]*d2.c[1], d1.c[2]*d2.c[2], d1.c[3]*d2.c[3]);
 }
 
+// Devuelve el producto vectorial de los vectores d1 y d2. Obviamente, d1 y d2
+// deben ser vectores
 DotDir crossProduct(const DotDir d1, const DotDir d2){
   return DotDir(d1.c[1]*d2.c[2] - d1.c[2]-d2.c[1],
                 d1.c[2]*d2.c[0] - d1.c[0]-d2.c[2],
@@ -99,6 +103,7 @@ class Transformation{
 
     Transformation() {}
 
+    // Set de la matriz a la matriz identidad
     void identidad(){
       matriz = {1,0,0,0,
                 0,1,0,0,
@@ -106,18 +111,21 @@ class Transformation{
                 0,0,0,1};
     }
 
+    // Set de la  matriz de traslacion
     void translation(float x, float y, float z){
       matriz[0][3] = x;
       matriz[1][3] = y;
       matriz[2][3] = z;
     }
 
+    // Set de la  matriz de escala
     void scale(float x, float y, float z){
       matriz[0][0] = x;
       matriz[1][1] = y;
       matriz[2][2] = z;
     }
 
+    // Set de la  matriz de rotacion eje X
     void rotationX(float theta){
       matriz[1][1] = cos(theta);
       matriz[1][2] = -sin(theta);
@@ -125,6 +133,7 @@ class Transformation{
       matriz[2][1] = sin(theta);
     }
 
+    // Set de la  matriz de rotacion eje Y
     void rotationY(float theta){
       matriz[0][0] = cos(theta);
       matriz[2][0] = -sin(theta);
@@ -132,6 +141,7 @@ class Transformation{
       matriz[0][2] = sin(theta);
     }
 
+    // Set de la  matriz de rotacion eje Z
     void rotationZ(float theta){
       matriz[0][0] = cos(theta);
       matriz[0][1] = -sin(theta);
@@ -139,6 +149,8 @@ class Transformation{
       matriz[1][0] = sin(theta);
     }
 
+    // Set de la  matriz de cambio de base formada por los vectores u,v,w y centrada
+    // en el punto o.
     void changeBase(const DotDir& u, const DotDir& v, const DotDir& w, const DotDir& o){
       matriz[0][0] = u.getX();
       matriz[1][0] = u.getY();
@@ -154,6 +166,27 @@ class Transformation{
       matriz[2][3] = o.getZ();
     }
 };
+
+Transformation operator*(const Transformation& t1, const Transformation& t2){
+  Transformation producto;
+  producto[0][0] = t1[0][0]*t2[0][0] + t1[0][1]*t2[1][0] + t1[0][2]*t2[2][0] + t1[0][3]*t2[3][0];
+  producto[0][1] = t1[0][0]*t2[0][1] + t1[0][1]*t2[1][1] + t1[0][2]*t2[2][1] + t1[0][3]*t2[3][1];
+  producto[0][2] = t1[0][0]*t2[0][2] + t1[0][1]*t2[1][2] + t1[0][2]*t2[2][2] + t1[0][3]*t2[3][2];
+  producto[0][3] = t1[0][0]*t2[0][3] + t1[0][1]*t2[1][3] + t1[0][2]*t2[2][3] + t1[0][3]*t2[3][3];
+  producto[1][0] = t1[1][0]*t2[0][0] + t1[1][1]*t2[1][0] + t1[1][2]*t2[2][0] + t1[1][3]*t2[3][0];
+  producto[1][1] = t1[1][0]*t2[0][1] + t1[1][1]*t2[1][1] + t1[1][2]*t2[2][1] + t1[1][3]*t2[3][1];
+  producto[1][2] = t1[1][0]*t2[0][2] + t1[1][1]*t2[1][2] + t1[1][2]*t2[2][2] + t1[1][3]*t2[3][2];
+  producto[1][3] = t1[1][0]*t2[0][3] + t1[1][1]*t2[1][3] + t1[1][2]*t2[2][3] + t1[1][3]*t2[3][3];
+  producto[2][0] = t1[2][0]*t2[0][0] + t1[2][1]*t2[1][0] + t1[2][2]*t2[2][0] + t1[2][3]*t2[3][0];
+  producto[2][1] = t1[2][0]*t2[0][1] + t1[2][1]*t2[1][1] + t1[2][2]*t2[2][1] + t1[2][3]*t2[3][1];
+  producto[2][2] = t1[2][0]*t2[0][2] + t1[2][1]*t2[1][2] + t1[2][2]*t2[2][2] + t1[2][3]*t2[3][2];
+  producto[2][3] = t1[2][0]*t2[0][3] + t1[2][1]*t2[1][3] + t1[2][2]*t2[2][3] + t1[2][3]*t2[3][3];
+  producto[3][0] = t1[3][0]*t2[0][0] + t1[3][1]*t2[1][0] + t1[3][2]*t2[2][0] + t1[3][3]*t2[3][0];
+  producto[3][1] = t1[3][0]*t2[0][1] + t1[3][1]*t2[1][1] + t1[3][2]*t2[2][1] + t1[3][3]*t2[3][1];
+  producto[3][2] = t1[3][0]*t2[0][2] + t1[3][1]*t2[1][2] + t1[3][2]*t2[2][2] + t1[3][3]*t2[3][2];
+  producto[3][3] = t1[3][0]*t2[0][3] + t1[3][1]*t2[1][3] + t1[3][2]*t2[2][3] + t1[3][3]*t2[3][3];
+  return producto;
+}
 
 class PlanetaryStation{
   private:
