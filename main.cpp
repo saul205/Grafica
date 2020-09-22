@@ -16,6 +16,15 @@ int main(){
     DotDir punto;
     punto = ref - centro;
 
+    cout << punto.ToString() << endl;
+
+    DotDir base[3];
+    Sphere esf(centro, eje, ref);
+
+    esf.getBase(base);
+    
+    cout << base[0].ToString() << endl << base[1].ToString() << endl << base[2].ToString() << endl;
+
     cout << "Hola "  << punto.ToString() << endl;
 
     return 0;
