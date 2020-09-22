@@ -5,10 +5,16 @@ using namespace std;
 
 int main(){
 
-    DotDir punto(1,1,1,1);
-    DotDir punto2(2, 2, 2, 2);
+    DotDir eje(0,2,0,0);
 
-    punto = punto + punto2;
+    DotDir centro(0,0,0,1);
+
+    DotDir ref(1,0,0,1);
+
+    cout << checkRadius(eje, centro, ref) << endl;
+
+    DotDir punto;
+    punto = ref - centro;
 
     cout << "Hola "  << punto.ToString() << endl;
 
