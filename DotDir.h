@@ -15,9 +15,9 @@ class DotDir {
 
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
-     friend DotDir dotProduct(const DotDir& d1, const DotDir& d2);
-     friend DotDir crossProduct(const DotDir& d1, const DotDir& d2);
-     friend DotDir normalization(const DotDir& d);
+     friend DotDir dotProduct(const DotDir& dd1, const DotDir& dd2);
+     friend DotDir crossProduct(const DotDir& dd1, const DotDir& dd2);
+     friend DotDir normalization(const DotDir& dd);
 
      DotDir(){}
 
@@ -71,22 +71,22 @@ DotDir operator-(const DotDir& dd1, const DotDir& dd2){
 
 // Devuelve el producto escalar de los vectores d1 y d2. Obviamente, d1 y d2
 // deben ser direcciones
-DotDir dotProduct(const DotDir& d1, const DotDir& d2){
-  return DotDir(d1.c[0]*d2.c[0], d1.c[1]*d2.c[1], d1.c[2]*d2.c[2], d1.c[3]*d2.c[3]);
+DotDir dotProduct(const DotDir& dd1, const DotDir& dd2){
+  return DotDir(dd1.c[0]*dd2.c[0], dd1.c[1]*dd2.c[1], dd1.c[2]*dd2.c[2], dd1.c[3]*dd2.c[3]);
 }
 
 // Devuelve el producto vectorial de los vectores d1 y d2. Obviamente, d1 y d2
 // deben ser direcciones
-DotDir crossProduct(const DotDir& d1, const DotDir& d2){
-  return DotDir(d1.c[1]*d2.c[2] - d1.c[2]*d2.c[1],
-                d1.c[2]*d2.c[0] - d1.c[0]*d2.c[2],
-                d1.c[0]*d2.c[1] - d1.c[1]*d2.c[0], d1.c[3] * d2.c[3]);
+DotDir crossProduct(const DotDir& dd1, const DotDir& dd2){
+  return DotDir(dd1.c[1]*dd2.c[2] - dd1.c[2]*dd2.c[1],
+                dd1.c[2]*dd2.c[0] - dd1.c[0]*dd2.c[2],
+                dd1.c[0]*dd2.c[1] - dd1.c[1]*dd2.c[0], dd1.c[3] * dd2.c[3]);
 }
 
 // Devuelve el vector correspondiente a la normalización de la dirección d
-DotDir normalization(const DotDir& d){
-  float modulo = d.mod();
-  return DotDir(d.c[0]/modulo, d.c[1]/modulo, d.c[2]/modulo, d.c[3]);
+DotDir normalization(const DotDir& dd){
+  float modulo = dd.mod();
+  return DotDir(dd.c[0]/modulo, dd.c[1]/modulo, dd.c[2]/modulo, dd.c[3]);
 }
 
 class Sphere{
@@ -132,8 +132,9 @@ class Transformation{
     Transformation() {}
 
     friend Transformation operator*(const Transformation& t1, const Transformation& t2);
-
-    // Rellena la matriz con ceros
+    friend DotDir operator*(const Transformation& t, const DotDir& dd);
+    friend Transformation transpuesta(const Transformation& t1);
+    // Rellena la diagonal de la matriz con ceros
     void setZero(){
       for(int i = 0; i < 4; ++i){
         matriz[i][i] = 0;
@@ -203,7 +204,28 @@ class Transformation{
       matriz[1][3] = o.getY();
       matriz[2][3] = o.getZ();
     }
+
+    string ToString() const{
+      string dev =  to_string(matriz[0][0]) + ", " + to_string(matriz[0][1]) + ", " + to_string(matriz[0][2]) + ", " + to_string(matriz[0][3])
+                  +  to_string(matriz[1][0]) + ", " + to_string(matriz[1][1]) + ", " + to_string(matriz[1][2]) + ", " + to_string(matriz[1][3])
+                  +  to_string(matriz[2][0]) + ", " + to_string(matriz[2][1]) + ", " + to_string(matriz[2][2]) + ", " + to_string(matriz[2][3])
+                  +  to_string(matriz[3][0]) + ", " + to_string(matriz[3][1]) + ", " + to_string(matriz[3][2]) + ", " + to_string(matriz[3][3]);
+      return dev;
+    }
 };
+
+
+// Devuelve la matriz transpuesta
+Transformation transpuesta(const Transformation& t1){
+      Transformation t;
+      int i,j;
+      for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 4; j++){
+          t.matriz[i][j] = t1.matriz[j][i];
+        }
+      }
+      return t;
+}
 
 // Producto de transformaciones (matrices)
 Transformation operator*(const Transformation& t1, const Transformation& t2){
@@ -216,6 +238,15 @@ Transformation operator*(const Transformation& t1, const Transformation& t2){
 			}
 		}
 	}
+  return producto;
+}
+
+// Producto de transformacion (matriz) por vector
+DotDir operator*(const Transformation& t, const DotDir& dd){
+  DotDir producto(t.matriz[0][0]*dd.getX() + t.matriz[0][1]*dd.getY() + t.matriz[0][2]*dd.getZ() + t.matriz[0][3]*dd.getW(), 
+                  t.matriz[1][0]*dd.getX() + t.matriz[1][1]*dd.getY() + t.matriz[1][2]*dd.getZ() + t.matriz[1][3]*dd.getW(), 
+                  t.matriz[2][0]*dd.getX() + t.matriz[2][1]*dd.getY() + t.matriz[2][2]*dd.getZ() + t.matriz[2][3]*dd.getW(), 
+                  t.matriz[3][0]*dd.getX() + t.matriz[3][1]*dd.getY() + t.matriz[3][2]*dd.getZ() + t.matriz[3][3]*dd.getW());
   return producto;
 }
 
