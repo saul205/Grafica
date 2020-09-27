@@ -11,24 +11,22 @@ int main(){
 
     DotDir ref(1,0,0,1);
 
-    cout << checkRadius(eje, centro, ref) << endl;
+    cout << "checkRadius: " << checkRadius(eje, centro, ref) << endl;
 
     DotDir punto;
     punto = ref - centro;
 
-    cout << punto.ToString() << endl;
+    cout << "ToString: " << punto.ToString() << endl;
 
     DotDir base[3];
     Sphere esf(centro, eje, ref);
 
     esf.getBase(base);
-    
-    cout << "Base: " << endl <<
-        base[0].ToString() << endl << 
-        base[1].ToString() << endl << 
-        base[2].ToString() << endl << endl;
 
-    cout << "Hola "  << punto.ToString() << endl;
+    cout << "Base obtenida con getBase: " << endl;
+    cout << "     " << base[0].ToString() << endl;
+    cout << "     " << base[1].ToString() << endl;
+    cout << "     " << base[2].ToString() << endl << endl;
 
     return 0;
 }

@@ -15,8 +15,9 @@ class DotDir {
 
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
-     friend DotDir dotProduct(const DotDir d1, const DotDir d2);
-     friend DotDir crossProduct(const DotDir d1, const DotDir d2);
+     friend DotDir dotProduct(const DotDir& d1, const DotDir& d2);
+     friend DotDir crossProduct(const DotDir& d1, const DotDir& d2);
+     friend DotDir normalization(const DotDir& d);
 
      DotDir(){}
 
@@ -43,11 +44,11 @@ class DotDir {
        return c[3];
      }
 
-     int mod() {
+     float mod() const {
          return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
      }
 
-     string ToString(){
+     string ToString() const{
        return to_string(c[0]) + ", " + to_string(c[1]) + ", " + to_string(c[2]) + ", " + to_string(c[3]);
      }
 };
@@ -69,17 +70,23 @@ DotDir operator-(const DotDir& dd1, const DotDir& dd2){
 }
 
 // Devuelve el producto escalar de los vectores d1 y d2. Obviamente, d1 y d2
-// deben ser vectores
-DotDir dotProduct(const DotDir d1, const DotDir d2){
+// deben ser direcciones
+DotDir dotProduct(const DotDir& d1, const DotDir& d2){
   return DotDir(d1.c[0]*d2.c[0], d1.c[1]*d2.c[1], d1.c[2]*d2.c[2], d1.c[3]*d2.c[3]);
 }
 
 // Devuelve el producto vectorial de los vectores d1 y d2. Obviamente, d1 y d2
-// deben ser vectores
-DotDir crossProduct(const DotDir d1, const DotDir d2){
+// deben ser direcciones
+DotDir crossProduct(const DotDir& d1, const DotDir& d2){
   return DotDir(d1.c[1]*d2.c[2] - d1.c[2]*d2.c[1],
                 d1.c[2]*d2.c[0] - d1.c[0]*d2.c[2],
                 d1.c[0]*d2.c[1] - d1.c[1]*d2.c[0], d1.c[3] * d2.c[3]);
+}
+
+// Devuelve el vector correspondiente a la normalización de la dirección d
+DotDir normalization(const DotDir& d){
+  float modulo = d.mod();
+  return DotDir(d.c[0]/modulo, d.c[1]/modulo, d.c[2]/modulo, d.c[3]);
 }
 
 class Sphere{
@@ -96,6 +103,7 @@ class Sphere{
       sphereCity = city;
     }
 
+    // Construye una base que incluye como uno de sus ejes al eje de la esfera
     void getBase(DotDir base[3]){
       base[0] = sphereAxis;
       base[1] = crossProduct(sphereAxis, sphereCity - sphereCenter);
@@ -110,8 +118,6 @@ class Sphere{
 // (ambos deben ser puntos) difieren en menos de 10e-6.
 bool checkRadius(DotDir axis, DotDir center, DotDir city){
   DotDir radius = center - city;
-  cout << radius.mod() << endl;
-  cout << axis.mod() << endl;
   return (abs(radius.mod() - 0.5*(axis.mod())) < 0.000001) ? true : false;
 }
 
@@ -125,15 +131,14 @@ class Transformation{
 
     Transformation() {}
 
-    Transformation(bool empty){
-      if(empty){
-        for(int i = 0; i < 4; ++i){
-          matriz[i][i] = 0;
-        }
+    friend Transformation operator*(const Transformation& t1, const Transformation& t2);
+
+    // Rellena la matriz con ceros
+    void setZero(){
+      for(int i = 0; i < 4; ++i){
+        matriz[i][i] = 0;
       }
     }
-
-    friend Transformation operator*(const Transformation& t1, const Transformation& t2);
 
     // Set de la matriz a la matriz identidad
     void identidad(){
@@ -200,8 +205,10 @@ class Transformation{
     }
 };
 
+// Producto de transformaciones (matrices)
 Transformation operator*(const Transformation& t1, const Transformation& t2){
-  Transformation producto(true);
+  Transformation producto;
+  producto.setZero();
   for(int i = 0; i < 4; ++i) {
 		for(int j = 0; j < 4; ++j) {
 			for(int k=0; k < 4; ++k) {
