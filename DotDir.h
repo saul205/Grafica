@@ -105,8 +105,8 @@ class Sphere{
 
     // Construye una base que incluye como uno de sus ejes al eje de la esfera
     void getBase(DotDir base[3]){
-      base[0] = sphereAxis;
-      base[1] = crossProduct(sphereAxis, sphereCity - sphereCenter);
+      base[1] = sphereAxis;
+      base[0] = crossProduct(sphereCity - sphereCenter, sphereAxis);
       base[2] = crossProduct(base[0], base[1]);
     }
 };
@@ -121,15 +121,76 @@ bool checkRadius(DotDir axis, DotDir center, DotDir city){
   return (abs(radius.mod() - 0.5*(axis.mod())) < 0.000001) ? true : false;
 }
 
+float Sarrus(float mat[3][3]){
+  return mat[0][0]*mat[1][1]*mat[2][2] + mat[0][1]*mat[1][2]*mat[2][0] + mat[1][0]*mat[2][1]*mat[0][2]
+          -mat[0][2]*mat[1][1]*mat[2][0] - mat[0][1]*mat[1][0]*mat[2][2] - mat[1][2]*mat[2][1]*mat[0][0];
+}
+
+void cofactor(float mat[4][4], float temp[3][3], int q) 
+{ 
+    int i = 0, j = 0; 
+  
+    for (int row = 1; row < 4; row++) 
+    { 
+        j = 0;
+        for (int col = 0; col < 4; col++) 
+        { 
+            if (col != q) 
+            { 
+                temp[i][j++] = mat[row][col];
+            }
+        }
+        i ++;
+    }
+} 
+  
+/* Recursive function for finding determinant of matrix. 
+  n is current dimension of mat[][]. */
+int determinante(float mat[4][4]) 
+{ 
+    int det = 0;
+    float temp[3][3] = {{0,0,0},{0,0,0}}; 
+    int sign = 1;
+
+    for(int q = 0; q < 4; q++) 
+    {
+      cofactor(mat, temp, q); 
+      det += sign * mat[0][q] * Sarrus(temp); 
+      sign = -sign; 
+    } 
+  
+    return det; 
+}
+
 class Transformation{
   private:
     float matriz[4][4] = {1,0,0,0,
                           0,1,0,0,
                           0,0,1,0,
                           0,0,0,1};
+
+    enum class Tipos : int {
+      scale, 
+      rotateX, 
+      rotateY, 
+      rotateZ, 
+      changeBase, 
+      translate, 
+      none
+    };
+
+    Tipos tipo = Tipos::none;
   public:
 
     Transformation() {}
+
+    Transformation(float mat[4][4]) {
+      for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+          matriz[i][j] = mat[i][j];
+        }
+      }
+    }
 
     friend Transformation operator*(const Transformation& t1, const Transformation& t2);
 
@@ -154,6 +215,8 @@ class Transformation{
       matriz[0][3] = x;
       matriz[1][3] = y;
       matriz[2][3] = z;
+
+      tipo = Tipos::translate;
     }
 
     // Set de la  matriz de escala
@@ -161,6 +224,8 @@ class Transformation{
       matriz[0][0] = x;
       matriz[1][1] = y;
       matriz[2][2] = z;
+
+      tipo = Tipos::scale;
     }
 
     // Set de la  matriz de rotacion eje X
@@ -169,6 +234,8 @@ class Transformation{
       matriz[1][2] = -sin(theta);
       matriz[2][2] = cos(theta);
       matriz[2][1] = sin(theta);
+
+      tipo = Tipos::rotateX;
     }
 
     // Set de la  matriz de rotacion eje Y
@@ -177,6 +244,8 @@ class Transformation{
       matriz[2][0] = -sin(theta);
       matriz[2][2] = cos(theta);
       matriz[0][2] = sin(theta);
+
+      tipo = Tipos::rotateY;
     }
 
     // Set de la  matriz de rotacion eje Z
@@ -185,6 +254,8 @@ class Transformation{
       matriz[0][1] = -sin(theta);
       matriz[1][1] = cos(theta);
       matriz[1][0] = sin(theta);
+
+      tipo = Tipos::rotateZ;
     }
 
     // Set de la  matriz de cambio de base formada por los vectores u,v,w y centrada
@@ -202,6 +273,95 @@ class Transformation{
       matriz[0][3] = o.getX();
       matriz[1][3] = o.getY();
       matriz[2][3] = o.getZ();
+
+      tipo = Tipos::changeBase;
+    }
+ 
+
+    Transformation invertMatrix() {
+
+      // Algoritmo para la eliminación simple de Gauss
+      
+      const int n = 4;
+
+      float matrix[4][4];
+
+      double factor;
+      float I[4][4];
+
+      for (int j = 0; j < n; j++){
+        for (int z = 0; z < n; z++){
+          I[j][z] = 0; 
+          matrix[j][z] = matriz[j][z];
+        }
+          
+        I[j][j] = 1; 
+      }
+
+      int det = determinante(matrix);
+      cout << "Determinante: " << det << endl;
+      if(det == 0){
+        return Transformation();
+      }
+
+      for(int i = 0; i < n; i ++){
+        
+        int j = i + 1;
+        while(matrix[i][i] == 0){
+          if(matrix[i][j] != 0){
+            for(int z = 0; z < 4; z++){
+              float aux = matrix[i][z];
+              matrix[i][z] = matrix[j][z];
+              matrix[j][z] = aux;
+
+              aux = I[i][z];
+              I[i][z] = I[j][z];
+              I[j][z] = aux;
+            }
+          }
+
+          j++;
+        }
+
+        factor = matrix[i][i];
+        for(int z = 0; z < 4; z ++){
+          matrix[i][z] /= factor;
+          I[i][z] /= factor;
+        }
+
+        for(int x = i + 1; x < 4; x ++){
+          factor = matrix[x][i] / matrix[i][i];
+          for(int z = 0; z < 4; z ++){
+            matrix[x][z] -= factor * matrix[i][z];
+            I[x][z] -= factor * I[i][z];
+          }
+        }
+
+      }
+
+      for(int i = n - 1; i > 0; i--){
+        for(int j = i - 1; j >= 0; j--){
+          factor = matrix[j][i] / matrix[i][i];
+          for(int z = 0; z < 4; z ++){
+            matrix[j][z] -= factor * matrix[i][z];
+            I[j][z] -= factor * I[i][z];
+          }
+        }
+      }
+
+      return Transformation(I);
+    }
+
+    string toString(){
+      string result = "";
+      for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+          result += to_string(matriz[i][j]) + " ";
+        }
+        result += "\n";
+      }
+
+      return result;
     }
 };
 
