@@ -15,7 +15,7 @@ class DotDir {
 
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
-     friend DotDir dotProduct(const DotDir& dd1, const DotDir& dd2);
+     friend float dotProduct(const DotDir& dd1, const DotDir& dd2);
      friend DotDir crossProduct(const DotDir& dd1, const DotDir& dd2);
      friend DotDir normalization(const DotDir& dd);
 
@@ -48,7 +48,7 @@ class DotDir {
          return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
      }
 
-     string ToString() const{
+     string toString() const{
        return to_string(c[0]) + ", " + to_string(c[1]) + ", " + to_string(c[2]) + ", " + to_string(c[3]);
      }
 };
@@ -71,8 +71,8 @@ DotDir operator-(const DotDir& dd1, const DotDir& dd2){
 
 // Devuelve el producto escalar de los vectores d1 y d2. Obviamente, d1 y d2
 // deben ser direcciones
-DotDir dotProduct(const DotDir& dd1, const DotDir& dd2){
-  return DotDir(dd1.c[0]*dd2.c[0], dd1.c[1]*dd2.c[1], dd1.c[2]*dd2.c[2], dd1.c[3]*dd2.c[3]);
+float dotProduct(const DotDir& dd1, const DotDir& dd2){
+  return dd1.c[0]*dd2.c[0] + dd1.c[1]*dd2.c[1] + dd1.c[2]*dd2.c[2];
 }
 
 // Devuelve el producto vectorial de los vectores d1 y d2. Obviamente, d1 y d2
@@ -80,7 +80,7 @@ DotDir dotProduct(const DotDir& dd1, const DotDir& dd2){
 DotDir crossProduct(const DotDir& dd1, const DotDir& dd2){
   return DotDir(dd1.c[1]*dd2.c[2] - dd1.c[2]*dd2.c[1],
                 dd1.c[2]*dd2.c[0] - dd1.c[0]*dd2.c[2],
-                dd1.c[0]*dd2.c[1] - dd1.c[1]*dd2.c[0], dd1.c[3] * dd2.c[3]);
+                dd1.c[0]*dd2.c[1] - dd1.c[1]*dd2.c[0], 0);
 }
 
 // Devuelve el vector correspondiente a la normalización de la dirección d
@@ -90,6 +90,7 @@ DotDir normalization(const DotDir& dd){
 }
 
 class Sphere{
+  
   private:
     DotDir sphereCenter, sphereAxis, sphereCity;
   public:
@@ -205,10 +206,10 @@ class Transformation{
       matriz[2][3] = o.getZ();
     }
 
-    string ToString() const{
-      string dev =  to_string(matriz[0][0]) + ", " + to_string(matriz[0][1]) + ", " + to_string(matriz[0][2]) + ", " + to_string(matriz[0][3])
-                  +  to_string(matriz[1][0]) + ", " + to_string(matriz[1][1]) + ", " + to_string(matriz[1][2]) + ", " + to_string(matriz[1][3])
-                  +  to_string(matriz[2][0]) + ", " + to_string(matriz[2][1]) + ", " + to_string(matriz[2][2]) + ", " + to_string(matriz[2][3])
+    string toString() const{
+      string dev =   to_string(matriz[0][0]) + ", " + to_string(matriz[0][1]) + ", " + to_string(matriz[0][2]) + ", " + to_string(matriz[0][3]) + '\n' 
+                  +  to_string(matriz[1][0]) + ", " + to_string(matriz[1][1]) + ", " + to_string(matriz[1][2]) + ", " + to_string(matriz[1][3]) + '\n' 
+                  +  to_string(matriz[2][0]) + ", " + to_string(matriz[2][1]) + ", " + to_string(matriz[2][2]) + ", " + to_string(matriz[2][3]) + '\n' 
                   +  to_string(matriz[3][0]) + ", " + to_string(matriz[3][1]) + ", " + to_string(matriz[3][2]) + ", " + to_string(matriz[3][3]);
       return dev;
     }
