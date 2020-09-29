@@ -22,15 +22,6 @@ class Sphere{
       radius = axis.mod()/2;
     }
 
-    // Devuelve cierto si y solo si el radio definido por el eje del planeta,
-    // el cual corresponde a su diámetro (debe ser una dirección),
-    // y la distancia entre el centro de la esfera y la ciudad de referencia
-    // (ambos deben ser puntos) difieren en menos de 10e-6.
-    bool checkRadius(DotDir axis, DotDir center, DotDir city){
-      DotDir radius = center - city;
-      return (abs(radius.mod() - 0.5*(axis.mod())) < 0.000001) ? true : false;
-    }
-
     // Construye una base que incluye como uno de sus ejes el axis de la esfera
     void getBase(DotDir base[3]){
       base[0] = crossProduct(sphereAxis, sphereCity - sphereCenter);
@@ -54,6 +45,16 @@ class Sphere{
       return radius;
     } 
 };
+
+// Devuelve cierto si y solo si el radio definido por el eje del planeta,
+// el cual corresponde a su diámetro (debe ser una dirección),
+// y la distancia entre el centro de la esfera y la ciudad de referencia
+// (ambos deben ser puntos) difieren en menos de 10e-6.
+bool checkRadius(DotDir axis, DotDir center, DotDir city){
+  DotDir radius = center - city;
+  return (abs(radius.mod() - 0.5*(axis.mod())) < 0.000001) ? true : false;
+}
+
 
 class PlanetaryStation{
   private:
