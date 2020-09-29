@@ -89,4 +89,13 @@ DotDir normalization(const DotDir& dd){
   return DotDir(dd.c[0]/modulo, dd.c[1]/modulo, dd.c[2]/modulo, dd.c[3]);
 }
 
+// Calcula el ángulo entre dos vectores
+float angle(const DotDir& dd1, const DotDir& dd2){
+      float angulo = dotProduct(dd1, dd2);
+      angulo = angulo / dd1.mod();
+      angulo = angulo / dd2.mod();
+      angulo = acos(angulo);
+      return angulo;
+}
+
 #endif
