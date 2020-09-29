@@ -67,8 +67,11 @@ int main(){
     Transformation t1;
     Transformation t2;
     Transformation t3;
+    Transformation t4;
     Transformation inversaT1;
     Transformation inversaT2;
+    Transformation inversaT3;
+    Transformation inversaT4;
 
     cout << "Identidad:   " << endl << t1.toString() << endl << endl;
     t1.setZero();
@@ -91,12 +94,31 @@ int main(){
     cout << "t2':         " << endl << t3.toString() << endl << endl;
     t3 = transpuesta(t1);
     cout << "t1':         " << endl << t3.toString() << endl << endl;
-    
 
     dd9 = t2*dd1;
     cout << "t2*dd1:      " << endl << dd9.toString() << endl << endl;
     t3 = transpuesta(t2);
     dd9 = t3*dd1;
     cout << "t2'*dd1:      " << endl << dd9.toString() << endl << endl;
+    inversaT2 = inverse(t2);
+    t4 = t2*inversaT2;
+    cout << "inv(t2):          " << endl << inversaT2.toString() << endl << endl;
+    cout << "t2*inv(t2)':      " << endl << t4.toString() << endl << endl;
+    t3 = t1*t1*t1;
+    inversaT3 = inverse(t3);
+    t4 = t3*inversaT3;
+    cout << "inv(t3):          " << endl << inversaT3.toString() << endl << endl;
+    cout << "t3*inv(t3):       " << endl << t4.toString() << endl << endl;
+
+    t4.identidad();
+    t4.changeBase(base[0], base[1], base[2], dd1);
+    cout << "t4:          " << endl << t4.toString() << endl << endl;
+    inversaT4 = inverse(t4);
+    t4 = t4*inversaT4;
+    cout << "inv(t4):     " << endl << inversaT4.toString() << endl << endl;
+    cout << "t4*inv(t4):  " << endl << t4.toString() << endl << endl;
     return 0;
+
+    cout << "Comprobaciones adicionales del cálculo de la inversa" << endl;
+    cout << "====================================================" << endl << endl;
 }

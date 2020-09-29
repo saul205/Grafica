@@ -212,7 +212,7 @@ Transformation inverse(const Transformation &t1) {
     int j = i + 1;
     //Se busca una fila que no tenga 0 en la componente de la diagonal necesaria y se permuta
     while(matrix[i][i] == 0){
-      if(matrix[i][j] != 0){
+      if(matrix[j][i] != 0){
         for(int z = 0; z < 4; z++){
           float aux = matrix[i][z];
           matrix[i][z] = matrix[j][z];
