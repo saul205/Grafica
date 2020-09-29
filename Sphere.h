@@ -24,9 +24,9 @@ class Sphere{
 
     // Construye una base que incluye como uno de sus ejes el axis de la esfera
     void getBase(DotDir base[3]){
-      base[0] = crossProduct(sphereAxis, sphereCity - sphereCenter);
-      base[1] = crossProduct(base[0], base[1]);
       base[2] = sphereAxis;
+      base[0] = crossProduct(sphereCity - sphereCenter, sphereAxis);
+      base[1] = crossProduct(base[2], base[0]);
     }
 
     DotDir getAxis(){
@@ -93,7 +93,6 @@ class PlanetaryStation{
       sph.getBase(baseCentro);
 
       DotDir extremoAxis(0,0,planet.getRadius(),1);
-
       // Rotamos sobre el segundo de los ejes calculado
       Transformation rotacionInclination;
       // Rotamos sobre el tercero de los ejes calculado (axis)
@@ -103,11 +102,19 @@ class PlanetaryStation{
       position = rotacionInclination*extremoAxis;
       position = rotacionAzimuth*position;
 
+      cout << "Posicion Local: " << position.toString() << endl << endl;
+
       // Pasar la posición de local a UCS
-      Transformation ucsLocal;
-      ucsLocal.changeBase(baseCentro[0], baseCentro[1], baseCentro[2], sph.getCenter());
-      Transformation localUCS = inverse(ucsLocal);
+      Transformation localUCS;
+      localUCS.changeBase(baseCentro[0], baseCentro[1], baseCentro[2], sph.getCenter());
+      Transformation ucsLocal = inverse(localUCS);
+
+      cout << "Base UCS a local" << endl << ucsLocal.toString() << endl;
+      cout << "Base local a UCS" << endl << localUCS.toString() << endl;
+
       position = localUCS*position;
+
+      cout << "Posicion UCS: " << position.toString() << endl << endl;
 
       // Calculo de la normal y las tangentes
       // 0 = tangente longitudinal
@@ -116,18 +123,33 @@ class PlanetaryStation{
       basePosition[2] = position - planet.getCenter();
       basePosition[0] = crossProduct(baseCentro[2], basePosition[2]);
       basePosition[1] = crossProduct(basePosition[2], basePosition[0]);
+
+      basePosition[2] = normalization(basePosition[2]);
+      basePosition[0] = normalization(basePosition[0]);
+      basePosition[1] = normalization(basePosition[1]);
     }
   };
 
   void conection(const PlanetaryStation& origen, const PlanetaryStation& destino){
 
       // Obtengo la dirección entre estaciones en ambas direcciones 
+
+      cout << "Posiciones " << destino.position.toString() << " | " << origen.position.toString() << endl << endl;
       DotDir dirUCS = destino.position - origen.position;
+
       Transformation ucsToPositionOrigen;
       ucsToPositionOrigen.changeBase(origen.basePosition[0], origen.basePosition[1], origen.basePosition[2], origen.position);
+      ucsToPositionOrigen = inverse(ucsToPositionOrigen);
+
+      cout << "Base Ucs a posicion Origen" << endl << ucsToPositionOrigen.toString() << endl << endl;
+
       DotDir origenDir = ucsToPositionOrigen*dirUCS;
       Transformation ucsToPositionDestino;
       ucsToPositionDestino.changeBase(destino.basePosition[0], destino.basePosition[1], destino.basePosition[2], destino.position);
+      ucsToPositionDestino = inverse(ucsToPositionDestino);
+      
+      cout << "Base Ucs a posicion Destino" << endl << ucsToPositionDestino.toString() << endl << endl;
+
       DotDir destinoDir = ucsToPositionDestino*dirUCS;
 
       if(origenDir.getZ() < 0){
