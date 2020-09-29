@@ -117,8 +117,59 @@ int main(){
     t4 = t4*inversaT4;
     cout << "inv(t4):     " << endl << inversaT4.toString() << endl << endl;
     cout << "t4*inv(t4):  " << endl << t4.toString() << endl << endl;
-    return 0;
 
     cout << "Comprobaciones adicionales del cálculo de la inversa" << endl;
     cout << "====================================================" << endl << endl;
+
+    DotDir centro1(5, 5, 5, 1);
+    DotDir eje1(1, 2, 3, 0);
+    DotDir ref1(6, 2, 3, 1);
+
+    Sphere pl1(centro1, eje1, ref1);
+    pl1.getBase(base);
+
+    t1.identidad();
+    t1.changeBase(base[0], base[1], base[2], centro1);
+
+    cout << "t1: \n" << t1.toString() << endl << endl;
+    t2 = inverse(t1);
+    cout << "t2, inversa(t1): \n" << t2.toString() << endl << endl;
+    t3 = t1*t2;
+    cout << "t1 * t2: \n" << t3.toString() << endl << endl;
+
+    cout << "//----------------------------------------------------------------" << endl << endl;
+
+    DotDir centro2(1, 1, 1, 1);
+    DotDir eje2(0, 1, 0, 0);
+    DotDir ref2(1, 0, 0, 1);
+
+    Sphere pl2(centro2, eje2, ref2);
+    pl2.getBase(base);
+
+    t1.identidad();
+    t1.changeBase(base[0], base[1], base[2], centro2);
+
+    cout << "t1: \n" << t1.toString() << endl << endl;
+    t2 = inverse(t1);
+    cout << "t2: \n" << t2.toString() << endl << endl;
+    t3 = t1*t2;
+    cout << "t1 * t2: \n" << t3.toString() << endl << endl;
+
+    cout << "//----------------------------------------------------------------" << endl << endl;
+
+    DotDir axe1(20, 0, 0, 0);
+    DotDir axe2(0, 20, 0, 0);
+    DotDir axe3(0, 0, 20, 0);
+    DotDir center(2, 3, 4, 1);
+
+    t1.identidad();
+    t1.changeBase(axe1, axe2, axe3, center);
+
+    cout << "t1: \n" << t1.toString() << endl << endl;
+    t2 = inverse(t1);
+    cout << "t2: \n" << t2.toString() << endl << endl;
+    t3 = t1*t2;
+    cout << "t1 * t2: \n" << t3.toString() << endl << endl;
+
+    return 0;
 }
