@@ -117,6 +117,9 @@ int main(){
     t4 = t4*inversaT4;
     cout << "inv(t4):     " << endl << inversaT4.toString() << endl << endl;
     cout << "t4*inv(t4):  " << endl << t4.toString() << endl << endl;
+    t1 = inverse(inversaT4);
+    t4 = inversaT4*t1;
+    cout << "inv(t4)*inv(inv(t4)):  " << endl << t4.toString() << endl << endl;
 
     cout << "Comprobaciones adicionales del cálculo de la inversa" << endl;
     cout << "====================================================" << endl << endl;

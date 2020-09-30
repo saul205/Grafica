@@ -144,8 +144,8 @@ DotDir operator*(const Transformation& t, const DotDir& dd){
 
 // Calculo del determinante de 3x3
 float Sarrus(float mat[3][3]){
-  return mat[0][0]*mat[1][1]*mat[2][2] + mat[0][1]*mat[1][2]*mat[2][0] + mat[1][0]*mat[2][1]*mat[0][2]
-          -mat[0][2]*mat[1][1]*mat[2][0] - mat[0][1]*mat[1][0]*mat[2][2] - mat[1][2]*mat[2][1]*mat[0][0];
+  return mat[0][0]*mat[1][1]*mat[2][2] + mat[1][0]*mat[2][1]*mat[0][2] + mat[2][0]*mat[0][1]*mat[1][2]
+          -mat[0][2]*mat[1][1]*mat[2][0] - mat[1][2]*mat[2][1]*mat[0][0] - mat[2][2]*mat[0][1]*mat[1][0];
 }
 
 // Obtenemos los cofactores para el calculo del determinante 4x4
@@ -168,8 +168,8 @@ void cofactor(float mat[4][4], float cof[3][3], int q) {
 }  
 
 // Calculo del determinante 4x4
-int determinante(float mat[4][4]) { 
-    int det = 0;
+float determinante(float mat[4][4]) { 
+    float det = 0;
     float cof[3][3]; 
     int s = 1;
 
@@ -180,7 +180,6 @@ int determinante(float mat[4][4]) {
       det += s * mat[0][q] * Sarrus(cof); 
       s = -s; 
     } 
-  
     return det; 
 }
 
