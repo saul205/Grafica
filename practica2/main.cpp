@@ -2,8 +2,9 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include "..\lib\Image.h"
 
-void leer(std::string nombre){
+Image leer(std::string nombre){
 
     std::ifstream f(nombre);
     std::string format;
@@ -51,19 +52,24 @@ void leer(std::string nombre){
         }
 
         int elementCounter = 0;
-        // Image a();
+        Image imagen;
         float rgbR = 0, rgbG = 0, rgbB = 0;
         for(int i = 0; i < height; ++i){
             for(int j = 0; j < width; ++j){
                 f >> rgbR;
                 f >> rgbG;
                 f >> rgbB;
-                // a.setElement(elementCounter, rgbR, rgbG, rgbB);
+                imagen.set(elementCounter, rgbR, rgbG, rgbB);
                 ++elementCounter;
             }
         }
-        std::cout << elementCounter << std::endl;
+        return imagen;
     }
+    else{
+        std::cout << "Error en la lectura" << std::endl;
+        return Image();
+    }
+    
 }
 
 int main(){
@@ -71,7 +77,9 @@ int main(){
     std::string file;
     std::cout << "Introduce una imagen: " << std::endl;
     std::cin >> file;
-    leer(file);
+    Image imagen = leer(file);
+
+    std::cout << imagen.toString() << std::endl;
 
     return 0;
 }
