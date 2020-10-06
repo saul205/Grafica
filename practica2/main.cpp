@@ -2,7 +2,8 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include "..\lib\Image.h"
+#include "../lib/Image.h"
+#include "../lib/ToneMapper.h"
 
 Image leer(std::string nombre){
 
@@ -36,7 +37,7 @@ Image leer(std::string nombre){
                     maximo = stof(linea);
                     maxFound = true;
                 }
-            }
+            }std::ifstream f(nombre);
         }
 
         // Lee el resto de comentarios que puedan existir
@@ -52,7 +53,7 @@ Image leer(std::string nombre){
         }
 
         int elementCounter = 0;
-        Image imagen;
+        Image imagen(format, nombre, width, height, color_res, maximo);
         float rgbR = 0, rgbG = 0, rgbB = 0;
         for(int i = 0; i < height; ++i){
             for(int j = 0; j < width; ++j){
@@ -72,14 +73,40 @@ Image leer(std::string nombre){
     
 }
 
+void escribir(std::string nombre, Image& img){
+
+    std::ofstream f(nombre);
+
+    if(f.is_open()){
+
+        std::string write = "";
+        write += img.getCabecera() + "\n";
+        write += "#MAX=" + std::to_string(img.getMax()) + "\n";
+        write += std::to_string(img.getWidth()) + " " + std::to_string(img.getHeight()) + "\n";
+        write += std::to_string(255) + "\n";
+        f << write;
+        
+        for(int i = 0; i < img.getHeight(); ++i){
+            f << img.toStringRow(i) << "\n";
+        }
+    }
+}
+
 int main(){
 
-    std::string file;
+    std::string file, file2;
     std::cout << "Introduce una imagen: " << std::endl;
     std::cin >> file;
     Image imagen = leer(file);
 
-    std::cout << imagen.toString() << std::endl;
+    std::cout << imagen.getMax() << endl;
+
+    ToneMapper tm;
+    tm.clamping(imagen);
+
+    std::cout << "Introduce una archivo destino: " << std::endl;
+    std::cin >> file2;
+    escribir(file2, imagen);
 
     return 0;
 }

@@ -6,53 +6,56 @@
 #include <iostream>
 
 class Image{
-
-private:
+    
+public:
 
     struct rgb{
         float r, g, b;
     };
 
-    std::vector<rgb> data;
-    float max = 0;
-
-    std::string name = "";
-    int width = 0, height = 0, c = 0;
-    
-public:
-
     Image(){
     }
 
-    void setData(std::string name, int width, int height, int c, float max){
-        this->name = name;
-        this->width = width;
-        this->height = height;
-        this->c = c;
-        this->max = max;
+    Image(std::string _cabecera, std::string _name, int _width, int _height, int _c, float _max){
+        name = _name;
+        width = _width;
+        height = _height;
+        c = _c;
+        max = _max;
+        cabecera = _cabecera;
 
         data.resize(width * height);
     }
 
+    void setData(std::string _cabecera, std::string _name, int _width, int _height, int _c, float _max){
+        name = _name;
+        width = _width;
+        height = _height;
+        c = _c;
+        max = _max;
+        cabecera = _cabecera;
+
+        data.resize(width * height * 2);
+    }
+
+    void setRGB(int index, rgb colors){
+        data[index] = colors;
+    }
+
     void set(int index, int r, int g, int b){
-        if(0 <= index && index <= width * height){
-            data[index] = {r * max / c, g * max/ c, b * max/ c};
-            std::cout << index << std::endl;
-        }else{
-            std::cout << "Error en la insercion en rango: " << index << std::endl;
-        }
+        data[index] = {r * max / c, g * max/ c, b * max/ c};
     }
 
     rgb get(int index){
-        if(0 <= index && index <= width * height){
-            return data[index];
-        }else{
-            std::cout << "Error en el get en rango: " << index << std::endl;
-        }
+        return data[index];
     }
 
     int getWidth(){
         return width;
+    }
+
+    std::string getCabecera(){
+        return cabecera;
     }
 
     int getHeight(){
@@ -71,9 +74,27 @@ public:
         return c;
     }
 
-    std::string toString(){
-        return "Nombre: " + name + "\nWidth: " + std::to_string(width) + " Height: " + std::to_string(height);
+    std::string toStringRow(int row){
+        std::string ret = "";
+        int index = width*row;
+        for (int i = 0; i < width; ++i){
+            ret += std::to_string((int)(data[index + i].r*(255/max))) + " ";
+            ret += std::to_string((int)(data[index + i].g*(255/max))) + " ";
+            ret += std::to_string((int)(data[index + i].b*(255/max)));
+            ret = (i+1 != width) ? ret + "     " : ret;
+        }
+        return ret;
     }
+
+private:
+
+    std::string cabecera = "";
+
+    std::vector<rgb> data;
+    float max = 0;
+
+    std::string name = "";
+    int width = 0, height = 0, c = 0;
 
 };
 
