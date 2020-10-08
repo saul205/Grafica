@@ -5,3 +5,5 @@ main
 *.obj
 imagenes/
 *.ppm
+*.zip
+practica2/IMGS/

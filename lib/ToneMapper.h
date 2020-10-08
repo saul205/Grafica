@@ -14,7 +14,7 @@ class ToneMapper{
     ToneMapper(){}
 
     void clamping(Image& img){
-        const float max = img.getMax();
+        const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 Image::rgb colores = img.get(i * img.getWidth() + j);
@@ -26,29 +26,28 @@ class ToneMapper{
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
-
-        img.setMax(1);
     }
 
     void equalization(Image& img){
-        const float max = img.getMax();
+
+        // Buscar máximo o cogerlo directamente?
+        const float maximo = img.getMaximo();
+
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 Image::rgb colores = img.get(i * img.getWidth() + j);
                 
-                colores.r = colores.r / max;
-                colores.g = colores.g / max;
-                colores.b = colores.b / max;
+                colores.r = colores.r / maximo;
+                colores.g = colores.g / maximo;
+                colores.b = colores.b / maximo;
 
-                if(colores.g == max){
+                if(colores.g == maximo){
                     std::cout << i * img.getWidth() + j << std::endl;
                 }
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
-
-        img.setMax(1);
     }
 
     void equalizeAndClamp(Image& img, const float clamping){
@@ -63,29 +62,25 @@ class ToneMapper{
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
-
-        img.setMax(1);
     }
 
     void gammaCurve(Image& img, const float gamma = 2.2){
-        const float max = img.getMax();
+        const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 Image::rgb colores = img.get(i * img.getWidth() + j);
                 
-                colores.r = pow((colores.r / max), gamma); 
-                colores.g = pow((colores.g / max), gamma); 
-                colores.b = pow((colores.b / max), gamma); 
+                colores.r = pow((colores.r / maximo), gamma); 
+                colores.g = pow((colores.g / maximo), gamma); 
+                colores.b = pow((colores.b / maximo), gamma); 
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
-
-        img.setMax(1);
     }
 
     void gammaCurveAndClamping(Image& img, const float clamping, const float gamma = 2.2){
-        const float max = img.getMax();
+        const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 Image::rgb colores = img.get(i * img.getWidth() + j);
@@ -97,8 +92,6 @@ class ToneMapper{
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
-
-        img.setMax(1);
     }
 
 };
