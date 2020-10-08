@@ -74,13 +74,17 @@ public:
         return c;
     }
 
+    void setMax(float _max){
+        max = _max;
+    }
+
     std::string toStringRow(int row){
         std::string ret = "";
         int index = width*row;
         for (int i = 0; i < width; ++i){
-            ret += std::to_string((int)(data[index + i].r*(255/max))) + " ";
-            ret += std::to_string((int)(data[index + i].g*(255/max))) + " ";
-            ret += std::to_string((int)(data[index + i].b*(255/max)));
+            ret += std::to_string((int)(data[index + i].r*(255 / max))) + " ";
+            ret += std::to_string((int)(data[index + i].g*(255 / max))) + " ";
+            ret += std::to_string((int)(data[index + i].b*(255 / max)));
             ret = (i+1 != width) ? ret + "     " : ret;
         }
         return ret;

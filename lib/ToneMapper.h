@@ -19,13 +19,15 @@ class ToneMapper{
             for(int j = 0; j < img.getWidth(); ++j){
                 Image::rgb colores = img.get(i * img.getWidth() + j);
                 
-                colores.r = colores.r <= max ? colores.r : max;
-                colores.g = colores.g <= max ? colores.g : max;
-                colores.b = colores.b <= max ? colores.b : max;
+                colores.r = colores.r <= 1 ? colores.r : 1 ;
+                colores.g = colores.g <= 1 ? colores.g : 1 ;
+                colores.b = colores.b <= 1 ? colores.b : 1 ;
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
+
+        img.setMax(1);
     }
 
     void equalization(Image& img){
@@ -45,6 +47,8 @@ class ToneMapper{
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
+
+        img.setMax(1);
     }
 
     void equalizeAndClamp(Image& img, const float clamping){
@@ -59,6 +63,8 @@ class ToneMapper{
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
+
+        img.setMax(1);
     }
 
     void gammaCurve(Image& img, const float gamma = 2.2){
@@ -74,6 +80,8 @@ class ToneMapper{
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
+
+        img.setMax(1);
     }
 
     void gammaCurveAndClamping(Image& img, const float clamping, const float gamma = 2.2){
@@ -82,13 +90,15 @@ class ToneMapper{
             for(int j = 0; j < img.getWidth(); ++j){
                 Image::rgb colores = img.get(i * img.getWidth() + j);
                 
-                colores.r = (colores.r / max <= clamping) ? pow(colores.r / max, gamma) / clamping : 1;
-                colores.g = (colores.g / max <= clamping) ? pow(colores.g / max, gamma) / clamping : 1;
-                colores.b = (colores.b / max <= clamping) ? pow(colores.b / max, gamma) / clamping : 1;
+                colores.r = (colores.r <= clamping) ? pow(colores.r / clamping, gamma)  : 1;
+                colores.g = (colores.g <= clamping) ? pow(colores.g / clamping, gamma)  : 1;
+                colores.b = (colores.b <= clamping) ? pow(colores.b / clamping, gamma)  : 1;
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
+
+        img.setMax(1);
     }
 
 };

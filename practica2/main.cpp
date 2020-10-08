@@ -102,7 +102,7 @@ int main(){
     std::cout << imagen.getMax() << endl;
 
     ToneMapper tm;
-    tm.clamping(imagen);
+    tm.gammaCurve(imagen, imagen.getMax() / 10);
 
     std::cout << "Introduce una archivo destino: " << std::endl;
     std::cin >> file2;
