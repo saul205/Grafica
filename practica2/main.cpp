@@ -18,7 +18,7 @@ int main(){
 
     std::cout << "Introduce una archivo destino: " << std::endl;
     std::cin >> file2;
-    escribir(file2, imagen, 255);
+    escribirbpm(file2, imagen, 255);
 
     return 0;
 }
