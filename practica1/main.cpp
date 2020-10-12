@@ -1,4 +1,4 @@
-#include "Sphere.h"
+#include "..\lib\Sphere.h"
 #include <iostream>
 
 using namespace std;
@@ -177,9 +177,9 @@ int main(){
     cout << "SIMULACION DE LA APLICACION" << endl << endl;
     cout << "===================================================" << endl << endl;
 
-    DotDir ejePlaneta1(0,0,2,0);
+    DotDir ejePlaneta1(0,0,4,0);
     DotDir centroPlaneta1(1,0,0,1);
-    DotDir refPlaneta1(1,1,0,1);
+    DotDir refPlaneta1(1,2,0,1);
 
     bool correcto = checkRadius(ejePlaneta1, centroPlaneta1, refPlaneta1);
     if(!correcto)
@@ -190,9 +190,9 @@ int main(){
 
     PlanetaryStation estacion1(planeta1, 1.57079633f, 0);
 
-    DotDir ejePlaneta2(0,0,2,0);
+    DotDir ejePlaneta2(0,0,4,0);
     DotDir centroPlaneta2(10, 0,0, 1);
-    DotDir refPlaneta2(10, 1, 0, 1);
+    DotDir refPlaneta2(10, 2, 0, 1);
 
     correcto = checkRadius(ejePlaneta2, centroPlaneta2, refPlaneta2);
     if(!correcto)
