@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="org.apache.lucene.index.IndexableField"/>
+    <fullyQualifiedTypeName name="javax.xml.parsers.DocumentBuilder"/>
+    <fullyQualifiedTypeName name="org.w3c.dom.Element"/>
+    <fullyQualifiedTypeName name="org.w3c.dom.NodeList"/>
+    <fullyQualifiedTypeName name="java.io.StringReader"/>
+    <fullyQualifiedTypeName name="java.io.Reader"/>
+    <fullyQualifiedTypeName name="org.apache.lucene.analysis.es.SpanishAnalyzer"/>
+    <fullyQualifiedTypeName name="org.apache.lucene.document.TextField"/>
+    <fullyQualifiedTypeName name="org.w3c.dom.Node"/>
+    <fullyQualifiedTypeName name="org.apache.lucene.document.DoublePoint"/>
+    <fullyQualifiedTypeName name="org.apache.lucene.search.BooleanClause"/>
+</qualifiedTypeNameHistroy>

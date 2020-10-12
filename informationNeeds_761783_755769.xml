@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<informationNeeds>
+	<informationNeed>
+		<identifier>1</identifier>
+		<text>Artículos relacionados con la investigación en España del efecto del ejercicio físico en pacientes con artritis reumatoide u otras enfermedades 
+			autoinmunes como la diabetes 1, así como las medidas necesarias para su realización.</text>
+	</informationNeed>
+	<informationNeed>
+		<identifier>2</identifier>
+		<text>Análisis de imágenes en tiempo real aplicado a la automoción. Preferiblemente aplicado al reconocimiento de obstáculos en la carretera para 
+			vehículos de conducción automática o para el apoyo de personas con discapacidad visual.</text>
+	</informationNeed>
+	<informationNeed>
+		<identifier>3</identifier>
+		<text>Influencia de "Don Quijote de la Mancha" en los autores del siglo XVII y de la primera mitad del siglo XVIII.</text>
+	</informationNeed>
+	<informationNeed>
+		<identifier>4</identifier>
+		<text>Tasa de desempleo en España durante la crisis del 2008 y estrategias planteadas para la recuperación económica.</text>
+	</informationNeed>
+	<informationNeed>
+		<identifier>5</identifier>
+		<text>Documentos relacionados con la contaminación y otros efectos producidos por la generación de energía eléctrica a partir de la fisión nuclear.</text>
+	</informationNeed>
+</informationNeeds>
