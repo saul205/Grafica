@@ -181,7 +181,7 @@ void escribir(std::string nombre, Image& img, const int col_res){
     }
 }
 
-void escribirbpm(std::string nombre, Image& img, const int col_res){
+void escribirbmp(std::string nombre, Image& img, const int col_res){
 
     std::ofstream f(nombre);
     if(f.is_open()){
@@ -242,7 +242,7 @@ void escribirbpm(std::string nombre, Image& img, const int col_res){
 
         const int h = img.getHeight();
         const int w = img.getWidth();
-        const int new_max = img.getMaximo();
+        const float new_max = img.getMaximo();
 
         for(int i = h; i > 0; --i){
             write = "";
