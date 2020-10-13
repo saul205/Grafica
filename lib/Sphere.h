@@ -27,6 +27,10 @@ class Sphere{
       base[2] = sphereAxis;
       base[0] = crossProduct(sphereCity - sphereCenter, sphereAxis);
       base[1] = crossProduct(base[2], base[0]);
+
+      base[2] = normalization(base[2]);
+      base[0] = normalization(base[0]);
+      base[1] = normalization(base[1]);
     }
 
     DotDir getAxis(){
