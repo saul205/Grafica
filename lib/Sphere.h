@@ -3,6 +3,7 @@
 
 #include "Transformation.h"
 #include "math.h"
+#include "Rgb.h"
 
 class Sphere{
   
@@ -10,6 +11,8 @@ class Sphere{
     // En UCS
     DotDir sphereCenter, sphereAxis, sphereCity;
     float radius;
+    rgb emission;
+
   public:
 
     Sphere(){}
@@ -21,6 +24,8 @@ class Sphere{
       sphereCity = city;
       radius = axis.mod()/2;
     }
+
+    //--------------------GETTERS-------------------------
 
     // Construye una base que incluye como uno de sus ejes el axis de la esfera
     void getBase(DotDir base[3]){
@@ -48,6 +53,16 @@ class Sphere{
     float getRadius(){
       return radius;
     } 
+
+    rgb getRgb(){
+      return emission;
+    }
+
+    //--------------------SETTERS-------------------------
+
+    void setRgb(rgb _color){
+      emission = _color;
+    }
 };
 
 // Devuelve cierto si y solo si el radio definido por el eje del planeta,
