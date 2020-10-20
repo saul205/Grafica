@@ -94,14 +94,14 @@ class ToneMapper{
         }
     }
 
-    void Reinhard(Image& img, float exp, const float gamma = 2.2){
+    void Reinhard(Image& img, float exp, float white = 2, const float gamma = 2.2){
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 Image::rgb colores = img.get(i * img.getWidth() + j);
                 
-                colores.r = pow(colores.r * exp / (1 + colores.r / exp), 1 / gamma);
-                colores.g = pow(colores.g * exp / (1 + colores.g / exp), 1 / gamma);
-                colores.b = pow(colores.b * exp / (1 + colores.b / exp), 1 / gamma);
+                colores.r = pow(colores.r * exp * (1 + colores.r * exp / white) / (1 + colores.r / exp), 1 / gamma);
+                colores.g = pow(colores.g * exp * (1 + colores.g * exp / white) / (1 + colores.g / exp), 1 / gamma);
+                colores.b = pow(colores.b * exp * (1 + colores.b * exp / white) / (1 + colores.b / exp), 1 / gamma);
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }

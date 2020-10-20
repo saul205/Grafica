@@ -44,6 +44,13 @@ class DotDir {
        return c[3];
      }
 
+     void setDotDir(float x, float y, float z, float w){
+         c[0] = x;
+         c[1] = y;
+         c[2] = z;
+         c[3] = w;
+     }
+
      float mod() const {
          return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
      }
@@ -69,8 +76,7 @@ DotDir operator-(const DotDir& dd1, const DotDir& dd2){
   return DotDir(dd1.c[0] - dd2.c[0], dd1.c[1] - dd2.c[1], dd1.c[2] - dd2.c[2], dd1.c[3] - dd2.c[3]);
 }
 
-// Devuelve el producto escalar de los vectores d1 y d2. Obviamente, d1 y d2
-// deben ser direcciones
+// Devuelve el producto escalar de los vectores d1 y d2.
 float dotProduct(const DotDir& dd1, const DotDir& dd2){
   return dd1.c[0]*dd2.c[0] + dd1.c[1]*dd2.c[1] + dd1.c[2]*dd2.c[2];
 }
