@@ -14,7 +14,7 @@ int main(){
     Image imagen = leer(file);
 
     ToneMapper tm;
-    tm.Filmic(imagen);
+    tm.Reinhard(imagen, imagen.getMaximo()/4);
 
     std::cout << "Introduce una archivo destino: " << std::endl;
     std::cin >> file2;
