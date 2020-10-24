@@ -31,9 +31,15 @@ class Sensor{
         }
 
         bool lanzarRayos(vector<shared_ptr<Figure>> objetos, Image& imagen){
+            
+            float pixelSize;
+            if(planeH <= planeW){
+                pixelSize = 2 / planeH;
+            }else{
+                pixelSize = 2 / planeW;
+            }
 
-            const float pixelW = 1 / planeW;
-            const float pixelH = 1 / planeH;
+            cout << pixelSize << endl;
 
             Image newImagen("algo", "render", planeW, planeH, 255, 1);
 
@@ -41,12 +47,12 @@ class Sensor{
             DotDir planePoint;
             DotDir dir;
 
-            for(int i = 0; i < planeW ; ++i){
-                for(int j = 0; j < planeH ; ++j){
+            for(int i = 0; i < planeW; ++i){
+                for(int j = 0; j < planeH; ++j){
                     // De momento tiramos el rayo a una esquina del píxel
                     // Origen en local es 0,0,0,1
                     // Como f = 1 la tercera componente es fija
-                    planePoint.setDotDir(+ pixelW * i - pixelW * planeW / 2, - pixelH*j + pixelH*planeH / 2, 2, 1);
+                    planePoint.setDotDir(pixelSize * i - pixelSize * planeW / 2, - pixelSize * j + pixelSize * planeH / 2, 1, 1);
                     dir = planePoint - oLocal;
                     normalization(dir);
 
