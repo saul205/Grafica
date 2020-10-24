@@ -6,14 +6,22 @@
 class Ray{
     private:
 
-        DotDir point;
+        DotDir origen;
         DotDir direction;
 
     public:
 
-        Ray(DotDir punto, DotDir direccion){
-            point = punto;
+        Ray(DotDir _origen, DotDir direccion){
+            origen = _origen;
             direction = direccion;
+        }
+
+        DotDir getDir(){
+            return direction;
+        }
+
+        DotDir getOrigen(){
+            return origen;
         }
 };
 

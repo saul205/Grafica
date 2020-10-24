@@ -2,9 +2,9 @@
 #define RGB_H
 
 struct rgb{
-    float red = 0;
-    float green = 0; 
-    float blue = 0;
+    float r = 0;
+    float g = 0; 
+    float b = 0;
 };
 
 #endif

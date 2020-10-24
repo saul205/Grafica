@@ -4,14 +4,13 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
+#include <fstream>
+#include "Rgb.h"
 
 class Image{
     
 public:
-
-    struct rgb{
-        float r, g, b;
-    };
 
     Image(){
     }
@@ -28,7 +27,7 @@ public:
     }
 
     void setRGB(int index, rgb colors){
-        data[index] = colors;
+        data[index] = {colors.r * max / c, colors.g * max/ c, colors.b * max/ c};
     }
 
     void set(int index, int r, int g, int b){
@@ -58,7 +57,7 @@ public:
     float getMaximo(){
         float maximo = get(0).r;
         for(int i = 0; i < getWidth()*getHeight(); ++i){
-            Image::rgb colores = get(i);
+            rgb colores = get(i);
             if(colores.r > maximo){ maximo = colores.r; }
             if(colores.g > maximo){ maximo = colores.g; }
             if(colores.b > maximo){ maximo = colores.b; }

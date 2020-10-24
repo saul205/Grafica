@@ -6,19 +6,46 @@
 #include <iostream>
 #include "DotDir.h"
 #include "Rgb.h"
+#include "Figure.h"
 
-class Plane{
+class Plane : public Figure {
     private:
 
         DotDir normal;
-        float distance;
-        rgb emission;
+        float c;
 
     public:
 
-        Plane(DotDir _normal, float _distance){
-            distance = _distance;
+        Plane() {}
+
+        Plane(DotDir _normal, float _c){
+            c = _c;
             normal = _normal;
+        }
+
+        // Debe tener una normal
+        // Si no instersecta o está detrás de la cámara devuelve falso y no modifica t,
+        // en caso contrario devuelve cierto y t = - (c + o*n) / (d*n)
+        bool instersects(Ray ray, float& t) override {
+    
+            float den = dotProduct(ray.getDir(), normal);
+
+            if(!den){
+                // Intersecta en el infinito
+                return false;
+            }
+
+            float num = -(c + dotProduct(ray.getOrigen(), normal));
+            
+            if(num / den < 0){
+                return false;
+            }
+
+            t = num / den;
+
+            //cout << num << " / " << den << " = " << t << endl;
+            //cout << ray.getDir().toString() << endl;
+            return true;
         }
 
         //--------------------GETTERS-------------------------
@@ -27,18 +54,18 @@ class Plane{
             return normal;
         }
 
-        float getDistance(){
-            return distance;
-        }
-
-        rgb getRgb(){
-            return emission;
+        float getC(){
+            return c;
         }
 
         //--------------------SETTERS-------------------------
 
-        void setRgb(rgb _color){
-            emission = _color;
+        void setNormal(DotDir _normal){
+            normal = _normal;
+        }
+
+        void setC(float _c){
+            c = _c;
         }
 };
 

@@ -4,6 +4,7 @@
 #include "Transformation.h"
 #include "math.h"
 #include "Rgb.h"
+#include "Figure.h"
 
 class Sphere{
   
@@ -11,7 +12,6 @@ class Sphere{
     // En UCS
     DotDir sphereCenter, sphereAxis, sphereCity;
     float radius;
-    rgb emission;
 
   public:
 
@@ -52,17 +52,9 @@ class Sphere{
 
     float getRadius(){
       return radius;
-    } 
-
-    rgb getRgb(){
-      return emission;
     }
 
     //--------------------SETTERS-------------------------
-
-    void setRgb(rgb _color){
-      emission = _color;
-    }
 };
 
 // Devuelve cierto si y solo si el radio definido por el eje del planeta,
