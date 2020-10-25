@@ -6,7 +6,7 @@
 #include "Rgb.h"
 #include "Figure.h"
 
-class Sphere{
+class Sphere : public Figure{
   
   private:
     // En UCS
@@ -23,6 +23,46 @@ class Sphere{
       sphereAxis = axis;
       sphereCity = city;
       radius = axis.mod()/2;
+    }
+
+    // Si no instersecta o está detrás de la cámara devuelve falso y no modifica t,
+    // en caso contrario devuelve cierto y t²|d|² + 2td*(o-c) + |o-c|² - r² = 0
+    // El rayo, si normalizado, |d|² = 1, se despeja t y se guarda la solución de la ecuación
+    // en t. Guarda la solución que representa el punto más cercano
+    bool instersects(Ray ray, float& t) override {
+        DotDir diff = ray.getOrigen() - sphereCenter;
+        float modDiff = diff.mod();
+        
+        float a = 1;
+        float b = 2.0f*dotProduct(ray.getDir(), diff);
+        float c = (modDiff*modDiff) - (radius*radius);
+        float doSquareRoot = b - 4.0f*a*c;
+        if(doSquareRoot < 0) {         // Sin soluciones
+          return false;
+
+        } else if(doSquareRoot == 0) { // Una solución, t es tangente a la esfera
+          float answer = (-b)/(2.0f);  // a = 1 y la raíz es 0
+          if(answer > 0){
+            t = answer;
+            return true;
+          } else {
+            return false;
+          }
+
+        } else {
+
+          float squareRoot = sqrt(doSquareRoot);
+          float sol1 = ((-b) + squareRoot) / 2.0f;
+          float sol2 = ((-b) - squareRoot) / 2.0f;
+          if(sol1 > 0 && sol2 > 0){
+            t = (sol1 < sol2) ? sol1 : sol2;
+            cout << t << endl;
+            return true;
+          } else {                    // La cámara está dentro de la esfera
+            return false;
+          }
+        }
+        
     }
 
     //--------------------GETTERS-------------------------

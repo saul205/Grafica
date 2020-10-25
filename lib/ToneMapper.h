@@ -17,7 +17,7 @@ class ToneMapper{
         const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
-                Image::rgb colores = img.get(i * img.getWidth() + j);
+                rgb colores = img.get(i * img.getWidth() + j);
                 
                 colores.r = colores.r <= 1 ? colores.r : 1 ;
                 colores.g = colores.g <= 1 ? colores.g : 1 ;
@@ -35,7 +35,7 @@ class ToneMapper{
 
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
-                Image::rgb colores = img.get(i * img.getWidth() + j);
+                rgb colores = img.get(i * img.getWidth() + j);
                 
                 colores.r = colores.r / maximo;
                 colores.g = colores.g / maximo;
@@ -53,7 +53,7 @@ class ToneMapper{
     void equalizeAndClamp(Image& img, const float clamping){
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
-                Image::rgb colores = img.get(i * img.getWidth() + j);
+                rgb colores = img.get(i * img.getWidth() + j);
                 
                 colores.r = colores.r <= clamping ? colores.r / clamping : 1;
                 colores.g = colores.g <= clamping ? colores.g / clamping : 1;
@@ -68,7 +68,7 @@ class ToneMapper{
         const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
-                Image::rgb colores = img.get(i * img.getWidth() + j);
+                rgb colores = img.get(i * img.getWidth() + j);
                 
                 colores.r = pow((colores.r / maximo), gamma); 
                 colores.g = pow((colores.g / maximo), gamma); 
@@ -83,7 +83,7 @@ class ToneMapper{
         const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
-                Image::rgb colores = img.get(i * img.getWidth() + j);
+                rgb colores = img.get(i * img.getWidth() + j);
                 
                 colores.r = (colores.r <= clamping) ? pow(colores.r / clamping, gamma)  : 1;
                 colores.g = (colores.g <= clamping) ? pow(colores.g / clamping, gamma)  : 1;
@@ -97,7 +97,7 @@ class ToneMapper{
     void Reinhard(Image& img, float exp, float white = 2, const float gamma = 2.2){
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
-                Image::rgb colores = img.get(i * img.getWidth() + j);
+                rgb colores = img.get(i * img.getWidth() + j);
                 
                 colores.r = pow(colores.r * exp * (1 + colores.r * exp / white) / (1 + colores.r / exp), 1 / gamma);
                 colores.g = pow(colores.g * exp * (1 + colores.g * exp / white) / (1 + colores.g / exp), 1 / gamma);
@@ -122,7 +122,7 @@ class ToneMapper{
     void Filmic(Image& img, float W = 10, float exp = 2.0) {
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
-                Image::rgb colores = img.get(i * img.getWidth() + j);
+                rgb colores = img.get(i * img.getWidth() + j);
                 
                 colores.r = (exp * eq(colores.r)) * (1 / eq(W));
                 colores.g = (exp * eq(colores.g)) * (1 / eq(W));

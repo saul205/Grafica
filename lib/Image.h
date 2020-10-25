@@ -27,11 +27,11 @@ public:
     }
 
     void setRGB(int index, rgb colors){
-        data[index] = {colors.r * max / c, colors.g * max/ c, colors.b * max/ c};
+        data[index] = colors;
     }
 
     void set(int index, int r, int g, int b){
-        data[index] = {r * max / c, g * max/ c, b * max/ c};
+        data[index] = rgb(r * max / c, g * max/ c, b * max/ c);
     }
 
     rgb get(int index){

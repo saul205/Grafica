@@ -6,6 +6,7 @@
 #include "Plane.h"
 #include "Ray.h"
 #include "Image.h"
+#include <memory>
 
 class Sensor{
     private:
@@ -27,6 +28,7 @@ class Sensor{
             oLocal = DotDir(0, 0, 0, 1);
 
             localAMundo.changeBase(lMundo, uMundo, fMundo, oMundo);
+            // No se está usando el prjection plane
             projectionPlane.setNormal(fMundo);
         }
 
@@ -54,28 +56,24 @@ class Sensor{
                     // Como f = 1 la tercera componente es fija
                     planePoint.setDotDir(pixelSize * i - pixelSize * planeW / 2, - pixelSize * j + pixelSize * planeH / 2, 1, 1);
                     dir = planePoint - oLocal;
-                    normalization(dir);
-
-                    Ray rayoLocal( oLocal, dir);
-
-                    //cout << dir.toString() << endl;
 
                     DotDir dirMundo = localAMundo*dir;
 
+                    dirMundo = normalization(dirMundo);
                     Ray rayoMundo( oMundo, dirMundo);
 
                     float minT = INFINITY, newT = INFINITY;
                     for(auto object : objetos){
-                        
+                    
                         // Si no intersecta no se modifica newT
                         if(object->instersects(rayoMundo, newT)){
 
-                            //cout << "Objeto  " << newT << endl; 
                             if(newT < minT){
                                 minT = newT;
                                 minTObject = object;
                             }
                         }
+
                     }
 
                     //cout << endl; 
@@ -85,10 +83,8 @@ class Sensor{
                         newImagen.setRGB(i + j * planeW, minTObject->getEmission());
                         minTObject = nullptr;
                     }else{
-                        newImagen.setRGB(i + j * planeW, {255, 255, 255});
-                    }
-
-                    
+                        newImagen.setRGB(i + j * planeW, rgb(255,255,255));
+                    }       
                 }
             }
 
