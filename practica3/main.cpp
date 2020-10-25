@@ -5,7 +5,7 @@
 
 int main(){
 
-    float W = 1440, H = 1080;
+    float W = 1600, H = 900;
     Image newImage;
 
     DotDir camera[4];
@@ -83,10 +83,17 @@ int main(){
     figuras.push_back(plano3);
     figuras.push_back(plano4);
 
-    bool success = renderer.lanzarRayos(figuras, newImage, 8);
+    bool success = renderer.lanzarRayos(figuras, newImage, 4);
     if(success){
         cout << "Escribo" << endl;
         escribirbmp("render.bmp", newImage, 255);
     }
+
+    hsl h = rgbToHsl(rgb(99,  108,  121));
+    cout << h.h << "  " << h.s << "  " << h.l << endl;
+
+    rgb col = hslToRgb(h);
+    cout << col.r << "  " << col.g << "  " << col.b << endl;
+
     return 0;
 }

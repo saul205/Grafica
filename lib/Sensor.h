@@ -53,7 +53,7 @@ class Sensor{
 
             const float centrarEnElPlanoW = pixelSize * planeW / 2;
             const float centrarEnElPlanoH = pixelSize * planeH / 2;
-
+ 
             for(int i = 0; i < planeW; ++i){
                 for(int j = 0; j < planeH; ++j){
 
