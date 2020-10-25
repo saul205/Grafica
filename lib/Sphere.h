@@ -36,7 +36,16 @@ class Sphere : public Figure{
         float a = 1;
         float b = 2.0f*dotProduct(ray.getDir(), diff);
         float c = (modDiff*modDiff) - (radius*radius);
-        float doSquareRoot = b - 4.0f*a*c;
+        float doSquareRoot = b*b - 4.0f*a*c;
+
+        /*if(doSquareRoot >= 0){
+
+          cout << "A: " << a << endl;
+          cout << "B: " << b << endl; 
+          cout << "C: " << c << endl;
+          cout << "Res: " << doSquareRoot << endl << endl;
+        }*/
+
         if(doSquareRoot < 0) {         // Sin soluciones
           return false;
 
@@ -56,7 +65,7 @@ class Sphere : public Figure{
           float sol2 = ((-b) - squareRoot) / 2.0f;
           if(sol1 > 0 && sol2 > 0){
             t = (sol1 < sol2) ? sol1 : sol2;
-            cout << t << endl;
+            //cout << t << endl;
             return true;
           } else {                    // La cámara está dentro de la esfera
             return false;

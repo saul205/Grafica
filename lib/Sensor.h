@@ -32,7 +32,7 @@ class Sensor{
             projectionPlane.setNormal(fMundo);
         }
 
-        bool lanzarRayos(vector<shared_ptr<Figure>> objetos, Image& imagen){
+        bool lanzarRayos(vector<shared_ptr<Figure>> objetos, Image& imagen, float AA){
             
             float pixelSize;
             if(planeH <= planeW){
@@ -51,40 +51,40 @@ class Sensor{
 
             for(int i = 0; i < planeW; ++i){
                 for(int j = 0; j < planeH; ++j){
-                    // De momento tiramos el rayo a una esquina del píxel
-                    // Origen en local es 0,0,0,1
-                    // Como f = 1 la tercera componente es fija
-                    planePoint.setDotDir(pixelSize * i - pixelSize * planeW / 2, - pixelSize * j + pixelSize * planeH / 2, 1, 1);
-                    dir = planePoint - oLocal;
+                    for(int z = 0; z < AA; ++z){
+                        // De momento tiramos el rayo a una esquina del píxel
+                        // Origen en local es 0,0,0,1
+                        // Como f = 1 la tercera componente es fija
+                        planePoint.setDotDir(pixelSize * i - pixelSize * planeW / 2, - pixelSize * j + pixelSize * planeH / 2, 1, 1);
+                        dir = planePoint - oLocal;
 
-                    DotDir dirMundo = localAMundo*dir;
+                        DotDir dirMundo = localAMundo*dir;
 
-                    dirMundo = normalization(dirMundo);
-                    Ray rayoMundo( oMundo, dirMundo);
+                        dirMundo = normalization(dirMundo);
+                        Ray rayoMundo( oMundo, dirMundo);
 
-                    float minT = INFINITY, newT = INFINITY;
-                    for(auto object : objetos){
-                    
-                        // Si no intersecta no se modifica newT
-                        if(object->instersects(rayoMundo, newT)){
+                        float minT = INFINITY, newT = INFINITY;
+                        for(auto object : objetos){
+                        
+                            // Si no intersecta no se modifica newT
+                            if(object->instersects(rayoMundo, newT)){
 
-                            if(newT < minT){
-                                minT = newT;
-                                minTObject = object;
+                                if(newT < minT){
+                                    minT = newT;
+                                    minTObject = object;
+                                }
                             }
+
                         }
-
-                    }
-
-                    //cout << endl; 
-
-                    //Mostrar en pantalla
-                    if(minTObject != nullptr){
-                        newImagen.setRGB(i + j * planeW, minTObject->getEmission());
-                        minTObject = nullptr;
-                    }else{
-                        newImagen.setRGB(i + j * planeW, rgb(255,255,255));
-                    }       
+                        //cout << endl; 
+                        //Mostrar en pantalla
+                        if(minTObject != nullptr){
+                            newImagen.setRGB(i + j * planeW, minTObject->getEmission());
+                            minTObject = nullptr;
+                        }else{
+                            newImagen.setRGB(i + j * planeW, rgb(255,255,255));
+                        } 
+                    }      
                 }
             }
 
