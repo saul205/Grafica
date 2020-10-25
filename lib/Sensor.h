@@ -7,6 +7,7 @@
 #include "Ray.h"
 #include "Image.h"
 #include <memory>
+#include <stdlib.h>
 
 class Sensor{
     private:
@@ -32,7 +33,7 @@ class Sensor{
             projectionPlane.setNormal(fMundo);
         }
 
-        bool lanzarRayos(vector<shared_ptr<Figure>> objetos, Image& imagen, float AA){
+        bool lanzarRayos(vector<shared_ptr<Figure>> objetos, Image& imagen, int antiAliasing){
             
             float pixelSize;
             if(planeH <= planeW){
@@ -48,14 +49,24 @@ class Sensor{
             shared_ptr<Figure> minTObject = nullptr;
             DotDir planePoint;
             DotDir dir;
+            srand(0);
+
+            const float centrarEnElPlanoW = pixelSize * planeW / 2;
+            const float centrarEnElPlanoH = pixelSize * planeH / 2;
 
             for(int i = 0; i < planeW; ++i){
                 for(int j = 0; j < planeH; ++j){
-                    for(int z = 0; z < AA; ++z){
+
+                    rgb color[antiAliasing];
+                    for(int z = 0; z < antiAliasing; ++z){
+
+                        float h = (((float) rand()) / RAND_MAX) * pixelSize;
+                        float w = (((float) rand()) / RAND_MAX) * pixelSize;
+
                         // De momento tiramos el rayo a una esquina del píxel
                         // Origen en local es 0,0,0,1
                         // Como f = 1 la tercera componente es fija
-                        planePoint.setDotDir(pixelSize * i - pixelSize * planeW / 2, - pixelSize * j + pixelSize * planeH / 2, 1, 1);
+                        planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
                         dir = planePoint - oLocal;
 
                         DotDir dirMundo = localAMundo*dir;
@@ -65,7 +76,6 @@ class Sensor{
 
                         float minT = INFINITY, newT = INFINITY;
                         for(auto object : objetos){
-                        
                             // Si no intersecta no se modifica newT
                             if(object->instersects(rayoMundo, newT)){
 
@@ -74,17 +84,28 @@ class Sensor{
                                     minTObject = object;
                                 }
                             }
-
                         }
-                        //cout << endl; 
+
                         //Mostrar en pantalla
                         if(minTObject != nullptr){
-                            newImagen.setRGB(i + j * planeW, minTObject->getEmission());
+                            color[z] = minTObject->getEmission();
                             minTObject = nullptr;
                         }else{
-                            newImagen.setRGB(i + j * planeW, rgb(255,255,255));
+                            color[z] =rgb(255,255,255);
                         } 
-                    }      
+                    }  
+
+                    float red = 0.0, green = 0.0, blue = 0.0;
+                    for(int z = 0; z < antiAliasing; ++z){
+                        red += color[z].r;
+                        green += color[z].g;
+                        blue += color[z].b;
+                    }
+
+                    red /= (float) antiAliasing;
+                    green /= (float) antiAliasing;
+                    blue /= (float) antiAliasing;
+                    newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
                 }
             }
 

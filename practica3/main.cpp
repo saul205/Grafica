@@ -5,7 +5,7 @@
 
 int main(){
 
-    float W = 1000, H = 500;
+    float W = 1440, H = 1080;
     Image newImage;
 
     DotDir camera[4];
@@ -83,7 +83,7 @@ int main(){
     figuras.push_back(plano3);
     figuras.push_back(plano4);
 
-    bool success = renderer.lanzarRayos(figuras, newImage, 1);
+    bool success = renderer.lanzarRayos(figuras, newImage, 8);
     if(success){
         cout << "Escribo" << endl;
         escribirbmp("render.bmp", newImage, 255);
