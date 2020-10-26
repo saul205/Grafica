@@ -83,17 +83,26 @@ int main(){
     figuras.push_back(plano3);
     figuras.push_back(plano4);
 
-    bool success = renderer.lanzarRayos(figuras, newImage, 4);
+    LightSource luz1(1, DotDir(0, 0, -8, 1));
+    //LightSource luz2(1, DotDir(0, 1, 0, 1));
+
+    vector<LightSource> luces;
+    luces.push_back(luz1);
+    //luces.push_back(luz2);
+
+    bool success = renderer.lanzarRayos(figuras, luces, newImage, 8);
     if(success){
         cout << "Escribo" << endl;
         escribirbmp("render.bmp", newImage, 255);
     }
 
+    /*
     hsl h = rgbToHsl(rgb(99,  108,  121));
     cout << h.h << "  " << h.s << "  " << h.l << endl;
 
     rgb col = hslToRgb(h);
     cout << col.r << "  " << col.g << "  " << col.b << endl;
+    */
 
     return 0;
 }

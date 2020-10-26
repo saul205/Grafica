@@ -11,7 +11,7 @@ class Figure{
 
     public:
 
-        virtual bool instersects(Ray ray, float& t) = 0;
+        virtual bool instersects(Ray ray, float& t, DotDir& p) = 0;
 
         void setRgb(rgb _color){
             emission = _color;

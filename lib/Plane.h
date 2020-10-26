@@ -26,7 +26,7 @@ class Plane : public Figure {
         // Debe tener una normal
         // Si no instersecta o está detrás de la cámara devuelve falso y no modifica t,
         // en caso contrario devuelve cierto y t = - (c + o*n) / (d*n)
-        bool instersects(Ray ray, float& t) override {
+        bool instersects(Ray ray, float& t, DotDir& p) override {
     
             float den = dotProduct(ray.getDir(), normal);
 
@@ -42,6 +42,8 @@ class Plane : public Figure {
             }
 
             t = num / den;
+
+            p = ray.getOrigen() + t * ray.getDir();
 
             //cout << num << " / " << den << " = " << t << endl;
             //cout << ray.getDir().toString() << endl;

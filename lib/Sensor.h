@@ -6,6 +6,7 @@
 #include "Plane.h"
 #include "Ray.h"
 #include "Image.h"
+#include "LightSource.h"
 #include <memory>
 #include <stdlib.h>
 
@@ -33,7 +34,14 @@ class Sensor{
             projectionPlane.setNormal(fMundo);
         }
 
-        bool lanzarRayos(vector<shared_ptr<Figure>> objetos, Image& imagen, int antiAliasing){
+        float renderEq(DotDir intersection, LightSource luz, shared_ptr<Figure> fig){
+
+            DotDir shadowR = luz.getPosition() - intersection;
+            float shMod = shadowR.mod();
+            return luz.getIntensity() / (shMod * shMod);
+        }
+
+        bool lanzarRayos(vector<shared_ptr<Figure>> objetos, vector<LightSource> luces, Image& imagen, int antiAliasing){
             
             float pixelSize;
             if(planeH <= planeW){
@@ -44,7 +52,7 @@ class Sensor{
 
             cout << pixelSize << endl;
 
-            Image newImagen("algo", "render", planeW, planeH, 255, 1);
+            Image newImagen("", "render", planeW, planeH, 255, 1);
 
             shared_ptr<Figure> minTObject = nullptr;
             DotDir planePoint;
@@ -74,24 +82,67 @@ class Sensor{
                         dirMundo = normalization(dirMundo);
                         Ray rayoMundo( oMundo, dirMundo);
 
+                        //cout << dirMundo.toString() << endl;
+
+                        DotDir inters, minInters;
                         float minT = INFINITY, newT = INFINITY;
                         for(auto object : objetos){
                             // Si no intersecta no se modifica newT
-                            if(object->instersects(rayoMundo, newT)){
+                            if(object->instersects(rayoMundo, newT, inters)){
 
                                 if(newT < minT){
                                     minT = newT;
                                     minTObject = object;
+                                    minInters = inters;
                                 }
                             }
                         }
-
+/*
+                        if(i == 100 && j == 800){
+                            cout << minInters.toString() << endl; 
+                        }
+*/
                         //Mostrar en pantalla
                         if(minTObject != nullptr){
+
+                            float lightPower = 0;
+
+                            for(auto luz : luces){
+
+                                Ray shRay(minInters, normalization(luz.getPosition() - inters));
+
+                                bool iluminado = true;
+                                for(int o = 0; o < objetos.size() && iluminado; o++){
+                                // Si no intersecta no se modifica newT
+                                    if(objetos[o]->instersects(shRay, minT, minInters)){
+
+                                        if(minT < (luz.getPosition() - minInters).mod() && minT > 0){
+                                            iluminado = false;
+                                        }
+/*
+                                        if(i == 100 && j == 800 && minT == 0){
+                                            cout << "Intersecta con el objeto " << o << endl; 
+                                        }
+                                        */
+                                    }
+                                }
+
+                                if(iluminado){
+                                    //lightPower += renderEq(minInters, luz, minTObject);
+                                    lightPower += luz.getIntensity();
+                                    if(lightPower > 1) lightPower = 1;
+                                }
+                            }
+
+
                             color[z] = minTObject->getEmission();
+                            color[z].r *= lightPower;
+                            color[z].g *= lightPower;
+                            color[z].b *= lightPower;
+
                             minTObject = nullptr;
                         }else{
-                            color[z] =rgb(255,255,255);
+                            color[z] = rgb(0,0,0);
                         } 
                     }  
 

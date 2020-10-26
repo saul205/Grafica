@@ -166,7 +166,9 @@ void escribir(std::string nombre, Image& img, const int col_res){
         std::string write = "";
         float maximo = img.getMaximo();
 
-        write += img.getCabecera() + "\n";
+        if(img.getCabecera() != ""){
+            write += img.getCabecera() + "\n";
+        }
         write += "#MAX=" + std::to_string(maximo) + "\n";
         write += std::to_string(img.getWidth()) + " " + std::to_string(img.getHeight()) + "\n";
         write += std::to_string(col_res) + "\n";
