@@ -90,7 +90,7 @@ int main(){
     luces.push_back(luz1);
     //luces.push_back(luz2);
 
-    bool success = renderer.lanzarRayos(figuras, luces, newImage, 8);
+    bool success = renderer.lanzarRayos(figuras, luces, newImage, 32);
     if(success){
         cout << "Escribo" << endl;
         escribirbmp("render.bmp", newImage, 255);

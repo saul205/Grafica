@@ -37,7 +37,7 @@ class Plane : public Figure {
 
             float num = -(c + dotProduct(ray.getOrigen(), normal));
             
-            if(num / den < 0){
+            if(num / den <= 0){
                 return false;
             }
 

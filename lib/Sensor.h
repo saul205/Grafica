@@ -116,7 +116,7 @@ class Sensor{
                                 // Si no intersecta no se modifica newT
                                     if(objetos[o]->instersects(shRay, minT, minInters)){
 
-                                        if(minT < (luz.getPosition() - minInters).mod() && minT > 0){
+                                        if(minT < (luz.getPosition() - minInters).mod()){
                                             iluminado = false;
                                         }
 /*
