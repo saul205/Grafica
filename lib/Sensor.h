@@ -10,6 +10,7 @@
 #include "LightSource.h"
 #include <memory>
 #include <stdlib.h>
+#include <thread>
 
 class Sensor{
     private:
@@ -18,6 +19,7 @@ class Sensor{
         DotDir lLocal, uLocal, fLocal, oLocal;
         Transformation localAMundo;
         float planeW, planeH;
+        float pixelSize, centrarEnElPlanoW, centrarEnElPlanoH;
         Plane projectionPlane;
 
     public:
@@ -35,144 +37,31 @@ class Sensor{
             projectionPlane.setNormal(fMundo);
         }
 
-        void lanzarRayosParalelizado(int wminlimit, int wmaxlimit, int hminlimit, int hmaxlimit, const int antiAliasing){
-
-            for(int i = 0; i < planeW; ++i){
-                for(int j = 0; j < planeH; ++j){
-
-                    rgb color[antiAliasing];
-                    for(int z = 0; z < antiAliasing; ++z){
-
-                        float h = (((float) rand()) / RAND_MAX) * pixelSize;
-                        float w = (((float) rand()) / RAND_MAX) * pixelSize;
-
-                        // De momento tiramos el rayo a una esquina del píxel
-                        // Origen en local es 0,0,0,1
-                        // Como f = 1 la tercera componente es fija
-                        planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
-                        dir = planePoint - oLocal;
-
-                        DotDir dirMundo = localAMundo*dir;
-
-                        dirMundo = normalization(dirMundo);
-                        Ray rayoMundo( oMundo, dirMundo);
-
-                        //cout << dirMundo.toString() << endl;
-
-                        DotDir inters, minInters;
-                        float minT = INFINITY, newT = INFINITY;
-                        for(auto object : objetos){
-                            // Si no intersecta no se modifica newT
-                            if(object->instersects(rayoMundo, newT, inters)){
-
-                                if(newT < minT){
-                                    minT = newT;
-                                    minTObject = object;
-                                    minInters = inters;
-                                }
-                            }
-                        }
-                        //Mostrar en pantalla
-                        if(minTObject != nullptr){
-                            color[z] = minTObject->getEmission();
-                            minTObject = nullptr;
-                        }else{
-                            color[z] = rgb(0,0,0);
-                        } 
-                    }  
-
-                    float red = 0.0, green = 0.0, blue = 0.0;
-                    for(int z = 0; z < antiAliasing; ++z){
-                        red += color[z].r;
-                        green += color[z].g;
-                        blue += color[z].b;
-                    }
-
-                    red /= (float) antiAliasing;
-                    green /= (float) antiAliasing;
-                    blue /= (float) antiAliasing;
-                    newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
-                }
-            }
-        }
-
-        bool lanzarRayos(vector<shared_ptr<Figure>> objetos,  Image& imagen, int antiAliasing){
+        // nThreads valor mínimo 1
+        bool lanzarRayos(vector<shared_ptr<Figure>> objetos,  Image& imagen, int antiAliasing, const int nThreads = 8){
             
-            float pixelSize;
             if(planeH <= planeW){
                 pixelSize = 2 / planeH;
             }else{
                 pixelSize = 2 / planeW;
             }
-
-            cout << pixelSize << endl;
-
+            
+            centrarEnElPlanoW = pixelSize * planeW / 2;
+            centrarEnElPlanoH = pixelSize * planeH / 2;
             Image newImagen("", "render", planeW, planeH, 255, 1);
-
-            shared_ptr<Figure> minTObject = nullptr;
-            DotDir planePoint;
-            DotDir dir;
             srand(0);
+            thread th[nThreads];
 
-            const float centrarEnElPlanoW = pixelSize * planeW / 2;
-            const float centrarEnElPlanoH = pixelSize * planeH / 2;
- 
-            for(int i = 0; i < planeW; ++i){
-                for(int j = 0; j < planeH; ++j){
-
-                    rgb color[antiAliasing];
-                    for(int z = 0; z < antiAliasing; ++z){
-
-                        float h = (((float) rand()) / RAND_MAX) * pixelSize;
-                        float w = (((float) rand()) / RAND_MAX) * pixelSize;
-
-                        // De momento tiramos el rayo a una esquina del píxel
-                        // Origen en local es 0,0,0,1
-                        // Como f = 1 la tercera componente es fija
-                        planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
-                        dir = planePoint - oLocal;
-
-                        DotDir dirMundo = localAMundo*dir;
-
-                        dirMundo = normalization(dirMundo);
-                        Ray rayoMundo( oMundo, dirMundo);
-
-                        //cout << dirMundo.toString() << endl;
-
-                        DotDir inters, minInters;
-                        float minT = INFINITY, newT = INFINITY;
-                        for(auto object : objetos){
-                            // Si no intersecta no se modifica newT
-                            if(object->instersects(rayoMundo, newT, inters)){
-
-                                if(newT < minT){
-                                    minT = newT;
-                                    minTObject = object;
-                                    minInters = inters;
-                                }
-                            }
-                        }
-                        //Mostrar en pantalla
-                        if(minTObject != nullptr){
-                            color[z] = minTObject->getEmission();
-                            minTObject = nullptr;
-                        }else{
-                            color[z] = rgb(0,0,0);
-                        } 
-                    }  
-
-                    float red = 0.0, green = 0.0, blue = 0.0;
-                    for(int z = 0; z < antiAliasing; ++z){
-                        red += color[z].r;
-                        green += color[z].g;
-                        blue += color[z].b;
-                    }
-
-                    red /= (float) antiAliasing;
-                    green /= (float) antiAliasing;
-                    blue /= (float) antiAliasing;
-                    newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
+            for(int i = 1; i < nThreads + 1; ++i){
+                if(i!=nThreads){
+                    th[i-1] = thread(&lanzarRayosParalelizado, newImagen, (i-1)*(planeW/nThreads), i*(planeW/nThreads), 0, planeH, antiAliasing, objetos);
+                } else {
+                    th[i-1] = thread(&lanzarRayosParalelizado, newImagen, (i-1)*(planeW/nThreads), planeW, 0, planeH, antiAliasing, objetos);
                 }
+            }
+            
+            for(int i = 1; i < nThreads + 1; ++i){
+                th[i-1].join();
             }
 
             imagen = newImagen;
@@ -181,5 +70,72 @@ class Sensor{
         }
 
 };
+
+
+void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int hminlimit,
+            int hmaxlimit, int antiAliasing, vector<shared_ptr<Figure>> objetos){
+
+    shared_ptr<Figure> minTObject = nullptr;
+    DotDir planePoint, dir;
+
+    for(int i = wminlimit; i < wmaxlimit; ++i){
+        for(int j = hminlimit; j < hmaxlimit; ++j){
+
+            rgb color[antiAliasing];
+            for(int z = 0; z < antiAliasing; ++z){
+
+                float h = (((float) rand()) / RAND_MAX) * pixelSize;
+                float w = (((float) rand()) / RAND_MAX) * pixelSize;
+
+                // De momento tiramos el rayo a una esquina del píxel
+                // Origen en local es 0,0,0,1
+                // Como f = 1 la tercera componente es fija
+                planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
+                dir = planePoint - oLocal;
+
+                DotDir dirMundo = localAMundo*dir;
+
+                dirMundo = normalization(dirMundo);
+                Ray rayoMundo( oMundo, dirMundo);
+
+                //cout << dirMundo.toString() << endl;
+
+                DotDir inters, minInters;
+                float minT = INFINITY, newT = INFINITY;
+                for(auto object : objetos){
+                    // Si no intersecta no se modifica newT
+                    if(object->instersects(rayoMundo, newT, inters)){
+
+                        if(newT < minT){
+                            minT = newT;
+                            minTObject = object;
+                            minInters = inters;
+                        }
+                    }
+                }
+                
+                //Mostrar en pantalla
+                if(minTObject != nullptr){
+                    color[z] = minTObject->getEmission();
+                    minTObject = nullptr;
+                }else{
+                    color[z] = rgb(0,0,0);
+                } 
+            }  
+
+            float red = 0.0, green = 0.0, blue = 0.0;
+            for(int z = 0; z < antiAliasing; ++z){
+                red += color[z].r;
+                green += color[z].g;
+                blue += color[z].b;
+            }
+
+            red /= (float) antiAliasing;
+            green /= (float) antiAliasing;
+            blue /= (float) antiAliasing;
+            newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
+        }
+    }
+}
 
 #endif
