@@ -34,9 +34,9 @@ int main(){
     shared_ptr<Figure> plano4(new Plane(normal4, 0));
     plano4->setRgb(rgb(124,50,255));
 
-    DotDir center(0,0,-3,0);
+    DotDir center(0,0,-3,1);
     DotDir axis(0,8,0,0);
-    DotDir city(0,0,-7,0);
+    DotDir city(0,0,-7,1);
     if(checkRadius(axis, center, city) ){
         shared_ptr<Figure> esfera(new Sphere(center, axis, city));
         esfera->setRgb(rgb(255,255,0));
@@ -45,9 +45,9 @@ int main(){
         cout << "Error en la esfera." << endl;
     }
 
-    DotDir center2(0.6,0.4,-6,0);
+    DotDir center2(0.6,0.4,-6,1);
     DotDir axis2(0,2,0,0);
-    DotDir city2(0.6,0.4,-7,0);
+    DotDir city2(0.6,0.4,-7,1);
     if(checkRadius(axis2, center2, city2) ){
         shared_ptr<Figure> esfera2(new Sphere(center2, axis2, city2));
         esfera2->setRgb(rgb(255,49,134));
@@ -56,9 +56,9 @@ int main(){
         cout << "Error en la esfera2." << endl;
     }
 
-    DotDir center3(-0.6,0.4,-6,0);
+    DotDir center3(-0.6,0.4,-6,1);
     DotDir axis3(0,2,0,0);
-    DotDir city3(-0.6,0.4,-7,0);
+    DotDir city3(-0.6,0.4,-7,1);
     if(checkRadius(axis3, center3, city3) ){
         shared_ptr<Figure> esfera3(new Sphere(center3, axis3, city3));
         esfera3->setRgb(rgb(255,49,134));
@@ -67,9 +67,9 @@ int main(){
         cout << "Error en la esfera3." << endl;
     }
 
-    DotDir center4(0,-1,-6,0);
+    DotDir center4(0,-1,-6,1);
     DotDir axis4(0,2.5,0,0);
-    DotDir city4(0,-1,-7.25,0);
+    DotDir city4(0,-1,-7.25,1);
     if(checkRadius(axis4, center4, city4) ){
         shared_ptr<Figure> esfera4(new Sphere(center4, axis4, city4));
         esfera4->setRgb(rgb(0,0,0));
@@ -83,26 +83,19 @@ int main(){
     figuras.push_back(plano3);
     figuras.push_back(plano4);
 
-    LightSource luz1(1, DotDir(0, 0, -8, 1));
-    //LightSource luz2(1, DotDir(0, 1, 0, 1));
+    // Pusheo un triángulo, las cejas
+    shared_ptr<Figure> triangle(new Triangle(DotDir(-0.8,0.9,-8,1), DotDir(-0.7,1.2,-8,1), DotDir(-0.1,0.5,-8,1)));
+    shared_ptr<Figure> triangle2(new Triangle(DotDir(0.1,0.5,-8,1), DotDir(0.7,1.2,-8,1), DotDir(0.8,0.9,-8,1)));
+    triangle->setRgb(rgb(255,255,255));
+    triangle2->setRgb(rgb(255,255,255));
+    figuras.push_back(triangle);
+    figuras.push_back(triangle2);
 
-    vector<LightSource> luces;
-    luces.push_back(luz1);
-    //luces.push_back(luz2);
-
-    bool success = renderer.lanzarRayos(figuras, luces, newImage, 8);
+    bool success = renderer.lanzarRayos(figuras, newImage, 8);
     if(success){
         cout << "Escribo" << endl;
         escribirbmp("render.bmp", newImage, 255);
     }
-
-    /*
-    hsl h = rgbToHsl(rgb(99,  108,  121));
-    cout << h.h << "  " << h.s << "  " << h.l << endl;
-
-    rgb col = hslToRgb(h);
-    cout << col.r << "  " << col.g << "  " << col.b << endl;
-    */
 
     return 0;
 }

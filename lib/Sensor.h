@@ -5,6 +5,7 @@
 #include "Transformation.h"
 #include "Plane.h"
 #include "Ray.h"
+#include "Triangle.h"
 #include "Image.h"
 #include "LightSource.h"
 #include <memory>
@@ -34,14 +35,68 @@ class Sensor{
             projectionPlane.setNormal(fMundo);
         }
 
-        float renderEq(DotDir intersection, LightSource luz, shared_ptr<Figure> fig){
+        void lanzarRayosParalelizado(int wminlimit, int wmaxlimit, int hminlimit, int hmaxlimit, const int antiAliasing){
 
-            DotDir shadowR = luz.getPosition() - intersection;
-            float shMod = shadowR.mod();
-            return luz.getIntensity() / (shMod * shMod);
+            for(int i = 0; i < planeW; ++i){
+                for(int j = 0; j < planeH; ++j){
+
+                    rgb color[antiAliasing];
+                    for(int z = 0; z < antiAliasing; ++z){
+
+                        float h = (((float) rand()) / RAND_MAX) * pixelSize;
+                        float w = (((float) rand()) / RAND_MAX) * pixelSize;
+
+                        // De momento tiramos el rayo a una esquina del píxel
+                        // Origen en local es 0,0,0,1
+                        // Como f = 1 la tercera componente es fija
+                        planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
+                        dir = planePoint - oLocal;
+
+                        DotDir dirMundo = localAMundo*dir;
+
+                        dirMundo = normalization(dirMundo);
+                        Ray rayoMundo( oMundo, dirMundo);
+
+                        //cout << dirMundo.toString() << endl;
+
+                        DotDir inters, minInters;
+                        float minT = INFINITY, newT = INFINITY;
+                        for(auto object : objetos){
+                            // Si no intersecta no se modifica newT
+                            if(object->instersects(rayoMundo, newT, inters)){
+
+                                if(newT < minT){
+                                    minT = newT;
+                                    minTObject = object;
+                                    minInters = inters;
+                                }
+                            }
+                        }
+                        //Mostrar en pantalla
+                        if(minTObject != nullptr){
+                            color[z] = minTObject->getEmission();
+                            minTObject = nullptr;
+                        }else{
+                            color[z] = rgb(0,0,0);
+                        } 
+                    }  
+
+                    float red = 0.0, green = 0.0, blue = 0.0;
+                    for(int z = 0; z < antiAliasing; ++z){
+                        red += color[z].r;
+                        green += color[z].g;
+                        blue += color[z].b;
+                    }
+
+                    red /= (float) antiAliasing;
+                    green /= (float) antiAliasing;
+                    blue /= (float) antiAliasing;
+                    newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
+                }
+            }
         }
 
-        bool lanzarRayos(vector<shared_ptr<Figure>> objetos, vector<LightSource> luces, Image& imagen, int antiAliasing){
+        bool lanzarRayos(vector<shared_ptr<Figure>> objetos,  Image& imagen, int antiAliasing){
             
             float pixelSize;
             if(planeH <= planeW){
@@ -97,49 +152,9 @@ class Sensor{
                                 }
                             }
                         }
-/*
-                        if(i == 100 && j == 800){
-                            cout << minInters.toString() << endl; 
-                        }
-*/
                         //Mostrar en pantalla
                         if(minTObject != nullptr){
-
-                            float lightPower = 0;
-
-                            for(auto luz : luces){
-
-                                Ray shRay(minInters, normalization(luz.getPosition() - inters));
-
-                                bool iluminado = true;
-                                for(int o = 0; o < objetos.size() && iluminado; o++){
-                                // Si no intersecta no se modifica newT
-                                    if(objetos[o]->instersects(shRay, minT, minInters)){
-
-                                        if(minT < (luz.getPosition() - minInters).mod() && minT > 0){
-                                            iluminado = false;
-                                        }
-/*
-                                        if(i == 100 && j == 800 && minT == 0){
-                                            cout << "Intersecta con el objeto " << o << endl; 
-                                        }
-                                        */
-                                    }
-                                }
-
-                                if(iluminado){
-                                    //lightPower += renderEq(minInters, luz, minTObject);
-                                    lightPower += luz.getIntensity();
-                                    if(lightPower > 1) lightPower = 1;
-                                }
-                            }
-
-
                             color[z] = minTObject->getEmission();
-                            color[z].r *= lightPower;
-                            color[z].g *= lightPower;
-                            color[z].b *= lightPower;
-
                             minTObject = nullptr;
                         }else{
                             color[z] = rgb(0,0,0);
