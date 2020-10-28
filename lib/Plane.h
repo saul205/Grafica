@@ -12,14 +12,20 @@ class Plane : public Figure {
     private:
 
         DotDir normal;
+        float lim[6];
         float c;
 
     public:
 
         Plane() {}
 
-        Plane(DotDir _normal, float _c){
+        Plane(DotDir _normal, float _lim[], float _c){
             c = _c;
+
+            for(int i = 0; i < 6; i++){
+                lim[i] = _lim[i];
+            }
+
             normal = _normal;
         }
 
@@ -37,7 +43,7 @@ class Plane : public Figure {
 
             float num = -(c + dotProduct(ray.getOrigen(), normal));
             
-            if(num / den < 0){
+            if(num / den <= 0){
                 return false;
             }
 
@@ -45,9 +51,18 @@ class Plane : public Figure {
 
             p = ray.getOrigen() + t * ray.getDir();
 
+
+            //cout << p.toString() << endl;
+
+            if(p.getX() <= lim[1] && p.getX() >= lim[0] &&
+                p.getY() <= lim[3] && p.getY() >= lim[2] &&
+                p.getZ() <= lim[5] && p.getZ() >= lim[4]){
+                    return true;
+                }
+
             //cout << num << " / " << den << " = " << t << endl;
             //cout << ray.getDir().toString() << endl;
-            return true;
+            return false;
         }
 
         //--------------------GETTERS-------------------------

@@ -19,20 +19,29 @@ int main(){
     vector<shared_ptr<Figure>> figuras;
 
     DotDir normal(6, 0, -1, 0);
-    shared_ptr<Figure> plano(new Plane(normal, 65));
+    float lim[6] = {-15, 0, -4, 20, -10, 1};
+    shared_ptr<Figure> plano(new Plane(normal, lim, 65));
     plano->setRgb(rgb(255,0,0));
 
     DotDir normal2(-6, 0, -1, 0);
-    shared_ptr<Figure> plano2(new Plane(normal2, 65));
+    float lim2[6] = {0, 15, -4, 20, -10, 1};
+    shared_ptr<Figure> plano2(new Plane(normal2, lim2, 65));
     plano2->setRgb(rgb(0,255,0));
 
     DotDir normal3(0, 1, 0, 0);
-    shared_ptr<Figure> plano3(new Plane(normal3, 3));
+    float lim3[6] = {-10, 10, -4, 20, -10, 1};
+    shared_ptr<Figure> plano3(new Plane(normal3, lim3, 3));
     plano3->setRgb(rgb(0,0,255));
 
     DotDir normal4(0, 0, -1, 0);
-    shared_ptr<Figure> plano4(new Plane(normal4, 0));
+    float lim4[6] = {-10, 10, -4, 20, -1, 1};
+    shared_ptr<Figure> plano4(new Plane(normal4, lim4, 0));
     plano4->setRgb(rgb(124,50,255));
+    
+    figuras.push_back(plano);
+    figuras.push_back(plano2);
+    figuras.push_back(plano3);
+    figuras.push_back(plano4);
 
     DotDir center(0,0,-3,1);
     DotDir axis(0,8,0,0);
@@ -78,11 +87,6 @@ int main(){
         cout << "Error en la esfera4." << endl;
     }
 
-    figuras.push_back(plano);
-    figuras.push_back(plano2);
-    figuras.push_back(plano3);
-    figuras.push_back(plano4);
-
     // Pusheo un triángulo, las cejas
     shared_ptr<Figure> triangle(new Triangle(DotDir(-0.8,0.9,-8,1), DotDir(-0.7,1.2,-8,1), DotDir(-0.1,0.5,-8,1)));
     shared_ptr<Figure> triangle2(new Triangle(DotDir(0.1,0.5,-8,1), DotDir(0.7,1.2,-8,1), DotDir(0.8,0.9,-8,1)));
@@ -91,7 +95,7 @@ int main(){
     figuras.push_back(triangle);
     figuras.push_back(triangle2);
 
-    bool success = renderer.lanzarRayos(figuras, newImage, 8);
+    bool success = renderer.lanzarRayos(figuras, newImage, 4);
     if(success){
         cout << "Escribo" << endl;
         escribirbmp("render.bmp", newImage, 255);
