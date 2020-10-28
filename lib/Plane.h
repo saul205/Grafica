@@ -65,10 +65,6 @@ class Plane : public Figure {
         void setNormal(DotDir _normal){
             normal = _normal;
         }
-
-        void setC(float _c){
-            c = _c;
-        }
 };
 
 #endif
