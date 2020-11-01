@@ -91,7 +91,7 @@ int main(){
     figuras.push_back(triangle);
     figuras.push_back(triangle2);
 
-    renderer.lanzarRayos(figuras, newImage, 8, 16);
+    renderer.lanzarRayos(figuras, newImage, 15, 8);
     cout << "Escribo" << endl;
     escribirbmp("render.bmp", newImage, 255);
 
