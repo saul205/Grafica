@@ -11,22 +11,20 @@
 class Plane : public Figure {
     private:
 
-        DotDir normal;
-        float lim[6];
-        float c;
+        DotDir v1, v2, normal, center;
+        float height, width;
 
     public:
 
         Plane() {}
 
-        Plane(DotDir _normal, float _lim[], float _c){
-            c = _c;
-
-            for(int i = 0; i < 6; i++){
-                lim[i] = _lim[i];
-            }
-
-            normal = _normal;
+        Plane(DotDir _v1, DotDir _v2, DotDir _center, float _height, float _width){
+            height = _height;
+            width = _width;
+            v1 = _v1;
+            v2 = _v2;
+            center = _center;
+            normal = crossProduct(v1, v2);
         }
 
         // Debe tener una normal
@@ -41,7 +39,7 @@ class Plane : public Figure {
                 return false;
             }
 
-            float num = -(c + dotProduct(ray.getOrigen(), normal));
+            float num = dotProduct(center - ray.getOrigen(), normal);
             
             if(num / den <= 0){
                 return false;
@@ -51,17 +49,15 @@ class Plane : public Figure {
 
             p = ray.getOrigen() + t * ray.getDir();
 
+            DotDir v = p - center;
+            
+            float p1 = dotProduct(v, v2);
+            float p2 = dotProduct(v, v1);
 
-            //cout << p.toString() << endl;
+            if(p1 > - width / 2 && p1 < width / 2 && p2 > - height / 2 && p2 < height / 2){
+                return true;
+            }
 
-            if(p.getX() <= lim[1] && p.getX() >= lim[0] &&
-                p.getY() <= lim[3] && p.getY() >= lim[2] &&
-                p.getZ() <= lim[5] && p.getZ() >= lim[4]){
-                    return true;
-                }
-
-            //cout << num << " / " << den << " = " << t << endl;
-            //cout << ray.getDir().toString() << endl;
             return false;
         }
 
@@ -71,18 +67,10 @@ class Plane : public Figure {
             return normal;
         }
 
-        float getC(){
-            return c;
-        }
-
         //--------------------SETTERS-------------------------
 
         void setNormal(DotDir _normal){
             normal = _normal;
-        }
-
-        void setC(float _c){
-            c = _c;
         }
 };
 

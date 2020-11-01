@@ -18,24 +18,40 @@ int main(){
 
     vector<shared_ptr<Figure>> figuras;
 
-    DotDir normal(6, 0, -1, 0);
-    float lim[6] = {-15, 0, -4, 20, -10, 1};
-    shared_ptr<Figure> plano(new Plane(normal, lim, 65));
+    shared_ptr<Figure> plano(new Plane(
+                                    DotDir(0, 1, 0, 0),
+                                    DotDir(-1, 0, -6, 0), 
+                                    DotDir(-10, 0, 0, 1),
+                                    20,
+                                    100
+                                    ));
     plano->setRgb(rgb(255,0,0));
 
-    DotDir normal2(-6, 0, -1, 0);
-    float lim2[6] = {0, 15, -4, 20, -10, 1};
-    shared_ptr<Figure> plano2(new Plane(normal2, lim2, 65));
+    shared_ptr<Figure> plano2(new Plane(
+                                    DotDir(0, 1, 0, 0),
+                                    DotDir(-1, 0, 6, 0), 
+                                    DotDir(10, 0, 0, 1),
+                                    20,
+                                    100
+                                    ));
     plano2->setRgb(rgb(0,255,0));
 
-    DotDir normal3(0, 1, 0, 0);
-    float lim3[6] = {-10, 10, -4, 20, -10, 1};
-    shared_ptr<Figure> plano3(new Plane(normal3, lim3, 3));
+    shared_ptr<Figure> plano3(new Plane(
+                                    DotDir(0, 0, 1, 0),
+                                    DotDir(1, 0, 0, 0), 
+                                    DotDir(0, -3, 0, 1),
+                                    20,
+                                    20
+                                    ));
     plano3->setRgb(rgb(0,0,255));
 
-    DotDir normal4(0, 0, -1, 0);
-    float lim4[6] = {-10, 10, -4, 20, -1, 1};
-    shared_ptr<Figure> plano4(new Plane(normal4, lim4, 0));
+    shared_ptr<Figure> plano4(new Plane(
+                                    DotDir(0, 1, 0, 0),
+                                    DotDir(1, 0, 0, 0), 
+                                    DotDir(0, 0, 0, 1),
+                                    20,
+                                    20
+                                    ));
     plano4->setRgb(rgb(124,50,255));
     
     figuras.push_back(plano);
