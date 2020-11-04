@@ -1,4 +1,5 @@
 #include <iostream>
+#include "../lib/BoundingVolume.h"
 #include "../lib/Sensor.h"
 #include "../lib/Sphere.h"
 #include <memory>
@@ -16,27 +17,27 @@ int main(){
 
     Sensor renderer(camera[0], camera[1], camera[2], camera[3], W, H);
 
-    vector<Figure*> figuras;
+    vector<std::shared_ptr<Figure>> figuras;
 
-    Figure* plano(new Plane(
+    std::shared_ptr<Figure> plano(new Plane(
                                     DotDir(0, 1, 0, 0),
                                     DotDir(-1, 0, -6, 0), 
-                                    DotDir(-10, 0, 0, 1),
-                                    20,
-                                    100
+                                    DotDir(-20, 5, 0, 1),
+                                    30,
+                                    150
                                     ));
     plano->setRgb(rgb(255,0,0));
 
-    Figure* plano2(new Plane(
+    std::shared_ptr<Figure> plano2(new Plane(
                                     DotDir(0, 1, 0, 0),
                                     DotDir(-1, 0, 6, 0), 
-                                    DotDir(10, 0, 0, 1),
-                                    20,
-                                    100
+                                    DotDir(20, 5, 0, 1),
+                                    30,
+                                    150
                                     ));
     plano2->setRgb(rgb(0,255,0));
 
-    Figure* plano3(new Plane(
+    std::shared_ptr<Figure> plano3(new Plane(
                                     DotDir(0, 0, 1, 0),
                                     DotDir(1, 0, 0, 0), 
                                     DotDir(0, -3, 0, 1),
@@ -45,7 +46,7 @@ int main(){
                                     ));
     plano3->setRgb(rgb(0,0,255));
 
-    Figure* plano4(new Plane(
+    std::shared_ptr<Figure> plano4(new Plane(
                                     DotDir(0, 1, 0, 0),
                                     DotDir(1, 0, 0, 0), 
                                     DotDir(0, 0, 0, 1),
@@ -63,9 +64,10 @@ int main(){
     DotDir axis(0,8,0,0);
     DotDir city(0,0,-7,1);
     if(checkRadius(axis, center, city) ){
-        Figure* esfera = new Sphere(center, axis, city);
+        std::shared_ptr<Figure> esfera(new Sphere(center, axis, city));
         esfera->setRgb(rgb(255,255,0));
         figuras.push_back(esfera);
+
     } else {
         cout << "Error en la esfera." << endl;
     }
@@ -74,7 +76,7 @@ int main(){
     DotDir axis2(0,2,0,0);
     DotDir city2(0.6,0.4,-7,1);
     if(checkRadius(axis2, center2, city2) ){
-        Figure* esfera2 = new Sphere(center2, axis2, city2);
+        std::shared_ptr<Figure> esfera2(new Sphere(center2, axis2, city2));
         esfera2->setRgb(rgb(255,49,134));
         figuras.push_back(esfera2);
     } else {
@@ -85,7 +87,7 @@ int main(){
     DotDir axis3(0,2,0,0);
     DotDir city3(-0.6,0.4,-7,1);
     if(checkRadius(axis3, center3, city3) ){
-        Figure* esfera3 = new Sphere(center3, axis3, city3);
+        std::shared_ptr<Figure> esfera3(new Sphere(center3, axis3, city3));
         esfera3->setRgb(rgb(255,49,134));
         figuras.push_back(esfera3);
     } else {
@@ -96,7 +98,7 @@ int main(){
     DotDir axis4(0,2.5,0,0);
     DotDir city4(0,-1,-7.25,1);
     if(checkRadius(axis4, center4, city4) ){
-        Figure* esfera4 = new Sphere(center4, axis4, city4);
+        std::shared_ptr<Figure> esfera4(new Sphere(center4, axis4, city4));
         esfera4->setRgb(rgb(0,0,0));
         figuras.push_back(esfera4);
     } else {
@@ -104,20 +106,42 @@ int main(){
     }
 
     // Pusheo un triángulo, las cejas
-    Figure* triangle = new Triangle(DotDir(-0.8,0.9,-8,1), DotDir(-0.7,1.2,-8,1), DotDir(-0.1,0.5,-8,1));
-    Figure* triangle2 = new Triangle(DotDir(0.1,0.5,-8,1), DotDir(0.7,1.2,-8,1), DotDir(0.8,0.9,-8,1));
+    std::shared_ptr<Figure> triangle(new Triangle(DotDir(-0.8,0.9,-8,1), DotDir(-0.7,1.2,-8,1), DotDir(-0.1,0.5,-8,1)));
+    std::shared_ptr<Figure> triangle2(new Triangle(DotDir(0.1,0.5,-8,1), DotDir(0.7,1.2,-8,1), DotDir(0.8,0.9,-8,1)));
     triangle->setRgb(rgb(255,255,255));
     triangle2->setRgb(rgb(255,255,255));
     figuras.push_back(triangle);
     figuras.push_back(triangle2);
+    
+    BoundingBox b = plano->getBound();
+    cout << b.getTop().toString() << endl;
+    cout << b.getBottom().toString() << endl;
+    cout << b.getCenter().toString() << endl << endl;
 
-    renderer.lanzarRayos(figuras, newImage, 16, 16);
+    
+    BoundingBox c = figuras[4]->getBound();
+    cout << c.getTop().toString() << endl;
+    cout << c.getBottom().toString() << endl;
+    cout << c.getCenter().toString() << endl << endl;
+
+    cout << "Union" << Union(b,  c).getCenter().toString() << endl;
+
+    std::shared_ptr<Figure> plano5(new Plane(
+                                    DotDir(-1, 1, 0, 0),
+                                    DotDir(-1, -1, 0, 0), 
+                                    DotDir(-1, 1, -7, 1),
+                                    5,
+                                    10
+                                    ));
+    plano5->setRgb(rgb(100,50,100));
+    
+    figuras.push_back(plano5);
+
+
+    BoundingVolume scene(figuras);
+    renderer.lanzarRayos(scene, newImage, 1, 1);
     cout << "Escribo" << endl;
     escribirbmp("render.bmp", newImage, 255);
-
-    for(Figure* i : figuras){
-        delete i;
-    }
-
+    
     return 0;
 }

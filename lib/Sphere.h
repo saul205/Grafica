@@ -6,7 +6,7 @@
 #include "Rgb.h"
 #include "Figure.h"
 
-class Sphere : public Figure{
+class Sphere : public Figure {
   
   private:
     // En UCS
@@ -69,6 +69,7 @@ class Sphere : public Figure{
             t = (sol1 < sol2) ? sol1 : sol2;
             //cout << t << endl;
             p = ray.getOrigen() + t * ray.getDir();
+
             return true;
           } else {                    // La cámara está dentro de la esfera
             return false;
@@ -98,7 +99,7 @@ class Sphere : public Figure{
       return sphereCity;
     }
 
-    DotDir getCenter(){
+    DotDir getCenter() override {
       return sphereCenter;
     } 
 
@@ -106,6 +107,12 @@ class Sphere : public Figure{
       return radius;
     }
 
+    BoundingBox getBound(){
+      return BoundingBox(
+        DotDir(sphereCenter.getX() - radius, sphereCenter.getY() - radius, sphereCenter.getZ() - radius, 1),
+        DotDir(sphereCenter.getX() + radius, sphereCenter.getY() + radius, sphereCenter.getZ() + radius, 1)
+      );
+    }
     //--------------------SETTERS-------------------------
 };
 
@@ -191,40 +198,40 @@ class PlanetaryStation{
       basePosition[0] = normalization(basePosition[0]);
       basePosition[1] = normalization(basePosition[1]);
     }
-  };
+};
 
-  void conection(const PlanetaryStation& origen, const PlanetaryStation& destino){
+void conection(const PlanetaryStation& origen, const PlanetaryStation& destino){
 
-      // Obtengo la dirección entre estaciones en ambas direcciones 
+  // Obtengo la dirección entre estaciones en ambas direcciones 
 
-      cout << "Posiciones " << destino.position.toString() << " | " << origen.position.toString() << endl << endl;
-      DotDir dirUCS = destino.position - origen.position;
+  cout << "Posiciones " << destino.position.toString() << " | " << origen.position.toString() << endl << endl;
+  DotDir dirUCS = destino.position - origen.position;
 
-      Transformation ucsToPositionOrigen;
-      ucsToPositionOrigen.changeBase(origen.basePosition[0], origen.basePosition[1], origen.basePosition[2], origen.position);
-      ucsToPositionOrigen = inverse(ucsToPositionOrigen);
+  Transformation ucsToPositionOrigen;
+  ucsToPositionOrigen.changeBase(origen.basePosition[0], origen.basePosition[1], origen.basePosition[2], origen.position);
+  ucsToPositionOrigen = inverse(ucsToPositionOrigen);
 
-      cout << "Base Ucs a posicion Origen" << endl << ucsToPositionOrigen.toString() << endl << endl;
+  cout << "Base Ucs a posicion Origen" << endl << ucsToPositionOrigen.toString() << endl << endl;
 
-      DotDir origenDir = ucsToPositionOrigen*dirUCS;
-      Transformation ucsToPositionDestino;
-      ucsToPositionDestino.changeBase(destino.basePosition[0], destino.basePosition[1], destino.basePosition[2], destino.position);
-      ucsToPositionDestino = inverse(ucsToPositionDestino);
-      
-      cout << "Base Ucs a posicion Destino" << endl << ucsToPositionDestino.toString() << endl << endl;
+  DotDir origenDir = ucsToPositionOrigen*dirUCS;
+  Transformation ucsToPositionDestino;
+  ucsToPositionDestino.changeBase(destino.basePosition[0], destino.basePosition[1], destino.basePosition[2], destino.position);
+  ucsToPositionDestino = inverse(ucsToPositionDestino);
+  
+  cout << "Base Ucs a posicion Destino" << endl << ucsToPositionDestino.toString() << endl << endl;
 
-      DotDir destinoDir = ucsToPositionDestino*dirUCS;
+  DotDir destinoDir = ucsToPositionDestino*dirUCS;
 
-      if(origenDir.getZ() < 0){
-        cout << "El lanzamiento desde la estación de origen no es posible." << endl;
-      }
-      if(destinoDir.getZ() > 0){
-         cout << "La recepción en la estación destino no es posible." << endl;
-      }
-
-      cout << "Coordenadas de la conexión en UCS:                 " << dirUCS.toString() << endl;  
-      cout << "Coordenadas de la conexión en coordenadas origen:  " << origenDir.toString() << endl;  
-      cout << "Coordenadas de la conexión en coordenadas destino: " << destinoDir.toString() << endl;  
+  if(origenDir.getZ() < 0){
+    cout << "El lanzamiento desde la estación de origen no es posible." << endl;
   }
+  if(destinoDir.getZ() > 0){
+      cout << "La recepción en la estación destino no es posible." << endl;
+  }
+
+  cout << "Coordenadas de la conexión en UCS:                 " << dirUCS.toString() << endl;  
+  cout << "Coordenadas de la conexión en coordenadas origen:  " << origenDir.toString() << endl;  
+  cout << "Coordenadas de la conexión en coordenadas destino: " << destinoDir.toString() << endl;  
+}
 
 #endif

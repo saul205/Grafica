@@ -7,6 +7,7 @@
 #include "DotDir.h"
 #include "Rgb.h"
 #include "Figure.h"
+#include "BoundingBox.h"
 
 class Plane : public Figure {
     private:
@@ -61,10 +62,34 @@ class Plane : public Figure {
             return false;
         }
 
+        BoundingBox getBound() override {
+            DotDir x = center + (width / 2 * v2);
+            DotDir y = center + (height / 2 * v1);
+            DotDir x2 = center - (width / 2 * v2);
+            DotDir y2 = center - (height / 2 * v1);
+
+            float maxX = max( max(x.getX(), y.getX()), max(x2.getX(), y2.getX()));
+            float maxY = max( max(x.getY(), y.getY()), max(x2.getY(), y2.getY()));
+            float maxZ = max( max(x.getZ(), y.getZ()), max(x2.getZ(), y2.getZ()));
+
+            float minX = min( min(x.getX(), y.getX()), min(x2.getX(), y2.getX()));
+            float minY = min( min(x.getY(), y.getY()), min(x2.getY(), y2.getY()));
+            float minZ = min( min(x.getZ(), y.getZ()), min(x2.getZ(), y2.getZ()));
+
+            return BoundingBox(
+                DotDir(maxX, maxY, maxZ, 1),
+                DotDir(minX, minY, minZ, 1)
+                );
+        }
+
         //--------------------GETTERS-------------------------
 
         DotDir getNormal(){
             return normal;
+        }
+
+        DotDir getCenter() override {
+            return center;
         }
 
         //--------------------SETTERS-------------------------

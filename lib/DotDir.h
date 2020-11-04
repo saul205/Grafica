@@ -59,6 +59,22 @@ class DotDir {
      string toString() const{
        return to_string(c[0]) + ", " + to_string(c[1]) + ", " + to_string(c[2]) + ", " + to_string(c[3]);
      }
+
+     float operator[](const int i) const {
+       if(i < 0 || i > 3){
+         return 0;
+       }
+
+       return c[i];
+     }
+
+     float operator[](int i) {
+       if(i < 0 || i > 3){
+         return 0;
+       }
+
+       return c[i];
+     }
 };
 
 DotDir operator+(const DotDir& dd1, const DotDir& dd2){

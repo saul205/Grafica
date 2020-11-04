@@ -16,7 +16,7 @@
 
 
 void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int hminlimit,
-                        int hmaxlimit, int antiAliasing, vector<Figure*> const objetos, const float pixelSize,
+                        int hmaxlimit, int antiAliasing, const BoundingVolume &scene, const float pixelSize,
                         float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, DotDir oLocal, DotDir oMundo,
                         Transformation localAMundo, int threadId){
 
@@ -47,22 +47,11 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
                 dirMundo = normalization(dirMundo);
                 Ray rayoMundo( oMundo, dirMundo);
 
-                DotDir inters, minInters;
-                float minT = INFINITY, newT = INFINITY;
-                for(int i = 0; i < objetos.size(); i++){
-                    // Si no intersecta no se modifica newT
-                    if(objetos[i]->instersects(rayoMundo, newT, inters)){
-                        if(newT < minT){
-                            minT = newT;
-                            minTObject = i;
-                            minInters = inters;
-                        }
-                    }  
-                }
+                std::shared_ptr<Figure> minTObject;
+                bool intersecta = scene.intersect(rayoMundo, minTObject);
                 
-                if(minTObject >= 0){
-                    color[z] = objetos[minTObject]->getEmission();
-                    minTObject = -1;
+                if(intersecta){
+                    color[z] = minTObject->getEmission();
                 }else{
                     color[z] = rgb(0,0,0);
                 } 
@@ -110,7 +99,7 @@ class Sensor{
         }
 
         // nThreads valor mínimo 1
-        void lanzarRayos(vector<Figure*> objetos,  Image& imagen, int antiAliasing, const int nThreads = 8){
+        void lanzarRayos(const BoundingVolume& scene,  Image& imagen, int antiAliasing, const int nThreads = 8){
             
             if(planeH <= planeW){
                 pixelSize = 2 / planeH;
@@ -127,9 +116,9 @@ class Sensor{
 
             for(int i = 1; i < nThreads + 1; ++i){
                 if(i!=nThreads){
-                    th[i-1] = thread(&lanzarRayosParalelizado, std::ref(newImagen), 0, planeW, (i-1)*(planeH/nThreads),  i*(planeH/nThreads), antiAliasing, objetos, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i-1);
+                    th[i-1] = thread(&lanzarRayosParalelizado, std::ref(newImagen), 0, planeW, (i-1)*(planeH/nThreads),  i*(planeH/nThreads), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i-1);
                 } else {
-                    th[i-1] = thread(&lanzarRayosParalelizado, std::ref(newImagen), 0, planeW, (i-1)*(planeH/nThreads),  i*(planeH/nThreads), antiAliasing, objetos, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i-1);
+                    th[i-1] = thread(&lanzarRayosParalelizado, std::ref(newImagen), 0, planeW, (i-1)*(planeH/nThreads),  i*(planeH/nThreads), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i-1);
                 }
             }
             
