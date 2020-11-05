@@ -81,31 +81,37 @@ class Sphere : public Figure{
 
     rgb getTexture(DotDir& interseccion){
 
-      DotDir UCSToLocal[3];
-      getBase(UCSToLocal);
+      
+      DotDir baseUCS[3];
+      getBase(baseUCS);
 
       Transformation UCSToLocalTransformation;
-      UCSToLocalTransformation.changeBase(UCSToLocal[0], UCSToLocal[1], UCSToLocal[2], getCenter());
+      UCSToLocalTransformation.changeBase(baseUCS[0], baseUCS[1], baseUCS[2], getCenter());
       UCSToLocalTransformation = inverse(UCSToLocalTransformation);
-      DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
 
+      DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
       DotDir center = UCSToLocalTransformation*getCenter();
       // Es el centro absoluto o el centro en local?.
 
-      float inclination = atan2(- (interseccionLocal.getZ() - center.getZ()), interseccionLocal.getX() - center.getX());
+      float inclination = atan(- (interseccionLocal.getZ() - center.getZ()) / interseccionLocal.getX() - center.getX());
       float u = (inclination + M_PI) / (2*M_PI);
       float azimuth = acos(- (interseccionLocal.getY() - center.getY()) / radius);
       float v = azimuth / M_PI;
 
-      cout << u << "   " << v << endl;
+      //cout << u << "   " << v << endl;
       float he = textura.getHeight();
       float we = textura.getWidth();
       
       u = u*we;
       v = v*he;
 
-      rgb dev = textura.getRGB(u, v);
+      cout << interseccionLocal.getX() << "  " << radius*cos(inclination)*sin(azimuth) << endl;
+      cout << interseccionLocal.getY() << "  " << -radius*cos(azimuth) << endl;
+      cout << interseccionLocal.getZ() << "  " << -radius*sin(inclination)*sin(azimuth) << endl;
+
+      rgb dev = textura.getRGB(v, u);
       return dev;
+
     }
 
     //--------------------GETTERS-------------------------
