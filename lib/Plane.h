@@ -65,6 +65,11 @@ class Plane : public Figure {
         void setNormal(DotDir _normal){
             normal = _normal;
         }
+
+        rgb getTexture(DotDir& interseccion){
+            return rgb(0,0,0);
+        };
+
 };
 
 #endif

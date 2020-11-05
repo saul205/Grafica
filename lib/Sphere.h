@@ -5,6 +5,7 @@
 #include "math.h"
 #include "Rgb.h"
 #include "Figure.h"
+#include <math.h>
 
 class Sphere : public Figure{
   
@@ -15,7 +16,8 @@ class Sphere : public Figure{
 
   public:
 
-    Sphere(){}
+    Sphere() {}
+
     // Los parámetros center, axis y city deben cumplir
     // checkRadius(center, axis, city)
     Sphere(const DotDir& center, const DotDir& axis, const DotDir& city){
@@ -77,6 +79,35 @@ class Sphere : public Figure{
         
     }
 
+    rgb getTexture(DotDir& interseccion){
+
+      DotDir UCSToLocal[3];
+      getBase(UCSToLocal);
+
+      Transformation UCSToLocalTransformation;
+      UCSToLocalTransformation.changeBase(UCSToLocal[0], UCSToLocal[1], UCSToLocal[2], getCenter());
+      UCSToLocalTransformation = inverse(UCSToLocalTransformation);
+      DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
+
+      DotDir center = UCSToLocalTransformation*getCenter();
+      // Es el centro absoluto o el centro en local?.
+
+      float inclination = atan2(- (interseccionLocal.getZ() - center.getZ()), interseccionLocal.getX() - center.getX());
+      float u = (inclination + M_PI) / (2*M_PI);
+      float azimuth = acos(- (interseccionLocal.getY() - center.getY()) / radius);
+      float v = azimuth / M_PI;
+
+      cout << u << "   " << v << endl;
+      float he = textura.getHeight();
+      float we = textura.getWidth();
+      
+      u = u*we;
+      v = v*he;
+
+      rgb dev = textura.getRGB(u, v);
+      return dev;
+    }
+
     //--------------------GETTERS-------------------------
 
     // Construye una base que incluye como uno de sus ejes el axis de la esfera
@@ -106,7 +137,6 @@ class Sphere : public Figure{
       return radius;
     }
 
-    //--------------------SETTERS-------------------------
 };
 
 // Devuelve cierto si y solo si el radio definido por el eje del planeta,

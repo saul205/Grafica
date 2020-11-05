@@ -47,7 +47,7 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
                 dirMundo = normalization(dirMundo);
                 Ray rayoMundo( oMundo, dirMundo);
 
-                DotDir inters, minInters;
+                DotDir inters, interseccion;
                 float minT = INFINITY, newT = INFINITY;
                 for(int i = 0; i < objetos.size(); i++){
                     // Si no intersecta no se modifica newT
@@ -55,13 +55,13 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
                         if(newT < minT){
                             minT = newT;
                             minTObject = i;
-                            minInters = inters;
+                            interseccion = inters;
                         }
                     }
                 }
                 
                 if(minTObject >= 0){
-                    color[z] = objetos[minTObject]->getEmission();
+                    color[z] = objetos[minTObject]->getEmission(interseccion);
                     minTObject = -1;
                 }else{
                     color[z] = rgb(0,0,0);
@@ -79,6 +79,7 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
             red /= (float) antiAliasing;
             green /= (float) antiAliasing;
             blue /= (float) antiAliasing;
+
             newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
         }
     }
@@ -110,7 +111,7 @@ class Sensor{
         }
 
         // nThreads valor mínimo 1
-        void lanzarRayos(vector<Figure*> objetos,  Image& imagen, int antiAliasing, const int nThreads = 8){
+        void lanzarRayos(vector<Figure*> objetos,  Image& imagen, int antiAliasing, const int nThreads = 1){
             
             if(planeH <= planeW){
                 pixelSize = 2 / planeH;

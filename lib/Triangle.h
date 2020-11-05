@@ -8,11 +8,57 @@
 #include "Rgb.h"
 #include "Figure.h"
 
+struct triangleVertexUV{
+
+    // Los marcados con uno corresponden al vértice A
+    // Los marcados con dos corresponden al vértice B
+    // Los marcados con tres corresponden al vértice C
+    // Para hacer el siguiente triángulo:
+    /*
+            A -------------- B
+            -              -
+            -            -
+            -         -             Dejar coordenadas por default
+            -      -                    A = (0,0)
+            -    -                      B = (1,0)
+            -  -                        C = (1,1)
+            C
+
+        Para hacer un plano hacer un triángulo por defecto y otro:
+
+                                B
+                            -   -       Con coordenadas:
+                        -       -           A = (1,1)
+                    -           -           B = (1,0)
+                -               -           C = (0,1)
+            C--------------------A
+    */
+
+    float u1 = 0;
+    float u2 = 1; 
+    float u3 = 0;
+    float v1 = 0; 
+    float v2 = 0;
+    float v3 = 1; 
+
+    triangleVertexUV(){}
+
+    triangleVertexUV(float _u1, float _v1, float _u2, float _v2, float _u3, float _v3){
+        u1 = _u1;
+        u2 = _u2;
+        u3 = _u3;
+        v1 = _v1;
+        v2 = _v2;
+        v3 = _v3;
+    }
+};
+
 class Triangle : public Figure {
     private:
 
         DotDir v0, v1, v2;
         DotDir v0v1, v0v2;
+        triangleVertexUV tvUV;
 
     public:
 
@@ -24,6 +70,16 @@ class Triangle : public Figure {
             v2 = _v2;
             v0v1 = v1 - v0;
             v0v2 = v2 - v0;
+            tvUV = triangleVertexUV();
+        }
+
+        Triangle(const DotDir& _v0, const DotDir& _v1, const DotDir& _v2, const triangleVertexUV& _tvUV){
+            v0 = _v0;
+            v1 = _v1;
+            v2 = _v2;
+            v0v1 = v1 - v0;
+            v0v2 = v2 - v0;
+            tvUV = _tvUV;
         }
 
         // Möller–Trumbore intersection algorithm, decide si el rayo intersecta o no con el triángulo
@@ -57,6 +113,39 @@ class Triangle : public Figure {
                 return false;
             }
         }
+        
+        // INtersection DEBE intersectar al triángulo
+        rgb getTexture(DotDir& p){
+
+            // Primero de los triángulos v0v1v2
+            DotDir abc = crossProduct(v0v1,v0v2); 
+            float abcArea = abc.mod() / 2; 
+
+            // Triángulo v0v1p
+            DotDir abp = crossProduct(v0v1, p - v0);
+            float abpArea = abp.mod() / 2;
+
+            // Triángulo v2v0p
+            DotDir cap = crossProduct(v0 - v2, p - v2);
+            float capArea = cap.mod() / 2;
+
+            float u = capArea / abcArea;
+            float v = abpArea / abcArea;
+
+            // A es 0,0 - B es height,0 - C es 0,width
+            float he = textura.getHeight();
+            float we = textura.getWidth();
+
+            float xTexture = (1.0f - u - v)*tvUV.u1 + u*tvUV.u2 + v*tvUV.u3;
+            float yTexture = (1.0f - u - v)*tvUV.v1 + u*tvUV.v2 + v*tvUV.v3;
+            xTexture = xTexture*we;
+            yTexture = yTexture*he;
+
+            rgb dev = textura.getRGB(yTexture, xTexture);
+            
+            return dev;
+
+        };
 
 };
 
