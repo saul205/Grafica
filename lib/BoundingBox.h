@@ -4,7 +4,7 @@
 #include "DotDir.h"
 #include <float.h>
 
-class BoundingBox {
+class BoundingBox{
 
     private:
 
@@ -31,33 +31,58 @@ class BoundingBox {
                              1 );
         }
 
-        bool intersects(Ray ray) {
-            DotDir r = ray.getDir();
-            return (r.getX() >= bottom.getX() && r.getX() <= top.getX() &&
-                    r.getY() >= bottom.getY() && r.getY() <= top.getY() &&
-                    r.getZ() >= bottom.getZ() && r.getZ() <= top.getZ());
+        bool intersects(Ray ray, float& t) {
+            float tNearX = (bottom.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
+            float tFarX = (top.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
+
+            float tNearY = (bottom.getY() - ray.getOrigen().getY()) / ray.getDir().getY();
+            float tFarY = (top.getY() - ray.getOrigen().getY()) / ray.getDir().getY();
+
+            float tNearZ = (bottom.getZ() - ray.getOrigen().getZ()) / ray.getDir().getZ();
+            float tFarZ = (top.getZ() - ray.getOrigen().getZ()) / ray.getDir().getZ();
+
+            float tNear = max(max(min(tNearX, tFarX), min(tNearY ,tFarY)), min(tNearZ ,tFarZ));
+            float tFar = min(min(max(tNearX, tFarX), max(tNearY ,tFarY)), max(tNearZ ,tFarZ));
+
+            if(tFar > tNear && tNear > 0) {
+                t = tNear;
+
+                //cout << bottom.getY() << endl << top.getY() << endl << endl;
+
+                return true;
+            }
+
+            return false;
         }
 
-        bool intersects(Ray ray) const {
-            float tmin = -INFINITY, tmax = INFINITY;
+        bool intersects(Ray ray, float& t) const {
+            
+            float tNearX = (bottom.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
+            float tFarX = (top.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
 
-            if(ray.getDir().getX() != 0){
-                float tx1 = (bottom.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
-                float tx2 = (top.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
+            float tNearY = (bottom.getY() - ray.getOrigen().getY()) / ray.getDir().getY();
+            float tFarY = (top.getY() - ray.getOrigen().getY()) / ray.getDir().getY();
 
-                tmin = max(tmin, min(tx1,tx2));
-                tmax = min(tmax, max(tx1,tx2));
+            float tNearZ = (bottom.getZ() - ray.getOrigen().getZ()) / ray.getDir().getZ();
+            float tFarZ = (top.getZ() - ray.getOrigen().getZ()) / ray.getDir().getZ();
+
+            float tNear = max(max(min(tNearX, tFarX), min(tNearY ,tFarY)), min(tNearZ ,tFarZ));
+            float tFar = min(min(max(tNearX, tFarX), max(tNearY ,tFarY)), max(tNearZ ,tFarZ));
+
+            cout << "Xnear: " << tNearX << endl << "Xfar: " << tFarX << endl;
+            cout << "Ynear: " << tNearY << endl << "Yfar: " << tFarY << endl;
+            cout << "Znear: " << tNearZ << endl << "Zfar: " << tFarZ << endl;
+            cout << "Near: " << tNear << endl << "Far: " << tFar << endl;
+
+            if(tFar > tNear && tNear > 0) {
+                t = tNear;
+
+                //cout << bottom.getY() << endl << top.getY() << endl << endl;
+
+                return true;
             }
 
-            if(ray.getDir().getY() != 0){
-                float ty1 = (bottom.getY() - ray.getOrigen().getY()) / ray.getDir().getY();
-                float ty2 = (top.getY() - ray.getOrigen().getY()) / ray.getDir().getY();
-
-                tmin = max(tmin, min(ty1,ty2));
-                tmax = min(tmax, max(ty1,ty2));
-            }
-
-            return tmax >= tmin;
+            return false;
         }
 
         DotDir getCenter() {

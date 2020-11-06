@@ -59,12 +59,12 @@ class BoundingVolume{
                 int nodeIndex = nodosAVisitar.back();
                 nodosAVisitar.pop_back();
 
-                if(nodos[nodeIndex].bound.intersects(ray)){
+                if(nodos[nodeIndex].bound.intersects(ray, newT)){
 
                     if(nodos[nodeIndex].nPrimitives > 0){
                         DotDir point;
                         for(int i = 0; i < nodos[nodeIndex].nPrimitives; i++){
-                            if(figuras[nodos[nodeIndex].primitivesOffset + i]->instersects(ray, newT, point)){
+                            if(figuras[nodos[nodeIndex].primitivesOffset + i]->getBound().intersects(ray, newT)){
                                 
                                 if(newT < minT){
                                     minT = newT;

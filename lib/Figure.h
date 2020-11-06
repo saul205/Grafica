@@ -13,7 +13,7 @@ class Figure {
 
     public:
 
-        virtual bool instersects(Ray ray, float& t, DotDir& p) = 0;
+        virtual bool intersects(Ray ray, float& t, DotDir& p) = 0;
         virtual DotDir getCenter() = 0;
         virtual BoundingBox getBound() = 0;
 

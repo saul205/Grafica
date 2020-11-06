@@ -27,7 +27,7 @@ class Triangle : public Figure {
         }
 
         // Möller–Trumbore intersection algorithm, decide si el rayo intersecta o no con el triángulo
-        bool instersects(Ray ray, float& t, DotDir& p) override {
+        bool intersects(Ray ray, float& t, DotDir& p) override {
     
             const float epsilon = 10e-7;
             DotDir h = crossProduct(ray.getDir(), v0v2);

@@ -57,6 +57,7 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
                 } 
             }  
 
+            //TO DO Sumar colores
             // Media del antialiasing
             float red = 0.0, green = 0.0, blue = 0.0;
             for(int z = 0; z < antiAliasing; ++z){

@@ -31,7 +31,7 @@ class Plane : public Figure {
         // Debe tener una normal
         // Si no instersecta o está detrás de la cámara devuelve falso y no modifica t,
         // en caso contrario devuelve cierto y t = - (c + o*n) / (d*n)
-        bool instersects(Ray ray, float& t, DotDir& p) override {
+        bool intersects(Ray ray, float& t, DotDir& p) override {
     
             float den = dotProduct(ray.getDir(), normal);
 
