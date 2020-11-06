@@ -30,7 +30,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
     std::shared_ptr<cuadrante> limites; 
 
     while(cbq.dequeue(limites)){
-        // cout << limites->minXlimit << "  " << limites->maxXlimit << "  " << limites->minYlimit << "  " << limites->maxYlimit << "  " <<endl;
+    // cout << limites->minXlimit << "  " << limites->maxXlimit << "  " << limites->minYlimit << "  " << limites->maxYlimit << "  " <<endl;
 
         for(int i = limites->minXlimit; i < limites->maxXlimit; ++i){
             for(int j = limites->minYlimit; j < limites->maxYlimit; ++j){
@@ -71,6 +71,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                         minTObject = -1;
                     }
                 }  
+
 
                 red /= (float) antiAliasing;
                 green /= (float) antiAliasing;

@@ -14,7 +14,7 @@ class Figure{
     protected:
 
         Image textura;
-        float new_max ;
+        float new_max  = 1;
         int col_res = 255;
 
     public:
@@ -31,9 +31,9 @@ class Figure{
 
         rgb getEmission(DotDir& interseccion){
             if(!hasTexture){
-                return emission;
+                return (emission / col_res) * new_max;
             } else {
-                return getTexture(interseccion);
+                return getTexture(interseccion) / new_max;
             }
         };
 

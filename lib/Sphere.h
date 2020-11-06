@@ -2,10 +2,10 @@
 #define SPHERE_H
 
 #include "Transformation.h"
-#include "math.h"
 #include "Rgb.h"
 #include "Figure.h"
-#include <math.h>
+
+const double pi = 3.141592653589793;
 
 class Sphere : public Figure{
   
@@ -35,9 +35,6 @@ class Sphere : public Figure{
       UCSToLocalTransformation.changeBase(baseUCS[0], baseUCS[1], baseUCS[2], center);
       UCSToLocalTransformation = inverse(UCSToLocalTransformation);
       centerLocal = UCSToLocalTransformation*center;
-      cout << center.toString()<< endl;
-      cout << centerLocal.toString()<< endl;
-      cout << baseUCS[0].toString() << "    " << baseUCS[1].toString() << "   " << baseUCS[2].toString() << endl;
     }
 
     // Si no instersecta o está detrás de la cámara devuelve falso y no modifica t,
@@ -52,14 +49,6 @@ class Sphere : public Figure{
         float b = 2.0f*dotProduct(ray.getDir(), diff);
         float c = (modDiff*modDiff) - (radius*radius);
         float doSquareRoot = b*b - 4.0f*a*c;
-
-        /*if(doSquareRoot >= 0){
-
-          cout << "A: " << a << endl;
-          cout << "B: " << b << endl; 
-          cout << "C: " << c << endl;
-          cout << "Res: " << doSquareRoot << endl << endl;
-        }*/
 
         if(doSquareRoot < 0) {         // Sin soluciones
           return false;
@@ -97,10 +86,10 @@ class Sphere : public Figure{
       DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
       // cout << interseccionLocal.toString()<< endl;
 
-      float azimuth = atan2(-(-interseccionLocal.getZ() - centerLocal.getZ()) , interseccionLocal.getX() - centerLocal.getX());
-      float u = (azimuth + M_PI) / (2*M_PI);
-      float inclination = acos(- (interseccionLocal.getY() - centerLocal.getY()) / radius);
-      float v = inclination / M_PI;
+      float azimuth = atan2(-(interseccionLocal.getZ() - centerLocal.getZ()) , interseccionLocal.getX() - centerLocal.getX());
+      float u = (azimuth + pi) / (2*pi);
+      float inclination = pi - acos(- (interseccionLocal.getY() - centerLocal.getY()) / radius);
+      float v = inclination / pi;
 
       u = u*textura.getWidth();
       v = v*textura.getHeight();
@@ -123,11 +112,11 @@ class Sphere : public Figure{
           El eje Z es perpendicular a Y y a X
     */
     void getBase(DotDir base[3]){
+      
       base[1] = sphereAxis;
-      base[0] = crossProduct(sphereAxis, sphereCity - sphereCenter);
-      base[2] = crossProduct(base[0], base[1]);
+      base[2] = crossProduct(sphereCity - sphereCenter, sphereAxis);
+      base[0] = crossProduct(base[1], base[2]);
 
-      cout << "Base 0 " << base[0].toString() <<  "Base 1 " << base[1].toString() <<  "Base 2 " << base[2].toString() << endl; 
       if(base[2].mod() > 0)
         base[2] = normalization(base[2]);
       if(base[0].mod() > 0)
@@ -229,8 +218,8 @@ class PlanetaryStation{
       // 1 = normal
       // 2 = tangente latitudinal
       basePosition[1] = position - planet.getCenter();
-      basePosition[0] = crossProduct(basePosition[1], baseCentro[1]);
-      basePosition[2] = crossProduct(basePosition[0], basePosition[1]);
+      basePosition[2] = crossProduct(baseCentro[1], basePosition[1]);
+      basePosition[0] = crossProduct(basePosition[1], basePosition[2]);
 
       basePosition[2] = normalization(basePosition[2]);
       basePosition[0] = normalization(basePosition[0]);

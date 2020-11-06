@@ -17,6 +17,18 @@ struct rgb{
     rgb(){}
 };
 
+rgb operator/(const rgb& color, const float& f){
+    return rgb(color.r / f, color.g / f, color.b / f);
+}
+
+rgb operator*(const rgb& color, const float& f){
+    return rgb(color.r * f, color.g * f, color.b * f);
+}
+
+rgb operator*(const float& f, const rgb& color){
+    return rgb(color.r * f, color.g * f, color.b * f);
+}
+
 struct hsl{
     float h = 0;
     float s = 0;
