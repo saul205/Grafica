@@ -177,9 +177,9 @@ int main(){
     cout << "SIMULACION DE LA APLICACION" << endl << endl;
     cout << "===================================================" << endl << endl;
 
-    DotDir ejePlaneta1(0,4,0,0);
-    DotDir centroPlaneta1(1,0,0,1);
-    DotDir refPlaneta1(1,0, 2,1);
+    DotDir ejePlaneta1(0, 4, 0, 0);
+    DotDir centroPlaneta1(1, 0,0,1);
+    DotDir refPlaneta1(1, 0, 2, 1);
 
     bool correcto = checkRadius(ejePlaneta1, centroPlaneta1, refPlaneta1);
     if(!correcto)
@@ -199,7 +199,7 @@ int main(){
         cout << "Planeta 2 tiene radio incorrecto" << endl;
     Sphere planeta2(centroPlaneta2, ejePlaneta2, refPlaneta2);
 
-    PlanetaryStation estacion2(planeta2, 1.57079633f, 2.0f*1.57079633f);
+    PlanetaryStation estacion2(planeta2, 1.57079633f, 2*1.57079633f);
 
     conection(estacion1, estacion2);
 

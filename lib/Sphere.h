@@ -124,8 +124,8 @@ class Sphere : public Figure{
     */
     void getBase(DotDir base[3]){
       base[1] = sphereAxis;
-      base[0] = crossProduct(sphereCity - sphereCenter, sphereAxis);
-      base[2] = crossProduct(base[1], base[0]);
+      base[0] = crossProduct(sphereAxis, sphereCity - sphereCenter);
+      base[2] = crossProduct(base[0], base[1]);
 
       cout << "Base 0 " << base[0].toString() <<  "Base 1 " << base[1].toString() <<  "Base 2 " << base[2].toString() << endl; 
       if(base[2].mod() > 0)
@@ -229,8 +229,8 @@ class PlanetaryStation{
       // 1 = normal
       // 2 = tangente latitudinal
       basePosition[1] = position - planet.getCenter();
-      basePosition[0] = crossProduct(baseCentro[1], basePosition[1]);
-      basePosition[2] = crossProduct(basePosition[1], basePosition[0]);
+      basePosition[0] = crossProduct(basePosition[1], baseCentro[1]);
+      basePosition[2] = crossProduct(basePosition[0], basePosition[1]);
 
       basePosition[2] = normalization(basePosition[2]);
       basePosition[0] = normalization(basePosition[0]);
