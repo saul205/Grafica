@@ -17,7 +17,7 @@ struct triangleVertexUV{
     /*
             A -------------- B
             -              -
-            -            -
+            -            -          
             -         -             Dejar coordenadas por default
             -      -                    A = (0,0)
             -    -                      B = (1,0)

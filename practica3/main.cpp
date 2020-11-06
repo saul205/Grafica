@@ -124,9 +124,10 @@ int main(){
     figuras.push_back(triangle2);
     figuras.push_back(triangle3);*/
 
-    DotDir center(0,0,-3,1);
-    DotDir axis(8,0,0,0);
-    DotDir city(0,-4,-3,1);
+    DotDir center(0, 0, -3, 1);
+    DotDir axis(0, 8, 0, 0);
+    DotDir city(0 , 0, 1, 1);
+    
     if(checkRadius(axis, center, city) ){
         Figure* esfera = new Sphere(center, axis, city);
         esfera->setTexture(imagen);

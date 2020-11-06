@@ -14,6 +14,9 @@ class Sphere : public Figure{
     DotDir sphereCenter, sphereAxis, sphereCity;
     float radius;
 
+    Transformation UCSToLocalTransformation;
+    DotDir centerLocal;
+
   public:
 
     Sphere() {}
@@ -25,6 +28,16 @@ class Sphere : public Figure{
       sphereAxis = axis;
       sphereCity = city;
       radius = axis.mod()/2;
+
+      DotDir baseUCS[3];
+      getBase(baseUCS);
+
+      UCSToLocalTransformation.changeBase(baseUCS[0], baseUCS[1], baseUCS[2], center);
+      UCSToLocalTransformation = inverse(UCSToLocalTransformation);
+      centerLocal = UCSToLocalTransformation*center;
+      cout << center.toString()<< endl;
+      cout << centerLocal.toString()<< endl;
+      cout << baseUCS[0].toString() << "    " << baseUCS[1].toString() << "   " << baseUCS[2].toString() << endl;
     }
 
     // Si no instersecta o está detrás de la cámara devuelve falso y no modifica t,
@@ -81,33 +94,20 @@ class Sphere : public Figure{
 
     rgb getTexture(DotDir& interseccion){
 
-      
-      DotDir baseUCS[3];
-      getBase(baseUCS);
-
-      Transformation UCSToLocalTransformation;
-      UCSToLocalTransformation.changeBase(baseUCS[0], baseUCS[1], baseUCS[2], getCenter());
-      UCSToLocalTransformation = inverse(UCSToLocalTransformation);
-
       DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
-      DotDir center = UCSToLocalTransformation*getCenter();
-      // Es el centro absoluto o el centro en local?.
+      // cout << interseccionLocal.toString()<< endl;
 
-      float inclination = atan(- (interseccionLocal.getZ() - center.getZ()) / interseccionLocal.getX() - center.getX());
-      float u = (inclination + M_PI) / (2*M_PI);
-      float azimuth = acos(- (interseccionLocal.getY() - center.getY()) / radius);
-      float v = azimuth / M_PI;
+      float azimuth = atan2(-(-interseccionLocal.getZ() - centerLocal.getZ()) , interseccionLocal.getX() - centerLocal.getX());
+      float u = (azimuth + M_PI) / (2*M_PI);
+      float inclination = acos(- (interseccionLocal.getY() - centerLocal.getY()) / radius);
+      float v = inclination / M_PI;
 
-      //cout << u << "   " << v << endl;
-      float he = textura.getHeight();
-      float we = textura.getWidth();
-      
-      u = u*we;
-      v = v*he;
+      u = u*textura.getWidth();
+      v = v*textura.getHeight();
 
-      cout << interseccionLocal.getX() << "  " << radius*cos(inclination)*sin(azimuth) << endl;
-      cout << interseccionLocal.getY() << "  " << -radius*cos(azimuth) << endl;
-      cout << interseccionLocal.getZ() << "  " << -radius*sin(inclination)*sin(azimuth) << endl;
+      // cout << interseccionLocal.getX() << "  " << radius*cos(inclination)*sin(azimuth) << endl;
+      // cout << interseccionLocal.getY() << "  " << -radius*cos(azimuth) << endl;
+      // cout << interseccionLocal.getZ() << "  " << -radius*sin(inclination)*sin(azimuth) << endl;
 
       rgb dev = textura.getRGB(v, u);
       return dev;
@@ -117,14 +117,23 @@ class Sphere : public Figure{
     //--------------------GETTERS-------------------------
 
     // Construye una base que incluye como uno de sus ejes el axis de la esfera
+    /*
+          El axis es el eje Y en la función getBase
+          El eje X es perpendicular a city - center y el axis
+          El eje Z es perpendicular a Y y a X
+    */
     void getBase(DotDir base[3]){
-      base[2] = sphereAxis;
+      base[1] = sphereAxis;
       base[0] = crossProduct(sphereCity - sphereCenter, sphereAxis);
-      base[1] = crossProduct(base[2], base[0]);
+      base[2] = crossProduct(base[1], base[0]);
 
-      base[2] = normalization(base[2]);
-      base[0] = normalization(base[0]);
-      base[1] = normalization(base[1]);
+      cout << "Base 0 " << base[0].toString() <<  "Base 1 " << base[1].toString() <<  "Base 2 " << base[2].toString() << endl; 
+      if(base[2].mod() > 0)
+        base[2] = normalization(base[2]);
+      if(base[0].mod() > 0)
+        base[0] = normalization(base[0]);
+      if(base[1].mod() > 0)
+        base[1] = normalization(base[1]);
     }
 
     DotDir getAxis(){
@@ -145,7 +154,7 @@ class Sphere : public Figure{
 
 };
 
-// Devuelve cierto si y solo si el radio definido por el eje del planeta,
+// DevuelYxyve cierto si y solo si el radio definido por el eje del planeta,
 // el cual corresponde a su diámetro (debe ser una dirección),
 // y la distancia entre el centro de la esfera y la ciudad de referencia
 // (ambos deben ser puntos) difieren en menos de 10e-6.
@@ -166,14 +175,14 @@ class PlanetaryStation{
 
     // Base en la estación en UCS
     // 0 = tangente longitudinal
-    // 1 = tangente latitudinal
-    // 2 = normal
+    // 1 = normal
+    // 2 = tangente latitudinal
     DotDir basePosition[3];
 
     // Base del centro del planeta en UCS
     // 0 = primer eje calculado
-    // 1 = segundo eje calculado
-    // 2 = axis
+    // 1 = axis
+    // 2 = segundo eje calculado
     DotDir baseCentro[3];
 
   public:
@@ -187,17 +196,17 @@ class PlanetaryStation{
       azimuth = azi;
 
       // 0 = primer eje calculado
-      // 1 = segundo eje calculado
-      // 2 = axis
+      // 1 = axis
+      // 2 = segundo eje calculado
       sph.getBase(baseCentro);
 
-      DotDir extremoAxis(0,0,planet.getRadius(),1);
+      DotDir extremoAxis(0,planet.getRadius(),0,1);
       // Rotamos sobre el segundo de los ejes calculado
       Transformation rotacionInclination;
       // Rotamos sobre el tercero de los ejes calculado (axis)
       Transformation rotacionAzimuth;
-      rotacionInclination.rotationY(inclination);
-      rotacionAzimuth.rotationZ(azimuth);
+      rotacionInclination.rotationZ(inclination);
+      rotacionAzimuth.rotationY(azimuth);
       position = rotacionInclination*extremoAxis;
       position = rotacionAzimuth*position;
 
@@ -217,11 +226,11 @@ class PlanetaryStation{
 
       // Calculo de la normal y las tangentes
       // 0 = tangente longitudinal
-      // 1 = tangente latitudinal
-      // 2 = normal
-      basePosition[2] = position - planet.getCenter();
-      basePosition[0] = crossProduct(baseCentro[2], basePosition[2]);
-      basePosition[1] = crossProduct(basePosition[2], basePosition[0]);
+      // 1 = normal
+      // 2 = tangente latitudinal
+      basePosition[1] = position - planet.getCenter();
+      basePosition[0] = crossProduct(baseCentro[1], basePosition[1]);
+      basePosition[2] = crossProduct(basePosition[1], basePosition[0]);
 
       basePosition[2] = normalization(basePosition[2]);
       basePosition[0] = normalization(basePosition[0]);

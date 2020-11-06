@@ -30,7 +30,7 @@ class Plane : public Figure {
     
             float den = dotProduct(ray.getDir(), normal);
 
-            if(!den){
+            if(den < 10e-6 && den > -10e-6){
                 // Intersecta en el infinito
                 return false;
             }
