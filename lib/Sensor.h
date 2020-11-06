@@ -31,7 +31,7 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
     for(int i = wminlimit; i < wmaxlimit; ++i){
         for(int j = hminlimit; j < hmaxlimit; ++j){
 
-            std::vector<rgb> color(antiAliasing);
+            float red = 0.0, green = 0.0, blue = 0.0;
             for(int z = 0; z < antiAliasing; ++z){
 
                 float h = random();
@@ -47,7 +47,7 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
                 dirMundo = normalization(dirMundo);
                 Ray rayoMundo( oMundo, dirMundo);
 
-                DotDir inters, minInters;
+                DotDir inters, interseccion;
                 float minT = INFINITY, newT = INFINITY;
                 for(int i = 0; i < objetos.size(); i++){
                     // Si no intersecta no se modifica newT
@@ -55,30 +55,24 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
                         if(newT < minT){
                             minT = newT;
                             minTObject = i;
-                            minInters = inters;
+                            interseccion = inters;
                         }
                     }
                 }
                 
                 if(minTObject >= 0){
-                    color[z] = objetos[minTObject]->getEmission();
+                    rgb color = objetos[minTObject]->getEmission(interseccion);
+                    red += color.r;
+                    green += color.g;
+                    blue += color.b;
                     minTObject = -1;
-                }else{
-                    color[z] = rgb(0,0,0);
-                } 
-            }  
-
-            // Media del antialiasing
-            float red = 0.0, green = 0.0, blue = 0.0;
-            for(int z = 0; z < antiAliasing; ++z){
-                red += color[z].r;
-                green += color[z].g;
-                blue += color[z].b;
+                }
             }
 
-            red /= (float) antiAliasing;
-            green /= (float) antiAliasing;
-            blue /= (float) antiAliasing;
+            red /=  antiAliasing;
+            green /=  antiAliasing;
+            blue /=  antiAliasing;
+
             newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
         }
     }
@@ -110,7 +104,7 @@ class Sensor{
         }
 
         // nThreads valor mínimo 1
-        void lanzarRayos(vector<Figure*> objetos,  Image& imagen, int antiAliasing, const int nThreads = 8){
+        void lanzarRayos(vector<Figure*> objetos,  Image& imagen, int antiAliasing, const int nThreads = 1){
             
             if(planeH <= planeW){
                 pixelSize = 2 / planeH;
