@@ -4,6 +4,7 @@
 #include "Transformation.h"
 #include "math.h"
 #include "Image.h"
+#include "Lab.h"
 
 class ToneMapper{
   
@@ -105,6 +106,40 @@ class ToneMapper{
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }
+        }
+    }
+
+    void ReinhardToneMapper(Image& img, const float a = 0.12f, const float delta = 0.18){
+        std::vector<lab> data;
+        RGBToLab(img, data);
+        applyReinhard(data, a, delta);
+        LabToRGB(img, data);
+    }
+
+    float averageReinhardLab(std::vector<lab> data, const float delta){
+
+        float suma = 0.0f;
+        for(unsigned int i = 0; i < data.size(); ++i){
+            suma = suma + log(delta + data[i].l);
+        }
+        return exp(suma) / ((float) data.size());
+    }
+
+    float applyReinhard(std::vector<lab> data, const float a, const float delta){
+
+        float lw = averageReinhardLab(data, delta);
+        for(unsigned int i = 0; i < data.size(); ++i){
+            data[i].l = data[i].l * a / lw;
+        }
+
+        float lWhite = -1.0f;
+        for(unsigned int i = 0; i < data.size(); ++i){
+            if(data[i].l > lWhite){
+                lWhite = data[i].l;
+            }
+        }
+        for(unsigned int i = 0; i < data.size(); ++i){
+            data[i].l = (data[i].l * (1.0f + (data[i].l / pow(lWhite,2.0f))))/ (data[i].l + 1.0f);
         }
     }
 

@@ -22,27 +22,27 @@ int main(){
     std::cin >> file;
     Image imagen = leer(file);
     ToneMapper tm;
-    tm.Filmic(imagen);
+    tm.ReinhardToneMapper(imagen);
 
-    vector<Figure*> figuras;
+    /*vector<Figure*> figuras;
 
     std::uniform_real_distribution<float> dist(0.0, 255.0);
     std::default_random_engine gen;
     auto random = std::bind(dist, gen);
 
     // Pusheo un triángulo, las cejas
-    /*for(int i = 0; i < 100; ++i){
+    for(int i = 0; i < 100; ++i){
         Figure* triangle = new Triangle(DotDir(-3840,2140,2000,1), DotDir(0,2140,2000,1), DotDir(-3840,0,2000,1));
         triangle->setRgb(rgb(random(),random(),random()));
         figuras.push_back(triangle);
-    }*/
+    }
 
     
     //    =================================================
     //    ESCENA DE LA CARA
     //    =============================================
 
-     /*       DotDir normal(6, 0, -1, 0);
+            DotDir normal(6, 0, -1, 0);
     Figure* plano = new Plane(normal, 65);
     plano->setRgb(rgb(255,0,0));
 
@@ -132,7 +132,7 @@ int main(){
     triangle3->setTexture(imagen);
     figuras.push_back(triangle2);
     figuras.push_back(triangle3);
-*/
+
     DotDir center(6, 0, -3, 1);
     DotDir axis(0, 8, 0, 0);
     DotDir city(10, 0, -3, 1);
@@ -146,10 +146,14 @@ int main(){
     }
 
     renderer.lanzarRayos(figuras, newImage, 1, 8);
+
     escribirbmp("render5.bmp", newImage, 255);
     for(Figure* i : figuras){
         delete i;
-    }
+    }*/
+
+    escribirbmp("reinhard.bmp", imagen, 255);
+
 
     return 0;
 }

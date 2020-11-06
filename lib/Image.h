@@ -275,4 +275,5 @@ void escribirbmp(std::string nombre, Image& img, const int col_res){
         f.close();
     }
 }
+
 #endif
