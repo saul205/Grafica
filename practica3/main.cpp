@@ -13,10 +13,10 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, 0, 1);
+    camera[3].setDotDir(0, 0, -10, 1);
 
     Sensor renderer(camera[0], camera[1], camera[2], camera[3], W, H);
-    
+
     std::string file, file2;
     std::cout << "Introduce una imagen: " << std::endl;
     std::cin >> file;
@@ -31,19 +31,18 @@ int main(){
     auto random = std::bind(dist, gen);
 
     // Pusheo un triángulo, las cejas
-    for(int i = 0; i < 100; ++i){
+    /*for(int i = 0; i < 100; ++i){
         Figure* triangle = new Triangle(DotDir(-3840,2140,2000,1), DotDir(0,2140,2000,1), DotDir(-3840,0,2000,1));
         triangle->setRgb(rgb(random(),random(),random()));
         figuras.push_back(triangle);
-    }
+    }*/
 
-/*
     
     //    =================================================
     //    ESCENA DE LA CARA
     //    =============================================
 
-            DotDir normal(6, 0, -1, 0);
+     /*       DotDir normal(6, 0, -1, 0);
     Figure* plano = new Plane(normal, 65);
     plano->setRgb(rgb(255,0,0));
 
@@ -114,10 +113,9 @@ int main(){
     triangle->setRgb(rgb(255,255,255));
     triangle2->setRgb(rgb(255,255,255));
     figuras.push_back(triangle);
-    figuras.push_back(triangle2);
-*/
+    figuras.push_back(triangle2);*/
 
-    
+
     /*
     //    ================================================
     //    PLANOS TRIÁNGULOS
@@ -133,11 +131,11 @@ int main(){
     triangle2->setTexture(imagen);
     triangle3->setTexture(imagen);
     figuras.push_back(triangle2);
-    figuras.push_back(triangle3);*/
-
-    DotDir center(0, 0, -3, 1);
+    figuras.push_back(triangle3);
+*/
+    DotDir center(6, 0, -3, 1);
     DotDir axis(0, 8, 0, 0);
-    DotDir city(4 , 0, -3, 1);
+    DotDir city(10, 0, -3, 1);
     
     if(checkRadius(axis, center, city) ){
         Figure* esfera = new Sphere(center, axis, city);
@@ -148,7 +146,7 @@ int main(){
     }
 
     renderer.lanzarRayos(figuras, newImage, 1, 8);
-    escribir("render5.ppm", newImage, 255);
+    escribirbmp("render5.bmp", newImage, 255);
     for(Figure* i : figuras){
         delete i;
     }

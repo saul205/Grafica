@@ -28,13 +28,13 @@ struct cuadrante{
 class ConcurrentBoundedQueue{
     
     std::mutex mtx;
-    std::queue<std::shared_ptr<cuadrante>> cbq;
+    std::queue<cuadrante> cbq;
 
     public:
 
         ConcurrentBoundedQueue(){ }
 
-        void enqueue(std::shared_ptr<cuadrante> enq) {
+        void enqueue(cuadrante enq) {
             std::unique_lock<std::mutex> lck (mtx,std::defer_lock);
             lck.lock();
             cbq.push(enq);
@@ -42,7 +42,7 @@ class ConcurrentBoundedQueue{
         };
 
 
-        bool dequeue(std::shared_ptr<cuadrante>& frente) {
+        bool dequeue(cuadrante& frente) {
             bool extraido = false;
 	        std::unique_lock<std::mutex> lck (mtx,std::defer_lock);
             lck.lock();

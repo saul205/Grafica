@@ -19,7 +19,7 @@ const int sizeCuadrante = 30;
 
 void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, vector<Figure*> const objetos, 
                         const float pixelSize, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, DotDir oLocal,
-                        DotDir oMundo, Transformation localAMundo, int threadId){
+                        DotDir oMundo, Transformation localAMundo){
 
     std::uniform_real_distribution<float> dist(0.0, pixelSize);
     std::default_random_engine gen;
@@ -27,13 +27,12 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
     int minTObject = -1;
     DotDir planePoint, dir;
-    std::shared_ptr<cuadrante> limites; 
+    cuadrante limites; 
 
     while(cbq.dequeue(limites)){
-    // cout << limites->minXlimit << "  " << limites->maxXlimit << "  " << limites->minYlimit << "  " << limites->maxYlimit << "  " <<endl;
 
-        for(int i = limites->minXlimit; i < limites->maxXlimit; ++i){
-            for(int j = limites->minYlimit; j < limites->maxYlimit; ++j){
+        for(int i = limites.minXlimit; i < limites.maxXlimit; ++i){
+            for(int j = limites.minYlimit; j < limites.maxYlimit; ++j){
 
                 float red = 0.0, green = 0.0, blue = 0.0;
                 for(int z = 0; z < antiAliasing; ++z){
@@ -71,7 +70,6 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                         minTObject = -1;
                     }
                 }  
-
 
                 red /= (float) antiAliasing;
                 green /= (float) antiAliasing;
@@ -120,34 +118,25 @@ class Sensor{
             for(int i = 0; i < planeW; i = i + sizeCuadrante){
                 for(int j = 0; j < planeH; j = j + sizeCuadrante){
                     if(i + sizeCuadrante <= planeW && j + sizeCuadrante <= planeH){
-                        shared_ptr<cuadrante> ptr = make_shared<cuadrante>(cuadrante(i, i + sizeCuadrante, j, j + sizeCuadrante));
-                        cbq.enqueue(ptr);
+                        cbq.enqueue(cuadrante(cuadrante(i, i + sizeCuadrante, j, j + sizeCuadrante)));
                     } else if(i + sizeCuadrante > planeW && j + sizeCuadrante <= planeH){
-                        shared_ptr<cuadrante> ptr = make_shared<cuadrante>(cuadrante(i, planeW, j, j + sizeCuadrante));
-                        cbq.enqueue(ptr);
+                        cbq.enqueue(cuadrante(cuadrante(i, planeW, j, j + sizeCuadrante)));
                     } else if(i + sizeCuadrante <= planeW && j + sizeCuadrante > planeH){
-                        shared_ptr<cuadrante> ptr = make_shared<cuadrante>(cuadrante(i, i + sizeCuadrante, j, planeH));
-                        cbq.enqueue(ptr);
+                        cbq.enqueue(cuadrante(cuadrante(i, i + sizeCuadrante, j, planeH)));
                     } else {
-                        shared_ptr<cuadrante> ptr = make_shared<cuadrante>(cuadrante(i, planeW, j, planeH));
-                        cbq.enqueue(ptr);
+                        cbq.enqueue(cuadrante(cuadrante(i, planeW, j, planeH)));
                     }               
                 }
             }
 
             centrarEnElPlanoW = pixelSize * planeW / 2;
             centrarEnElPlanoH = pixelSize * planeH / 2;
-            Image newImagen("", "render", planeW, planeH, 255, 1);
 
             std::vector<std::thread> th(nThreads);
             auto start = chrono::steady_clock::now();
 
             for(int i = 0; i < nThreads; ++i){
-                if(i!=nThreads){
-                    th[i] = thread(&lanzarRayosParalelizado, std::ref(newImagen), std::ref(cbq), antiAliasing, objetos, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i);
-                } else {
-                    th[i] = thread(&lanzarRayosParalelizado, std::ref(newImagen), std::ref(cbq), antiAliasing, objetos, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i);
-                }
+                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, objetos, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo);
             }
             
             for(int i = 0; i < nThreads; ++i){
@@ -157,7 +146,6 @@ class Sensor{
             auto end = chrono::steady_clock::now();
             cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << endl;
 
-            imagen = newImagen;
         }
 };
 

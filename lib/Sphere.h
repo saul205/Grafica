@@ -86,9 +86,11 @@ class Sphere : public Figure{
       DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
       // cout << interseccionLocal.toString()<< endl;
 
-      float azimuth = atan2(-(interseccionLocal.getZ() - centerLocal.getZ()) , interseccionLocal.getX() - centerLocal.getX());
+      float azimuth = atan2(interseccionLocal.getZ() - centerLocal.getZ() , interseccionLocal.getX() - centerLocal.getX());
       float u = (azimuth + pi) / (2*pi);
-      float inclination = pi - acos(- (interseccionLocal.getY() - centerLocal.getY()) / radius);
+      
+      // Inclinación DESDE EL POLO NORTE, entre 0 y pi
+      float inclination = acos(interseccionLocal.getY() / radius);
       float v = inclination / pi;
 
       u = u*textura.getWidth();
