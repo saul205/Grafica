@@ -24,8 +24,6 @@ void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int
     std::default_random_engine gen;
 
     auto random = std::bind(dist, gen);
-
-    int minTObject = -1;
     DotDir planePoint, dir;
 
     for(int i = wminlimit; i < wmaxlimit; ++i){

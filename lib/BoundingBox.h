@@ -13,6 +13,7 @@ class BoundingBox{
     public:
 
         friend BoundingBox Union(const BoundingBox& box1, const BoundingBox& box2);
+        friend BoundingBox Union(const BoundingBox& box1, const DotDir& box2);
 
         BoundingBox(){
             bottom.setDotDir(FLT_MAX, FLT_MAX, FLT_MAX, 1);
@@ -44,15 +45,17 @@ class BoundingBox{
             float tNear = max(max(min(tNearX, tFarX), min(tNearY ,tFarY)), min(tNearZ ,tFarZ));
             float tFar = min(min(max(tNearX, tFarX), max(tNearY ,tFarY)), max(tNearZ ,tFarZ));
 
-            if(tFar > tNear && tNear > 0) {
+            if(tFar < tNear) return false;
+
+            if(tFar < 0) return false;
+
+            if(tNear > 0){
                 t = tNear;
-
-                //cout << bottom.getY() << endl << top.getY() << endl << endl;
-
-                return true;
+            }else{
+                t = tFar;
             }
 
-            return false;
+            return true;
         }
 
         bool intersects(Ray ray, float& t) const {
@@ -69,20 +72,23 @@ class BoundingBox{
             float tNear = max(max(min(tNearX, tFarX), min(tNearY ,tFarY)), min(tNearZ ,tFarZ));
             float tFar = min(min(max(tNearX, tFarX), max(tNearY ,tFarY)), max(tNearZ ,tFarZ));
 
-            cout << "Xnear: " << tNearX << endl << "Xfar: " << tFarX << endl;
+            /*cout << "Xnear: " << tNearX << endl << "Xfar: " << tFarX << endl;
             cout << "Ynear: " << tNearY << endl << "Yfar: " << tFarY << endl;
             cout << "Znear: " << tNearZ << endl << "Zfar: " << tFarZ << endl;
-            cout << "Near: " << tNear << endl << "Far: " << tFar << endl;
+            cout << "Near: " << tNear << endl << "Far: " << tFar << endl;*/
 
-            if(tFar > tNear && tNear > 0) {
+            if(tFar < tNear) return false;
+
+            if(tFar < 0) return false;
+
+            if(tNear > 0){
                 t = tNear;
 
-                //cout << bottom.getY() << endl << top.getY() << endl << endl;
-
-                return true;
+            }else{
+                t = tFar;
             }
 
-            return false;
+            return true;
         }
 
         DotDir getCenter() {
@@ -127,6 +133,18 @@ BoundingBox Union(const BoundingBox& box1, const BoundingBox& box2){
                         DotDir(std::min(box1.bottom.getX(), box2.bottom.getX()),
                                 std::min(box1.bottom.getY(), box2.bottom.getY()),
                                 std::min(box1.bottom.getZ(), box2.bottom.getZ()),
+                                1));
+}
+
+BoundingBox Union(const BoundingBox& box1, const DotDir& box2){
+    return BoundingBox(DotDir(std::max(box1.top.getX(), box2.getX()),
+                                std::max(box1.top.getY(), box2.getY()),
+                                std::max(box1.top.getZ(), box2.getZ()),
+                                1), 
+
+                        DotDir(std::min(box1.bottom.getX(), box2.getX()),
+                                std::min(box1.bottom.getY(), box2.getY()),
+                                std::min(box1.bottom.getZ(), box2.getZ()),
                                 1));
 }
 

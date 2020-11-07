@@ -63,10 +63,12 @@ class Plane : public Figure {
         }
 
         BoundingBox getBound() override {
-            DotDir x = center + (width / 2 * v2);
-            DotDir y = center + (height / 2 * v1);
-            DotDir x2 = center - (width / 2 * v2);
-            DotDir y2 = center - (height / 2 * v1);
+            DotDir v2n = normalization(v2);
+            DotDir v1n = normalization(v1);
+            DotDir x = center + (width / 2 * v2n) + (height / 2 * v1n);
+            DotDir y = center - (height / 2 * v1n) + (width / 2 * v2n);
+            DotDir x2 = center - (width / 2 * v2n) - (height / 2 * v1n);
+            DotDir y2 = center - (width / 2 * v2n) + (height / 2 * v1n);
 
             float maxX = max( max(x.getX(), y.getX()), max(x2.getX(), y2.getX()));
             float maxY = max( max(x.getY(), y.getY()), max(x2.getY(), y2.getY()));

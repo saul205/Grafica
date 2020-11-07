@@ -130,8 +130,8 @@ int main(){
                                     DotDir(-1, 1, 0, 0),
                                     DotDir(-1, -1, 0, 0), 
                                     DotDir(-1, 1, -7, 1),
-                                    5,
-                                    10
+                                    3,
+                                    3
                                     ));
     plano5->setRgb(rgb(100,50,100));
     
@@ -139,7 +139,7 @@ int main(){
 
 
     BoundingVolume scene(figuras);
-    renderer.lanzarRayos(scene, newImage, 1, 1);
+    renderer.lanzarRayos(scene, newImage, 16, 16);
     cout << "Escribo" << endl;
     escribirbmp("render.bmp", newImage, 255);
     

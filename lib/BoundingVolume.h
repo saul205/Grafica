@@ -22,12 +22,14 @@ class BoundingVolume{
 
     struct Node{
 
-        void InitLeaf(int first, int n, const BoundingBox& b){
+        void InitLeaf(const BoundingBox& b){
             bounds = b;
-            firstPrimOffset = first;
-            nPrimitives = n;
             left = nullptr;
             right = nullptr;
+        }
+
+        void addPrimitive(int n){
+            primitives.push_back(n);
         }
 
         void InitInterior(int axis, std::shared_ptr<Node> _left, std::shared_ptr<Node> _right){
@@ -35,17 +37,18 @@ class BoundingVolume{
             right = _right;
             splitAxis = axis;
             bounds = Union(_left->bounds, _right->bounds);
-            nPrimitives = 0;
         }
 
+        std::vector<int> primitives;
         BoundingBox bounds;
-        int splitAxis, firstPrimOffset, nPrimitives;
+        int splitAxis;
         std::shared_ptr<Node> left, right;
     };
 
     struct LinearNode{
         BoundingBox bound;
-        int nPrimitives, axis, primitivesOffset, secondChildOffset;
+        std::vector<int> primitives;
+        int nPrimitives, axis, firstChildOffset, secondChildOffset;
     };
 
     public:
@@ -58,17 +61,21 @@ class BoundingVolume{
             while(nodosAVisitar.size() > 0){
                 int nodeIndex = nodosAVisitar.back();
                 nodosAVisitar.pop_back();
-
-                if(nodos[nodeIndex].bound.intersects(ray, newT)){
-
-                    if(nodos[nodeIndex].nPrimitives > 0){
+                newT = INFINITY;
+                bool intersecta = nodos[nodeIndex].bound.intersects(ray, newT);
+                /*if(intersecta){
+                    cout << newT << "   " << minT << endl;
+                }*/
+                if(intersecta){
+                    if(nodos[nodeIndex].primitives.size() > 0){
                         DotDir point;
-                        for(int i = 0; i < nodos[nodeIndex].nPrimitives; i++){
-                            if(figuras[nodos[nodeIndex].primitivesOffset + i]->getBound().intersects(ray, newT)){
+                        newT = INFINITY;
+                        for(int fig : nodos[nodeIndex].primitives){
+                            if(figuras[fig]->intersects(ray, newT, point)){
                                 
                                 if(newT < minT){
                                     minT = newT;
-                                    minTObject = nodos[nodeIndex].primitivesOffset + i;
+                                    minTObject = fig;
                                 }
                                 intersect = true;
                             }
@@ -77,7 +84,7 @@ class BoundingVolume{
                     else{
                         //cout << "Soy " << nodeIndex << " añado " << nodeIndex + 1 << " | " << nodos[nodeIndex].secondChildOffset << endl;
                         nodosAVisitar.push_back(nodos[nodeIndex].secondChildOffset);
-                        nodosAVisitar.push_back(nodeIndex + 1);
+                        nodosAVisitar.push_back(nodos[nodeIndex].firstChildOffset);
                     }
                 }
             }
@@ -100,33 +107,17 @@ class BoundingVolume{
             }
 
             int totalNodes = 0;
-            std::vector<std::shared_ptr<Figure>> orderedFigures;
-            orderedFigures.reserve(figuras.size());
 
-            std::shared_ptr<Node> root(recursiveBuild(primitiveInfo, 0, figuras.size(), totalNodes, orderedFigures));
+            std::shared_ptr<Node> root(recursiveBuild(primitiveInfo, 0, figuras.size(), totalNodes));
 
-            figuras.swap(orderedFigures);
             primitiveInfo.clear();
 
             nodos.reserve(totalNodes);
             int offset = 0;
             int offset2 = flattenTree(root, offset);
-
-            int i = 0;
-            for(LinearNode l : nodos){
-                cout << i << ": " << l.primitivesOffset << " | " << l.secondChildOffset << endl;
-                if(l.nPrimitives > 0){
-                    cout << figuras[l.primitivesOffset]->getEmission().r << " " << figuras[l.primitivesOffset]->getEmission().g << " " << figuras[l.primitivesOffset]->getEmission().b << endl;
-                }
-                //cout << l.bound.getTop().toString() << endl;
-                //cout << l.bound.getBottom().toString() << endl;
-                cout << figuras[l.primitivesOffset]->getCenter().toString() << endl;
-                i++;
-            }
         }
 
-        std::shared_ptr<Node> recursiveBuild(std::vector<PrimitiveInfo> &primitiveInfo, int start, int end, int &totalNodes, 
-                                             std::vector<std::shared_ptr<Figure>>& orderedFigures){
+        std::shared_ptr<Node> recursiveBuild(std::vector<PrimitiveInfo> &primitiveInfo, int start, int end, int &totalNodes){
             std::shared_ptr<Node> nodo(new Node()); 
             int nPrimitives = end - start;
             totalNodes ++;
@@ -137,29 +128,27 @@ class BoundingVolume{
             }
 
             if(nPrimitives == 1){
-                int firstPrimOffset = orderedFigures.size();
+                nodo->InitLeaf(bounds);
                 for(int i = start; i < end; i ++){
-                    orderedFigures.push_back(figuras[primitiveInfo[i].primitiveIndex]);
+                    nodo->primitives.push_back(primitiveInfo[i].primitiveIndex);
                 }
-                nodo->InitLeaf(firstPrimOffset, nPrimitives, bounds);
                 return nodo;
             }else{
                 BoundingBox centroidBounds;
                 for(int i = start; i < end; i++){
-                    centroidBounds = Union(centroidBounds, primitiveInfo[i].bound);
+                    centroidBounds = Union(centroidBounds, primitiveInfo[i].centroid);
                 }
                 int dim = centroidBounds.MaxAxe();
                 int mid = (start + end) / 2;
 
                 if(centroidBounds.getTop()[dim] == centroidBounds.getBottom()[dim]){
-                    int firstPrimOffset = orderedFigures.size();
                     for(int i = start; i < end; i ++){
-                        orderedFigures.push_back(figuras[primitiveInfo[i].primitiveIndex]);
+                        nodo->primitives.push_back(primitiveInfo[i].primitiveIndex);
                     }
-                    nodo->InitLeaf(firstPrimOffset, nPrimitives, bounds);
                     return nodo;
                 }else{
                     //Primera prueba con Centros
+                    
                     float pMid = (centroidBounds.getTop()[dim] + centroidBounds.getBottom()[dim]) / 2;
                     PrimitiveInfo *midPtr = std::partition(&primitiveInfo[start], &primitiveInfo[end-1]+1, 
                             [dim, pMid](const PrimitiveInfo &p){
@@ -178,8 +167,8 @@ class BoundingVolume{
                 }
 
                 nodo->InitInterior(dim, 
-                    recursiveBuild(primitiveInfo, start, mid, totalNodes, orderedFigures),
-                    recursiveBuild(primitiveInfo, mid, end, totalNodes, orderedFigures));
+                    recursiveBuild(primitiveInfo, start, mid, totalNodes),
+                    recursiveBuild(primitiveInfo, mid, end, totalNodes));
             }
             return nodo;
         }
@@ -194,14 +183,12 @@ class BoundingVolume{
             nodos.push_back(LinearNode());
             int myOffset = offset++;
             nodos[myOffset].bound = nodo->bounds;
+            nodos[myOffset].primitives = nodo->primitives;
             
-            if(nodo->nPrimitives > 0){
-                nodos[myOffset].primitivesOffset = nodo->firstPrimOffset;
-                nodos[myOffset].nPrimitives = nodo->nPrimitives;
+            if(nodo->primitives.size() > 0){
             }else{
                 nodos[myOffset].axis = nodo->splitAxis;
-                nodos[myOffset].nPrimitives = 0;
-                flattenTree(nodo->left, offset);
+                nodos[myOffset].firstChildOffset = flattenTree(nodo->left, offset);
                 nodos[myOffset].secondChildOffset = flattenTree(nodo->right, offset);
             }
             return myOffset;

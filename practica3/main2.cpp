@@ -19,7 +19,7 @@ int main(){
 
     vector<std::shared_ptr<Figure>> figuras;
 
-    /*std::shared_ptr<Figure> plano(new Plane(
+    std::shared_ptr<Figure> plano(new Plane(
                                     DotDir(0, 1, 0, 0),
                                     DotDir(-1, 0, -6, 0), 
                                     DotDir(-20, 5, 0, 1),
@@ -28,7 +28,7 @@ int main(){
                                     ));
     plano->setRgb(rgb(255,0,0));
 
-    std::shared_ptr<Figure> plano2(new Plane(
+    /*std::shared_ptr<Figure> plano2(new Plane(
                                     DotDir(0, 1, 0, 0),
                                     DotDir(-1, 0, 6, 0), 
                                     DotDir(20, 5, 0, 1),
@@ -53,14 +53,14 @@ int main(){
                                     20,
                                     20
                                     ));
-    plano4->setRgb(rgb(124,50,255));
+    plano4->setRgb(rgb(124,50,255));*/
     
     figuras.push_back(plano);
-    figuras.push_back(plano2);
-    figuras.push_back(plano3);
-    figuras.push_back(plano4);*/
+    //figuras.push_back(plano2);
+    //figuras.push_back(plano3);
+    //figuras.push_back(plano4);
 
-    DotDir center(0,0,-3,1);
+    /*DotDir center(0,0,-3,1);
     DotDir axis(0,8,0,0);
     DotDir city(0,0,-7,1);
     if(checkRadius(axis, center, city) ){
@@ -70,7 +70,7 @@ int main(){
 
     } else {
         cout << "Error en la esfera." << endl;
-    }
+    }*/
 
     /*DotDir center2(0.6,0.4,-6,1);
     DotDir axis2(0,2,0,0);
@@ -126,7 +126,7 @@ int main(){
 
     cout << "Union" << Union(b,  c).getCenter().toString() << endl;
 
-    std::shared_ptr<Figure> plano5(new Plane(
+    */std::shared_ptr<Figure> plano5(new Plane(
                                     DotDir(-1, 1, 0, 0),
                                     DotDir(-1, -1, 0, 0), 
                                     DotDir(-1, 1, -7, 1),
@@ -135,7 +135,7 @@ int main(){
                                     ));
     plano5->setRgb(rgb(100,50,100));
     
-    figuras.push_back(plano5);*/
+    figuras.push_back(plano5);
 
     BoundingBox c = figuras[0]->getBound();
     cout << c.getTop().toString() << endl;
