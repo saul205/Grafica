@@ -14,6 +14,7 @@ class BoundingVolume{
             primitiveIndex = index;
             bound = _bound;
             centroid = bound.getCenter();
+            //cout << "Centroid " << centroid.toString() << endl;
         }
 
         int primitiveIndex;
@@ -120,10 +121,12 @@ class BoundingVolume{
             int offset = 0;
             int offset2 = flattenTree(root, offset);
 
-            cout << "Total nodes: " << totalNodes << endl;
+            /*cout << "Total nodes: " << totalNodes << endl;
             for(LinearNode l : nodos){
                 cout << l.primitives.size() << endl;
-            }
+                cout << l.bound.getTop().toString() << endl;
+                cout << l.bound.getBottom().toString() << endl;
+            }*/
         }
 
         std::shared_ptr<Node> recursiveBuild(std::vector<PrimitiveInfo> &primitiveInfo, int start, int end, int &totalNodes){
@@ -135,6 +138,8 @@ class BoundingVolume{
             for(int i = start; i < end; i++){
                 bounds = Union(bounds, primitiveInfo[i].bound);
             }
+
+            //cout << start << " -> " << end << endl << bounds.getTop().toString() << endl << bounds.getBottom().toString() << endl;
 
             if(nPrimitives == 1){
                 nodo->InitLeaf(bounds);
@@ -151,6 +156,7 @@ class BoundingVolume{
                 int mid = (start + end) / 2;
 
                 if(centroidBounds.getTop()[dim] == centroidBounds.getBottom()[dim]){
+                    nodo->InitLeaf(bounds);
                     for(int i = start; i < end; i ++){
                         nodo->primitives.push_back(primitiveInfo[i].primitiveIndex);
                     }

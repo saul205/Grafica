@@ -144,6 +144,9 @@ class Sphere : public Figure{
     }
 
     BoundingBox getBound(){
+
+      //cout << sphereCenter.getX() + radius << " " << sphereCenter.getX() - radius << endl;
+      //cout << sphereCenter.getY() + radius << " " << sphereCenter.getY() - radius << endl;
       return BoundingBox(
         DotDir(sphereCenter.getX() + radius, sphereCenter.getY() + radius, sphereCenter.getZ() + radius, 1),
         DotDir(sphereCenter.getX() - radius, sphereCenter.getY() - radius, sphereCenter.getZ() - radius, 1)

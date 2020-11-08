@@ -24,7 +24,7 @@ void createFaceScene(Scene &escena){
 
 int main(){
 
-    float W = 100, H = 100;
+    float W = 1600, H = 900;
 
     DotDir camera[4];
     camera[0].setDotDir(1, 0, 0, 0);
@@ -84,7 +84,7 @@ int main(){
     std::default_random_engine gen;
     auto random = std::bind(dist, gen);
 
-    int n = 1;
+    int n = 10;
     for(int i = -n; i < n; i ++){
         for(int j = n; j > -n; j --){
             scene.addTriangle(DotDir(i, j, 10, 1), DotDir(i + 1, j, 10, 1), DotDir(i, j - 1, 10, 1), rgb(random(), random(), random()));
