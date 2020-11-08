@@ -94,6 +94,7 @@ class Scene{
         void render(string output, int AA, int hilos = 1, int mode = 1){
             BoundingVolume bv(figuras);
             cout << "N Figuras: " << figuras.size() << endl;
+            cout << "N Nodos: " << bv.getSize() << endl;
             renderer.lanzarRayos(bv, imagen, AA, hilos);
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

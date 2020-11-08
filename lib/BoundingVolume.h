@@ -49,12 +49,12 @@ class BoundingVolume{
     struct LinearNode{
         BoundingBox bound;
         std::vector<int> primitives;
-        int nPrimitives, axis, firstChildOffset, secondChildOffset;
+        int axis, firstChildOffset, secondChildOffset;
     };
 
     public:
 
-        bool intersect(Ray ray, std::shared_ptr<Figure>& figura, DotDir& interseccion) const {
+        bool intersect(Ray ray, std::shared_ptr<Figure>& figura, DotDir& interseccion, float &intersecciones) const {
             bool intersect = false;
             std::vector<int> nodosAVisitar;
             nodosAVisitar.push_back(0);
@@ -63,6 +63,7 @@ class BoundingVolume{
                 int nodeIndex = nodosAVisitar.back();
                 nodosAVisitar.pop_back();
                 newT = INFINITY;
+                intersecciones ++;
                 bool intersecta = nodos[nodeIndex].bound.intersects(ray, newT);
                 /*if(intersecta && ray.getDir().getX() > -0.001 && ray.getDir().getX() < 0.001 && ray.getDir().getY() > -0.001 && ray.getDir().getY() < 0.001){
                     cout << nodeIndex << " " << newT << "   " << minT << endl;
@@ -72,6 +73,7 @@ class BoundingVolume{
                         DotDir point;
                         newT = INFINITY;
                         for(int fig : nodos[nodeIndex].primitives){
+                            intersecciones ++;
                             if(figuras[fig]->intersects(ray, newT, point)){
                                 
                                 if(newT < minT){
@@ -117,6 +119,11 @@ class BoundingVolume{
             nodos.reserve(totalNodes);
             int offset = 0;
             int offset2 = flattenTree(root, offset);
+
+            cout << "Total nodes: " << totalNodes << endl;
+            for(LinearNode l : nodos){
+                cout << l.primitives.size() << endl;
+            }
         }
 
         std::shared_ptr<Node> recursiveBuild(std::vector<PrimitiveInfo> &primitiveInfo, int start, int end, int &totalNodes){
@@ -173,6 +180,10 @@ class BoundingVolume{
                     recursiveBuild(primitiveInfo, mid, end, totalNodes));
             }
             return nodo;
+        }
+
+        float getSize(){
+            return nodos.size();
         }
        
     private:

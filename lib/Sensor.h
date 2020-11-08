@@ -24,7 +24,8 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
     auto random = std::bind(dist, gen);
     DotDir planePoint, dir;
     cuadrante limites; 
-
+    
+    float intersecciones = 0;
     while(cbq.dequeue(limites)){
 
         for(int i = limites.minXlimit; i < limites.maxXlimit; ++i){
@@ -47,7 +48,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                     std::shared_ptr<Figure> minTObject;
                     DotDir interseccion;
-                    bool intersecta = scene.intersect(rayoMundo, minTObject, interseccion);
+                    bool intersecta = scene.intersect(rayoMundo, minTObject, interseccion, intersecciones);
                     
                     if(intersecta){
                         rgb color = minTObject->getEmission(interseccion);
@@ -63,7 +64,8 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                 newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
             }
         }
-    } 
+    }
+    cout << "Intersecciones: " << intersecciones << endl;
 }
 
 class Sensor{
