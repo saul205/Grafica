@@ -81,7 +81,7 @@ class Sphere : public Figure{
         
     }
 
-    rgb getTexture(DotDir& interseccion){
+    rgb getTexture(const DotDir& interseccion){
 
       DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
       // cout << interseccionLocal.toString()<< endl;
@@ -145,8 +145,8 @@ class Sphere : public Figure{
 
     BoundingBox getBound(){
       return BoundingBox(
-        DotDir(sphereCenter.getX() - radius, sphereCenter.getY() - radius, sphereCenter.getZ() - radius, 1),
-        DotDir(sphereCenter.getX() + radius, sphereCenter.getY() + radius, sphereCenter.getZ() + radius, 1)
+        DotDir(sphereCenter.getX() + radius, sphereCenter.getY() + radius, sphereCenter.getZ() + radius, 1),
+        DotDir(sphereCenter.getX() - radius, sphereCenter.getY() - radius, sphereCenter.getZ() - radius, 1)
       );
     }
     //--------------------SETTERS-------------------------

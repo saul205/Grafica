@@ -52,7 +52,7 @@ class BoundingBox{
             if(tNear > 0){
                 t = tNear;
             }else{
-                t = tFar;
+                t = 0;
             }
 
             return true;
@@ -85,7 +85,7 @@ class BoundingBox{
                 t = tNear;
 
             }else{
-                t = tFar;
+                t = 0;
             }
 
             return true;

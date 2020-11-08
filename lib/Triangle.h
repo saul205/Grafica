@@ -113,7 +113,7 @@ class Triangle : public Figure {
         }
         
         // INtersection DEBE intersectar al triángulo
-        rgb getTexture(DotDir& p){
+        rgb getTexture(const DotDir& p){
 
             // Primero de los triángulos v0v1v2
             DotDir abc = crossProduct(v0v1,v0v2); 

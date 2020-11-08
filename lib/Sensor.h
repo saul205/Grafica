@@ -78,6 +78,8 @@ class Sensor{
 
     public:
 
+        Sensor(){};
+
         Sensor(DotDir _l, DotDir _u, DotDir _f, DotDir _o, float planeWidth, float planeHeight) :
                 lMundo(_l), uMundo(_u), fMundo(_f), oMundo(_o), planeW(planeWidth), planeH(planeHeight) {
 

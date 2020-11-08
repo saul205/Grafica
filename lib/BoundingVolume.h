@@ -64,10 +64,10 @@ class BoundingVolume{
                 nodosAVisitar.pop_back();
                 newT = INFINITY;
                 bool intersecta = nodos[nodeIndex].bound.intersects(ray, newT);
-                /*if(intersecta){
-                    cout << newT << "   " << minT << endl;
+                /*if(intersecta && ray.getDir().getX() > -0.001 && ray.getDir().getX() < 0.001 && ray.getDir().getY() > -0.001 && ray.getDir().getY() < 0.001){
+                    cout << nodeIndex << " " << newT << "   " << minT << endl;
                 }*/
-                if(intersecta){
+                if(intersecta && newT < minT){
                     if(nodos[nodeIndex].primitives.size() > 0){
                         DotDir point;
                         newT = INFINITY;

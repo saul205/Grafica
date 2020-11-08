@@ -26,7 +26,7 @@ class Figure {
         virtual BoundingBox getBound() = 0;
         
 
-        virtual rgb getTexture(DotDir& interseccion) = 0;
+        virtual rgb getTexture(const DotDir& interseccion) = 0;
 
         void setRgb(rgb _color){
             emission = _color;
