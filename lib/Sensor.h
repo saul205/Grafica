@@ -29,6 +29,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
     DotDir planePoint, dir;
     cuadrante limites; 
 
+    float intersecciones = 0;
     while(cbq.dequeue(limites)){
 
         for(int i = limites.minXlimit; i < limites.maxXlimit; ++i){
@@ -53,6 +54,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     float minT = INFINITY, newT = INFINITY;
                     for(int i = 0; i < objetos.size(); i++){
                         // Si no intersecta no se modifica newT
+                        intersecciones ++;
                         if(objetos[i]->intersects(rayoMundo, newT, inters)){
                             if(newT < minT){
                                 minT = newT;
@@ -77,7 +79,8 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                 newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
             }
         }
-    } 
+    }
+    cout << "Intersecciones: " << intersecciones << endl;
 }
 
 class Sensor{
