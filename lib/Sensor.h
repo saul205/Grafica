@@ -1,11 +1,10 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include "DotDir.h"
+#include "ConcurrentBoundedQueue.h"
 #include "Transformation.h"
 #include "Plane.h"
 #include "Ray.h"
-#include "Triangle.h"
 #include "Image.h"
 #include "LightSource.h"
 #include <memory>
@@ -14,62 +13,57 @@
 #include <random>
 #include <functional>
 
+const int sizeCuadrante = 30;
 
-void lanzarRayosParalelizado(Image& newImagen, int wminlimit, int wmaxlimit, int hminlimit,
-                        int hmaxlimit, int antiAliasing, const BoundingVolume &scene, const float pixelSize,
-                        float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, DotDir oLocal, DotDir oMundo,
-                        Transformation localAMundo, int threadId){
+void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, 
+                        const float pixelSize, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, DotDir oLocal,
+                        DotDir oMundo, Transformation localAMundo){
 
     std::uniform_real_distribution<float> dist(0.0, pixelSize);
     std::default_random_engine gen;
-
     auto random = std::bind(dist, gen);
     DotDir planePoint, dir;
+    cuadrante limites; 
 
-    for(int i = wminlimit; i < wmaxlimit; ++i){
-        for(int j = hminlimit; j < hmaxlimit; ++j){
+    while(cbq.dequeue(limites)){
 
-            std::vector<rgb> color(antiAliasing);
-            for(int z = 0; z < antiAliasing; ++z){
+        for(int i = limites.minXlimit; i < limites.maxXlimit; ++i){
+            for(int j = limites.minYlimit; j < limites.maxYlimit; ++j){
 
-                float h = random();
-                float w = random();
+                float red = 0.0, green = 0.0, blue = 0.0;
+                for(int z = 0; z < antiAliasing; ++z){
 
+                    float h = random();
+                    float w = random();
 
-                // Como f = 1 la tercera componente es fija
-                planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
-                dir = planePoint - oLocal;
+                    // Como f = 1 la tercera componente es fija
+                    planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
+                    dir = planePoint - oLocal;
 
-                DotDir dirMundo = localAMundo*dir;
+                    DotDir dirMundo = localAMundo*dir;
 
-                dirMundo = normalization(dirMundo);
-                Ray rayoMundo( oMundo, dirMundo);
+                    dirMundo = normalization(dirMundo);
+                    Ray rayoMundo( oMundo, dirMundo);
 
-                std::shared_ptr<Figure> minTObject;
-                bool intersecta = scene.intersect(rayoMundo, minTObject);
-                
-                if(intersecta){
-                    color[z] = minTObject->getEmission();
-                }else{
-                    color[z] = rgb(0,0,0);
-                } 
-            }  
+                    std::shared_ptr<Figure> minTObject;
+                    DotDir interseccion;
+                    bool intersecta = scene.intersect(rayoMundo, minTObject, interseccion);
+                    
+                    if(intersecta){
+                        rgb color = minTObject->getEmission(interseccion);
+                        red += color.r;
+                        green += color.g;
+                        blue += color.b;
+                    } 
+                }  
 
-            //TO DO Sumar colores
-            // Media del antialiasing
-            float red = 0.0, green = 0.0, blue = 0.0;
-            for(int z = 0; z < antiAliasing; ++z){
-                red += color[z].r;
-                green += color[z].g;
-                blue += color[z].b;
+                red /= (float) antiAliasing;
+                green /= (float) antiAliasing;
+                blue /= (float) antiAliasing;
+                newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
             }
-
-            red /= (float) antiAliasing;
-            green /= (float) antiAliasing;
-            blue /= (float) antiAliasing;
-            newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
         }
-    }
+    } 
 }
 
 class Sensor{
@@ -98,7 +92,7 @@ class Sensor{
         }
 
         // nThreads valor mínimo 1
-        void lanzarRayos(const BoundingVolume& scene,  Image& imagen, int antiAliasing, const int nThreads = 8){
+        void lanzarRayos(const BoundingVolume &scene,  Image& imagen, int antiAliasing, const int nThreads = 1){
             
             if(planeH <= planeW){
                 pixelSize = 2 / planeH;
@@ -106,29 +100,38 @@ class Sensor{
                 pixelSize = 2 / planeW;
             }
             
-            centrarEnElPlanoW = pixelSize * planeW / 2;
-            centrarEnElPlanoH = pixelSize * planeH / 2;
-            Image newImagen("", "render", planeW, planeH, 255, 1);
-            std::vector<std::thread> th(nThreads);
-
-            auto start = chrono::steady_clock::now();
-
-            for(int i = 1; i < nThreads + 1; ++i){
-                if(i!=nThreads){
-                    th[i-1] = thread(&lanzarRayosParalelizado, std::ref(newImagen), 0, planeW, (i-1)*(planeH/nThreads),  i*(planeH/nThreads), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i-1);
-                } else {
-                    th[i-1] = thread(&lanzarRayosParalelizado, std::ref(newImagen), 0, planeW, (i-1)*(planeH/nThreads),  i*(planeH/nThreads), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo, i-1);
+            ConcurrentBoundedQueue cbq;
+            for(int i = 0; i < planeW; i = i + sizeCuadrante){
+                for(int j = 0; j < planeH; j = j + sizeCuadrante){
+                    if(i + sizeCuadrante <= planeW && j + sizeCuadrante <= planeH){
+                        cbq.enqueue(cuadrante(cuadrante(i, i + sizeCuadrante, j, j + sizeCuadrante)));
+                    } else if(i + sizeCuadrante > planeW && j + sizeCuadrante <= planeH){
+                        cbq.enqueue(cuadrante(cuadrante(i, planeW, j, j + sizeCuadrante)));
+                    } else if(i + sizeCuadrante <= planeW && j + sizeCuadrante > planeH){
+                        cbq.enqueue(cuadrante(cuadrante(i, i + sizeCuadrante, j, planeH)));
+                    } else {
+                        cbq.enqueue(cuadrante(cuadrante(i, planeW, j, planeH)));
+                    }               
                 }
             }
+
+            centrarEnElPlanoW = pixelSize * planeW / 2;
+            centrarEnElPlanoH = pixelSize * planeH / 2;
+
+            std::vector<std::thread> th(nThreads);
+            auto start = chrono::steady_clock::now();
+
+            for(int i = 0; i < nThreads; ++i){
+                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo);
+            }
             
-            for(int i = 1; i < nThreads + 1; ++i){
-                th[i-1].join();
+            for(int i = 0; i < nThreads; ++i){
+                th[i].join();
             }
 
             auto end = chrono::steady_clock::now();
             cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << endl;
 
-            imagen = newImagen;
         }
 };
 

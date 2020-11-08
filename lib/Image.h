@@ -38,12 +38,20 @@ public:
         return data[index];
     }
 
+    rgb getRGB(int h, int w){
+        return data[h*width + w];
+    }
+
     int getWidth(){
         return width;
     }
 
     std::string getCabecera(){
         return cabecera;
+    }
+
+    void setCabecera(std::string c){
+        cabecera = c;
     }
 
     int getHeight(){
@@ -168,7 +176,10 @@ void escribir(std::string nombre, Image& img, const int col_res){
 
         if(img.getCabecera() != ""){
             write += img.getCabecera() + "\n";
+        } else {
+            write += "P3\n";
         }
+
         write += "#MAX=" + std::to_string(maximo) + "\n";
         write += std::to_string(img.getWidth()) + " " + std::to_string(img.getHeight()) + "\n";
         write += std::to_string(col_res) + "\n";
@@ -264,4 +275,5 @@ void escribirbmp(std::string nombre, Image& img, const int col_res){
         f.close();
     }
 }
+
 #endif

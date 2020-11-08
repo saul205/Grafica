@@ -4,10 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "DotDir.h"
-#include "Rgb.h"
 #include "Figure.h"
-#include "BoundingBox.h"
 
 class Plane : public Figure {
     private:
@@ -35,7 +32,7 @@ class Plane : public Figure {
     
             float den = dotProduct(ray.getDir(), normal);
 
-            if(!den){
+            if(den < 10e-6 && den > -10e-6){
                 // Intersecta en el infinito
                 return false;
             }
@@ -99,6 +96,11 @@ class Plane : public Figure {
         void setNormal(DotDir _normal){
             normal = _normal;
         }
+
+        rgb getTexture(DotDir& interseccion){
+            return rgb(0,0,0);
+        };
+
 };
 
 #endif

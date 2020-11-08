@@ -3,6 +3,7 @@
 
 #include "Figure.h"
 #include <vector>
+#include <algorithm>
 
 class BoundingVolume{
     struct PrimitiveInfo{
@@ -53,7 +54,7 @@ class BoundingVolume{
 
     public:
 
-        bool intersect(Ray ray, std::shared_ptr<Figure>& figura) const {
+        bool intersect(Ray ray, std::shared_ptr<Figure>& figura, DotDir& interseccion) const {
             bool intersect = false;
             std::vector<int> nodosAVisitar;
             nodosAVisitar.push_back(0);
@@ -76,6 +77,7 @@ class BoundingVolume{
                                 if(newT < minT){
                                     minT = newT;
                                     minTObject = fig;
+                                    interseccion = point;
                                 }
                                 intersect = true;
                             }

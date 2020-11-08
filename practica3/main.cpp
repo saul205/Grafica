@@ -2,23 +2,11 @@
 #include "../lib/BoundingVolume.h"
 #include "../lib/Sensor.h"
 #include "../lib/Sphere.h"
+#include "../lib/Triangle.h"
+#include "../lib/ToneMapper.h"
 #include <memory>
 
-int main(){
-
-    float W = 1600, H = 900;
-    Image newImage;
-
-    DotDir camera[4];
-    camera[0].setDotDir(1, 0, 0, 0);
-    camera[1].setDotDir(0, 1, 0, 0);
-    camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, -10, 1);
-
-    Sensor renderer(camera[0], camera[1], camera[2], camera[3], W, H);
-
-    vector<std::shared_ptr<Figure>> figuras;
-
+void createFaceScene(std::vector<shared_ptr<Figure>>& figuras){
     std::shared_ptr<Figure> plano(new Plane(
                                     DotDir(0, 1, 0, 0),
                                     DotDir(-1, 0, -6, 0), 
@@ -26,7 +14,7 @@ int main(){
                                     30,
                                     150
                                     ));
-    plano->setRgb(rgb(255,0,0));
+    plano->setRgb(rgb(255, 0, 0));
 
     std::shared_ptr<Figure> plano2(new Plane(
                                     DotDir(0, 1, 0, 0),
@@ -112,36 +100,83 @@ int main(){
     triangle2->setRgb(rgb(255,255,255));
     figuras.push_back(triangle);
     figuras.push_back(triangle2);
-    
-    BoundingBox b = plano->getBound();
-    cout << b.getTop().toString() << endl;
-    cout << b.getBottom().toString() << endl;
-    cout << b.getCenter().toString() << endl << endl;
+}
+
+int main(){
+
+    float W = 1600, H = 900;
+    Image newImage("P3", "IMG", 1600, 900, 255, 255);
+
+    DotDir camera[4];
+    camera[0].setDotDir(1, 0, 0, 0);
+    camera[1].setDotDir(0, 1, 0, 0);
+    camera[2].setDotDir(0, 0, 1, 0);
+    camera[3].setDotDir(0, 0, -10, 1);
+
+    Sensor renderer(camera[0], camera[1], camera[2], camera[3], W, H);
+
+    /*std::string file, file2;
+    std::cout << "Introduce una imagen: " << std::endl;
+    std::cin >> file;
+    Image imagen = leer(file);
+    ToneMapper tm;
+    tm.ReinhardToneMapper(imagen);*/
+
+    vector<shared_ptr<Figure>> figuras;
+
+    std::uniform_real_distribution<float> dist(0.0, 255.0);
+    std::default_random_engine gen;
+    auto random = std::bind(dist, gen);
+
+    // Pusheo un triángulo, las cejas
+    for(int i = 0; i < 100; ++i){
+        shared_ptr<Figure> triangle(new Triangle(DotDir(-3840,2140,2000,1), DotDir(0,2140,2000,1), DotDir(-3840,0,2000,1)));
+        triangle->setRgb(rgb(random(),random(),random()));
+        figuras.push_back(triangle);
+    }
 
     
-    BoundingBox c = figuras[4]->getBound();
-    cout << c.getTop().toString() << endl;
-    cout << c.getBottom().toString() << endl;
-    cout << c.getCenter().toString() << endl << endl;
+    //    =================================================
+    //    ESCENA DE LA CARA
+    //    =============================================
 
-    cout << "Union" << Union(b,  c).getCenter().toString() << endl;
+    createFaceScene(figuras);
 
-    std::shared_ptr<Figure> plano5(new Plane(
-                                    DotDir(-1, 1, 0, 0),
-                                    DotDir(-1, -1, 0, 0), 
-                                    DotDir(-1, 1, -7, 1),
-                                    3,
-                                    3
-                                    ));
-    plano5->setRgb(rgb(100,50,100));
+    /*
+    //    ================================================
+    //    PLANOS TRIÁNGULOS
+    //    ===============================================
     
-    figuras.push_back(plano5);
-
-
-    BoundingVolume scene(figuras);
-    renderer.lanzarRayos(scene, newImage, 16, 16);
-    cout << "Escribo" << endl;
-    escribirbmp("render.bmp", newImage, 255);
+    shared_ptr<Figure> triangle = new Triangle(DotDir(-3840,2140,2000,1), DotDir(0,2140,2000,1), DotDir(-3840,0,2000,1));
+    triangle->setTexture(imagen);
+    triangle->setRgb(rgb(0,0,1.0f));
+    figuras.push_back(triangle);
     
+    shared_ptr<Figure> triangle2 = new Triangle(DotDir(0,2140,2000,1), DotDir(3800,2140,2000,1), DotDir(0,0,2000,1));
+    shared_ptr<Figure> triangle3 = new Triangle(DotDir(3800,0,2000,1), DotDir(3800,2140,2000,1), DotDir(0,0,2000,1), triangleVertexUV(1,1,1,0,0,1));
+    triangle2->setTexture(imagen);
+    triangle3->setTexture(imagen);
+    figuras.push_back(triangle2);
+    figuras.push_back(triangle3);
+
+    DotDir center(6, 0, -3, 1);
+    DotDir axis(0, 8, 0, 0);
+    DotDir city(10, 0, -3, 1);
+    
+    if(checkRadius(axis, center, city) ){
+        shared_ptr<Figure> esfera = new Sphere(center, axis, city);
+        esfera->setTexture(imagen);
+        figuras.push_back(esfera);
+    } else {
+        cout << "Error en la esfera." << endl;
+    }
+*/
+    renderer.lanzarRayos(figuras, newImage, 8, 8);
+
+    escribir("render5.ppm", newImage, 255);
+
+    //escribir("render.ppm", imagen, 255);
+
+
     return 0;
 }
