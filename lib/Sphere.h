@@ -41,7 +41,7 @@ class Sphere : public Figure{
     // en caso contrario devuelve cierto y t²|d|² + 2td*(o-c) + |o-c|² - r² = 0
     // El rayo, si normalizado, |d|² = 1, se despeja t y se guarda la solución de la ecuación
     // en t. Guarda la solución que representa el punto más cercano
-    bool instersects(Ray ray, float& t, DotDir& p) override {
+    bool intersects(Ray ray, float& t, DotDir& p) override {
         DotDir diff = ray.getOrigen() - sphereCenter;
         float modDiff = diff.mod();
         
@@ -81,7 +81,7 @@ class Sphere : public Figure{
         
     }
 
-    rgb getTexture(DotDir& interseccion){
+    rgb getTexture(const DotDir& interseccion) override {
 
       DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
       // cout << interseccionLocal.toString()<< endl;
@@ -135,7 +135,7 @@ class Sphere : public Figure{
       return sphereCity;
     }
 
-    DotDir getCenter(){
+    DotDir getCenter() override {
       return sphereCenter;
     } 
 

@@ -21,9 +21,11 @@ class Figure{
 
         Figure(){}
 
-        virtual bool instersects(Ray ray, float& t, DotDir& p) = 0;
+        virtual bool intersects(Ray ray, float& t, DotDir& p) = 0;
 
-        virtual rgb getTexture(DotDir& interseccion) = 0;
+        virtual rgb getTexture(const DotDir& interseccion) = 0;
+
+        virtual DotDir getCenter() = 0;
 
         void setRgb(rgb _color){
             emission = _color;
