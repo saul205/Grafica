@@ -53,7 +53,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     float minT = INFINITY, newT = INFINITY;
                     for(int i = 0; i < objetos.size(); i++){
                         // Si no intersecta no se modifica newT
-                        if(objetos[i]->instersects(rayoMundo, newT, inters)){
+                        if(objetos[i]->intersects(rayoMundo, newT, inters)){
                             if(newT < minT){
                                 minT = newT;
                                 minTObject = i;
@@ -91,6 +91,8 @@ class Sensor{
         Plane projectionPlane;
 
     public:
+
+        Sensor(){}
 
         Sensor(DotDir _l, DotDir _u, DotDir _f, DotDir _o, float planeWidth, float planeHeight) :
                 lMundo(_l), uMundo(_u), fMundo(_f), oMundo(_o), planeW(planeWidth), planeH(planeHeight) {

@@ -125,6 +125,7 @@ class ToneMapper{
         return expf(suma / ((float) data.size()));
     }
 
+
     float applyReinhard(std::vector<lab>& data, const float a, const float delta){
 
         float lw = averageReinhardLab(data, delta);
