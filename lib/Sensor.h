@@ -65,7 +65,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
             }
         }
     }
-    cout << "Intersecciones: " << intersecciones << endl;
+    //cout << "Intersecciones: " << intersecciones << endl;
 }
 
 class Sensor{

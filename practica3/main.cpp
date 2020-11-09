@@ -22,6 +22,23 @@ void createFaceScene(Scene &escena){
     escena.addTriangle(DotDir(0.1,0.5,-8,1), DotDir(0.7,1.2,-8,1), DotDir(0.8,0.9,-8,1), rgb(255,255,255));
 }
 
+void createSphereScene(Scene& escena){
+    escena.addPlane(DotDir(0, 0, 1, 0), DotDir(1, 0, 0, 0), DotDir(0, -0.5, 20, 0), 100, 100, rgb(255, 153, 255));
+    
+    std::uniform_real_distribution<float> dist(0.0, 255.0);
+    std::default_random_engine gen;
+    auto random = std::bind(dist, gen);
+    int n = 10;
+    int d = 5;
+    for(int j = -n * d; j < n * d; j += 5){
+        float h = 0;
+        for(int i = 1; i < 10; ++i){
+            escena.addSphere(DotDir(j,-0.5 + i / 2.0f,h,1), DotDir(0,i,0,0), DotDir(j + i / 2.0f,-0.5 + i / 2.0f,h,1), rgb(random(), random(), random()));
+            h += i + 0.5; 
+        }
+    }
+}
+
 int main(){
 
     float W = 1600, H = 900;
@@ -30,7 +47,7 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, -10, 1);
+    camera[3].setDotDir(0, 5, -7, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
 
@@ -49,6 +66,8 @@ int main(){
     //    =============================================
 
     //createFaceScene(scene);
+
+    createSphereScene(scene);
 
     /*
     //    ================================================
@@ -80,7 +99,7 @@ int main(){
     }
 */
     // 2000 X 2000 PLANO DE TRIANGULOS
-    std::uniform_real_distribution<float> dist(0.0, 255.0);
+    /*std::uniform_real_distribution<float> dist(0.0, 255.0);
     std::default_random_engine gen;
     auto random = std::bind(dist, gen);
 
@@ -90,9 +109,9 @@ int main(){
             scene.addTriangle(DotDir(i, j, 10, 1), DotDir(i + 1, j, 10, 1), DotDir(i, j - 1, 10, 1), rgb(random(), random(), random()));
             scene.addTriangle(DotDir(i + 1, j - 1, 10, 1), DotDir(i + 1, j, 10, 1), DotDir(i, j - 1, 10, 1), rgb(random(), random(), random()));
         }
-    }
+    }*/
 
-    scene.render("render", 1, 1);
+    scene.render("render", 8, 16);
 
     //escribir("render.ppm", imagen, 255);
 
