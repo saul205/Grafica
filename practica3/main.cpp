@@ -24,19 +24,23 @@ void createFaceScene(Scene &escena){
 
 void createSphereScene(Scene& escena){
     escena.addPlane(DotDir(0, 0, 1, 0), DotDir(1, 0, 0, 0), DotDir(0, -0.5, 20, 0), 100, 100, rgb(255, 153, 255));
+    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(1, 0, 0, 0), DotDir(0, 100, 100, 0), 10000, 10000, rgb(51, 255, 255));
     
     std::uniform_real_distribution<float> dist(0.0, 255.0);
     std::default_random_engine gen;
     auto random = std::bind(dist, gen);
     int n = 10;
     int d = 5;
-    for(int j = -n * d; j < n * d; j += 5){
-        float h = 0;
-        for(int i = 1; i < 10; ++i){
-            escena.addSphere(DotDir(j,-0.5 + i / 2.0f,h,1), DotDir(0,i,0,0), DotDir(j + i / 2.0f,-0.5 + i / 2.0f,h,1), rgb(random(), random(), random()));
-            h += i + 0.5; 
-        }
+    for(int y = 0; y < 10; y++){
+       for(int j = -n * d; j < n * d; j += 5){
+            float h = 0;
+            for(int i = 1; i < 10; ++i){
+                escena.addSphere(DotDir(j,y * 5,h,1), DotDir(0,i,0,0), DotDir(j + i / 2.0f,y * 5,h,1), rgb(random(), random(), random()));
+                h += i + 0.5; 
+            }
+        } 
     }
+    
 }
 
 int main(){
@@ -47,7 +51,7 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 5, -7, 1);
+    camera[3].setDotDir(0, 25, -7, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
 
