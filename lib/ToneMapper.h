@@ -109,27 +109,28 @@ class ToneMapper{
         }
     }
 
-    void ReinhardToneMapper(Image& img, const float a = 0.12f, const float delta = 0.18){
+    void ReinhardToneMapper(Image& img, const float a = 1.5f, const float delta = 0.18f){
         std::vector<lab> data;
         RGBToLab(img, data);
         applyReinhard(data, a, delta);
         LabToRGB(img, data);
     }
 
-    float averageReinhardLab(std::vector<lab> data, const float delta){
+    float averageReinhardLab(std::vector<lab>& data, const float delta){
 
         float suma = 0.0f;
         for(unsigned int i = 0; i < data.size(); ++i){
-            suma = suma + log(delta + data[i].l);
+            suma = suma + logf(delta + data[i].l);
         }
-        return exp(suma) / ((float) data.size());
+        return expf(suma / ((float) data.size()));
     }
 
-    void applyReinhard(std::vector<lab> data, const float a, const float delta){
+
+    float applyReinhard(std::vector<lab>& data, const float a, const float delta){
 
         float lw = averageReinhardLab(data, delta);
         for(unsigned int i = 0; i < data.size(); ++i){
-            data[i].l = data[i].l * a / lw;
+            data[i].l = (data[i].l * a) / lw;
         }
 
         float lWhite = -1.0f;
@@ -138,8 +139,9 @@ class ToneMapper{
                 lWhite = data[i].l;
             }
         }
+
         for(unsigned int i = 0; i < data.size(); ++i){
-            data[i].l = (data[i].l * (1.0f + (data[i].l / pow(lWhite,2.0f))))/ (data[i].l + 1.0f);
+            data[i].l = (data[i].l * (1.0f + (data[i].l / pow(lWhite,2.0f)))) / (data[i].l + 1.0f);
         }
     }
 

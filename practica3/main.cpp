@@ -52,6 +52,18 @@ int main(){
     camera[2].setDotDir(0, 0, 1, 0);
     camera[3].setDotDir(0, 25, -7, 1);
 
+    Sensor renderer(camera[0], camera[1], camera[2], camera[3], W, H);
+
+    std::string file, file2;
+    std::cout << "Introduce una imagen: " << std::endl;
+    std::cin >> file;
+    Image imagen = leer(file);
+    ToneMapper tm;
+        escribir("reinhard1.ppm", imagen, 255);
+    tm.ReinhardToneMapper(imagen);
+        escribir("reinhard2.ppm", imagen, 255);
+
+    vector<Figure*> figuras;
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
 
     /*std::uniform_real_distribution<float> dist(0.0, 255.0);
@@ -115,9 +127,6 @@ int main(){
     }*/
 
     scene.render("render", 8, 1);
-
-    //escribir("render.ppm", imagen, 255);
-
 
     return 0;
 }
