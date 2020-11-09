@@ -111,7 +111,7 @@ int main(){
         }
     }*/
 
-    scene.render("render", 8, 16);
+    scene.render("render", 8, 1);
 
     //escribir("render.ppm", imagen, 255);
 
