@@ -3,6 +3,7 @@
 
 #include "../lib/BoundingVolume.h"
 #include "../lib/Sensor.h"
+#include "../lib/Plane.h"
 #include "../lib/Sphere.h"
 #include "../lib/Triangle.h"
 #include "../lib/ToneMapper.h"
@@ -44,6 +45,7 @@ class Scene{
                                     height,
                                     width
                                     ));
+                                    
             plano->setTexture(textura);
             figuras.push_back(plano);
             return figuras.size() - 1;
@@ -54,7 +56,6 @@ class Scene{
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setRgb(color);
                 figuras.push_back(esfera);
-
                 return figuras.size() - 1;
             } else {
                 cout << "Error en la esfera." << endl;
@@ -67,7 +68,6 @@ class Scene{
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setTexture(textura);
                 figuras.push_back(esfera);
-
                 return figuras.size() - 1;
             } else {
                 cout << "Error en la esfera." << endl;
@@ -87,7 +87,6 @@ class Scene{
             std::shared_ptr<Figure> triangle(new Triangle(v1, v2, v3));
             triangle->setTexture(textura);
             figuras.push_back(triangle);
-
             return figuras.size() - 1;
         }
 

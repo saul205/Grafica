@@ -97,8 +97,8 @@ class Plane : public Figure {
         void setNormal(DotDir _normal){
             normal = _normal;
         }
-
-        rgb getTexture(const DotDir& interseccion){
+  
+        rgb getTexture(const DotDir& interseccion) override {
 
             DotDir v = interseccion - center;
             

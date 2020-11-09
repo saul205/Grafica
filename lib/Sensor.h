@@ -24,7 +24,6 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
     auto random = std::bind(dist, gen);
     DotDir planePoint, dir;
     cuadrante limites; 
-    
     float intersecciones = 0;
     while(cbq.dequeue(limites)){
 
@@ -45,7 +44,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                     dirMundo = normalization(dirMundo);
                     Ray rayoMundo( oMundo, dirMundo);
-
+                  
                     std::shared_ptr<Figure> minTObject;
                     DotDir interseccion;
                     bool intersecta = scene.intersect(rayoMundo, minTObject, interseccion, intersecciones);
@@ -80,7 +79,7 @@ class Sensor{
 
     public:
 
-        Sensor(){};
+        Sensor(){}
 
         Sensor(DotDir _l, DotDir _u, DotDir _f, DotDir _o, float planeWidth, float planeHeight) :
                 lMundo(_l), uMundo(_u), fMundo(_f), oMundo(_o), planeW(planeWidth), planeH(planeHeight) {

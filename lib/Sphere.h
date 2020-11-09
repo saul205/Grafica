@@ -81,7 +81,7 @@ class Sphere : public Figure{
         
     }
 
-    rgb getTexture(const DotDir& interseccion){
+    rgb getTexture(const DotDir& interseccion) override {
 
       DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
       // cout << interseccionLocal.toString()<< endl;

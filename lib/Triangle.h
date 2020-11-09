@@ -111,9 +111,18 @@ class Triangle : public Figure {
                 return false;
             }
         }
+
+        DotDir getCenter() override {
+            return DotDir(
+                (v1.getX() + v2.getX() + v0.getX()) / 3,
+                (v1.getY() + v2.getY() + v0.getY()) / 3,
+                (v1.getZ() + v2.getZ() + v0.getZ()) / 3,
+                1
+            );
+        }
         
         // INtersection DEBE intersectar al triángulo
-        rgb getTexture(const DotDir& p){
+        rgb getTexture(const DotDir& p) override {
 
             // Primero de los triángulos v0v1v2
             DotDir abc = crossProduct(v0v1,v0v2); 
@@ -143,7 +152,7 @@ class Triangle : public Figure {
             
             return dev;
 
-        };
+        }
 
         DotDir getCenter() override {
             return DotDir(

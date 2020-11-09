@@ -40,7 +40,6 @@ void createSphereScene(Scene& escena){
             }
         } 
     }
-    
 }
 
 int main(){
@@ -116,9 +115,6 @@ int main(){
     }*/
 
     scene.render("render", 8, 1);
-
-    //escribir("render.ppm", imagen, 255);
-
 
     return 0;
 }

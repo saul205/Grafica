@@ -24,8 +24,6 @@ class Figure {
         virtual bool intersects(Ray ray, float& t, DotDir& p) = 0;
         virtual DotDir getCenter() = 0;
         virtual BoundingBox getBound() = 0;
-        
-
         virtual rgb getTexture(const DotDir& interseccion) = 0;
 
         void setRgb(rgb _color){
