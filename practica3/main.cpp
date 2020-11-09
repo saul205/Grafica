@@ -50,9 +50,19 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 25, -7, 1);
+    camera[3].setDotDir(0, 0, -10, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
+/*
+    std::string file;
+    std::cout << "Introduce una imagen: " << std::endl;
+    std::cin >> file;
+    Image imagen = leer(file);
+    ToneMapper tm;
+        escribir("reinhard1.ppm", imagen, 255);
+    tm.ReinhardToneMapper(imagen);
+        escribir("reinhard2.ppm", imagen, 255);
+*/
 
     /*std::uniform_real_distribution<float> dist(0.0, 255.0);
     std::default_random_engine gen;
@@ -68,9 +78,9 @@ int main(){
     //    ESCENA DE LA CARA
     //    =============================================
 
-    //createFaceScene(scene);
+    createFaceScene(scene);
 
-    createSphereScene(scene);
+    //createSphereScene(scene);
 
     /*
     //    ================================================
@@ -114,7 +124,7 @@ int main(){
         }
     }*/
 
-    scene.render("render", 8, 1);
+    scene.render("render", 8, 16);
 
     return 0;
 }

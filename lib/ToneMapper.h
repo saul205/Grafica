@@ -4,7 +4,7 @@
 #include "Transformation.h"
 #include "math.h"
 #include "Image.h"
-//#include "Lab.h"
+#include "Lab.h"
 
 class ToneMapper{
   
@@ -127,7 +127,7 @@ class ToneMapper{
     }
 
 
-    float applyReinhard(std::vector<lab>& data, const float a, const float delta){
+    void applyReinhard(std::vector<lab>& data, const float a, const float delta){
 
         float lw = averageReinhardLab(data, delta);
         for(unsigned int i = 0; i < data.size(); ++i){
