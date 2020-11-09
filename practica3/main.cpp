@@ -22,7 +22,9 @@ int main(){
     std::cin >> file;
     Image imagen = leer(file);
     ToneMapper tm;
+        escribir("reinhard1.ppm", imagen, 255);
     tm.ReinhardToneMapper(imagen);
+        escribir("reinhard2.ppm", imagen, 255);
 
     /*vector<Figure*> figuras;
 
@@ -152,7 +154,6 @@ int main(){
         delete i;
     }*/
 
-    escribirbmp("reinhard.bmp", imagen, 255);
 
 
     return 0;
