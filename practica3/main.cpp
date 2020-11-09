@@ -3,9 +3,17 @@
 #include "../lib/Scene.h"
 
 void createFaceScene(Scene &escena){
-    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(-1, 0, -6, 0),   DotDir(-20, 5, 0, 1),   30, 150,    rgb(255, 0, 0));
-    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(-1, 0, 6, 0),    DotDir(20, 5, 0, 1),    30, 150,    rgb(0,255,0));
-    escena.addPlane(DotDir(0, 0, 1, 0), DotDir(1, 0, 0, 0),     DotDir(0, -3, 0, 1),    20, 20,     rgb(0,0,255));
+    for(int j = 0; j < 10; j++){
+        for(int i = 0; i < 10; i++){
+            escena.addPlane(DotDir(0, 0, 1, 0), DotDir(1, 0, 0, 0), DotDir(-10 + .5 + i * 2, -3, -.5 - j, 1), 1, 1, rgb(255 * (j % 2), 255 * (j % 2), 255));
+            escena.addPlane(DotDir(0, 0, 1, 0), DotDir(1, 0, 0, 0), DotDir(-10 + 1.5 + i * 2, -3, -.5 - j, 1), 1, 1, rgb(255 * ((j + 1) % 2),255 * ((j + 1) % 2),255));
+        }
+    }
+
+    escena.addPlane(DotDir(0,1,0,0), DotDir(1, 0, 0, 0), DotDir(0, 9, -0.00001, 1), 2, 2, rgb());
+    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(0, 0, 1, 0),   DotDir(-10, 4, 0, 1),   14, 10,    rgb(255, 0, 0));
+    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(0, 0, 1, 0),    DotDir(10, 4, 0, 1),    14, 10,    rgb(0,255,0));
+    //escena.addPlane(DotDir(0, 0, 1, 0), DotDir(1, 0, 0, 0),     DotDir(0, -3, 0, 1),    20, 20,     rgb(0,0,255));
     //escena.addPlane(DotDir(0, 1, 0, 0), DotDir(1, 0, 0, 0),     DotDir(0, 0, 0, 1),     20, 20,     rgb(124,50,255));
     Image imagen = leer("../practica2/imagenes/seymour_park/seymour_park.ppm");
     ToneMapper tm;
@@ -40,6 +48,12 @@ void createSphereScene(Scene& escena){
             }
         } 
     }
+}
+
+void escenaComprobacion(Scene& escena){
+    escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0, 5, 0, 1), 10, 20, rgb(0, 0, 255));
+    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(-1, 0, -6, 0),   DotDir(-20, 5, 0, 1),   30, 10,    rgb(255, 0, 0));
+    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(-1, 0, 6, 0),    DotDir(20, 5, 0, 1),    30, 10,    rgb(0,255,0));
 }
 
 int main(){
@@ -81,6 +95,8 @@ int main(){
     createFaceScene(scene);
 
     //createSphereScene(scene);
+
+    //escenaComprobacion(scene);
 
     /*
     //    ================================================

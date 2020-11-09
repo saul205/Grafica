@@ -23,7 +23,7 @@ class Plane : public Figure {
             v1 = _v1;
             v2 = _v2;
             center = _center;
-            normal = crossProduct(v1, v2);
+            normal = crossProduct(v2, v1);
             v2n = normalization(v2);
             v1n = normalization(v1);
         }
@@ -52,10 +52,10 @@ class Plane : public Figure {
 
             DotDir v = p - center;
             
-            float p1 = dotProduct(v, v2);
-            float p2 = dotProduct(v, v1);
+            float p1 = dotProduct(v, v2n);
+            float p2 = dotProduct(v, v1n);
 
-            if(p1 > - width / 2 && p1 < width / 2 && p2 > - height / 2 && p2 < height / 2){
+            if(p1 > - width / 2.0f && p1 < width / 2.0f && p2 > - height / 2.0f && p2 < height / 2.0f){
                 return true;
             }
 
