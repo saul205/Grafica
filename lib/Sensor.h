@@ -1,12 +1,10 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include "DotDir.h"
 #include "ConcurrentBoundedQueue.h"
 #include "Transformation.h"
 #include "Plane.h"
 #include "Ray.h"
-#include "Triangle.h"
 #include "Image.h"
 #include "LightSource.h"
 #include <memory>
@@ -17,18 +15,15 @@
 
 const int sizeCuadrante = 30;
 
-void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, vector<Figure*> const objetos, 
+void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, 
                         const float pixelSize, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, DotDir oLocal,
                         DotDir oMundo, Transformation localAMundo){
 
     std::uniform_real_distribution<float> dist(0.0, pixelSize);
     std::default_random_engine gen;
     auto random = std::bind(dist, gen);
-
-    int minTObject = -1;
     DotDir planePoint, dir;
     cuadrante limites; 
-
     float intersecciones = 0;
     while(cbq.dequeue(limites)){
 
@@ -49,28 +44,17 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                     dirMundo = normalization(dirMundo);
                     Ray rayoMundo( oMundo, dirMundo);
-
-                    DotDir inters, interseccion;
-                    float minT = INFINITY, newT = INFINITY;
-                    for(int i = 0; i < objetos.size(); i++){
-                        // Si no intersecta no se modifica newT
-                        intersecciones ++;
-                        if(objetos[i]->intersects(rayoMundo, newT, inters)){
-                            if(newT < minT){
-                                minT = newT;
-                                minTObject = i;
-                                interseccion = inters;
-                            }
-                        }
-                    }
-                
-                    if(minTObject >= 0){
-                        rgb color = objetos[minTObject]->getEmission(interseccion);
+                  
+                    std::shared_ptr<Figure> minTObject;
+                    DotDir interseccion;
+                    bool intersecta = scene.intersect(rayoMundo, minTObject, interseccion, intersecciones);
+                    
+                    if(intersecta){
+                        rgb color = minTObject->getEmission(interseccion);
                         red += color.r;
                         green += color.g;
                         blue += color.b;
-                        minTObject = -1;
-                    }
+                    } 
                 }  
 
                 red /= (float) antiAliasing;
@@ -111,7 +95,7 @@ class Sensor{
         }
 
         // nThreads valor mínimo 1
-        void lanzarRayos(vector<Figure*> objetos,  Image& imagen, int antiAliasing, const int nThreads = 1){
+        void lanzarRayos(const BoundingVolume &scene,  Image& imagen, int antiAliasing, const int nThreads = 1){
             
             if(planeH <= planeW){
                 pixelSize = 2 / planeH;
@@ -141,7 +125,7 @@ class Sensor{
             auto start = chrono::steady_clock::now();
 
             for(int i = 0; i < nThreads; ++i){
-                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, objetos, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo);
+                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo);
             }
             
             for(int i = 0; i < nThreads; ++i){

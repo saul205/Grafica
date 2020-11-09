@@ -1,6 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "../lib/BoundingVolume.h"
 #include "../lib/Sensor.h"
 #include "../lib/Plane.h"
 #include "../lib/Sphere.h"
@@ -13,7 +14,7 @@ class Scene{
         Sensor renderer;
         float color_res;
 
-        std::vector<Figure*> figuras;
+        std::vector<shared_ptr<Figure>> figuras;
 
     public:
 
@@ -22,15 +23,9 @@ class Scene{
             renderer = Sensor(c1, c2, c3, c4, width, height);
             color_res = col_res;
         }
-        
-        ~Scene(){
-            for(Figure* f : figuras){
-                free(f);
-            }
-        }
 
         int addPlane(DotDir vHeight, DotDir vWidth, DotDir center, float height, float width, rgb color){
-            Figure*  plano(new Plane(
+            std::shared_ptr<Figure> plano(new Plane(
                                     vHeight,
                                     vWidth, 
                                     center,
@@ -43,13 +38,14 @@ class Scene{
         }
 
         int addPlane(DotDir vHeight, DotDir vWidth, DotDir center, float height, float width, const Image& textura){
-            Figure*  plano = new Plane(
+            std::shared_ptr<Figure> plano(new Plane(
                                     vHeight,
                                     vWidth, 
                                     center,
                                     height,
                                     width
-                                    );
+                                    ));
+                                    
             plano->setTexture(textura);
             figuras.push_back(plano);
             return figuras.size() - 1;
@@ -57,10 +53,9 @@ class Scene{
 
         int addSphere(DotDir c, DotDir axe, DotDir reference, rgb color){
             if(checkRadius(axe, c, reference) ){
-                Figure*  esfera = new Sphere(c, axe, reference);
+                std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setRgb(color);
                 figuras.push_back(esfera);
-
                 return figuras.size() - 1;
             } else {
                 cout << "Error en la esfera." << endl;
@@ -70,10 +65,9 @@ class Scene{
 
         int addSphere(DotDir c, DotDir axe, DotDir reference, const Image& textura){
             if(checkRadius(c, axe, reference) ){
-                Figure*  esfera = new Sphere(c, axe, reference);
+                std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setTexture(textura);
                 figuras.push_back(esfera);
-
                 return figuras.size() - 1;
             } else {
                 cout << "Error en la esfera." << endl;
@@ -82,7 +76,7 @@ class Scene{
         }
 
         int addTriangle(DotDir v1, DotDir v2, DotDir v3, rgb color){
-            Figure*  triangle = new Triangle(v1, v2, v3);
+            std::shared_ptr<Figure> triangle(new Triangle(v1, v2, v3));
             triangle->setRgb(color);
             figuras.push_back(triangle);
 
@@ -90,16 +84,17 @@ class Scene{
         }
 
         int addTriangle(DotDir v1, DotDir v2, DotDir v3, const Image& textura){
-            Figure*  triangle = new Triangle(v1, v2, v3);
+            std::shared_ptr<Figure> triangle(new Triangle(v1, v2, v3));
             triangle->setTexture(textura);
             figuras.push_back(triangle);
-
             return figuras.size() - 1;
         }
 
         void render(string output, int AA, int hilos = 1, int mode = 1){
+            BoundingVolume bv(figuras);
             cout << "N Figuras: " << figuras.size() << endl;
-            renderer.lanzarRayos(figuras, imagen, AA, hilos);
+            cout << "N Nodos: " << bv.getSize() << endl;
+            renderer.lanzarRayos(bv, imagen, AA, hilos);
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);
             }else{

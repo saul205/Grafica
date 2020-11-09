@@ -1,5 +1,5 @@
-#ifndef CBQ
-#define CBQ
+#ifndef CONCURRENTBOUNDEDQUEUE_H
+#define CONCURRENTBOUNDEDQUEUE_H
 
 #include <mutex>
 #include <queue>

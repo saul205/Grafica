@@ -1,7 +1,6 @@
 #ifndef LAB_H
 #define LAB_H
 
-#include "Rgb.h"
 #include "Image.h"
 
 struct lab{

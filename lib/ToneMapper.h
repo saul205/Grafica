@@ -4,7 +4,7 @@
 #include "Transformation.h"
 #include "math.h"
 #include "Image.h"
-#include "Lab.h"
+//#include "Lab.h"
 
 class ToneMapper{
   
@@ -108,6 +108,7 @@ class ToneMapper{
             }
         }
     }
+
 
     void ReinhardToneMapper(Image& img, const float a = 1.5f, const float delta = 0.18f){
         std::vector<lab> data;

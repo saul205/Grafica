@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "DotDir.h"
-#include "Rgb.h"
 #include "Figure.h"
 
 class Plane : public Figure {
@@ -64,6 +62,26 @@ class Plane : public Figure {
             return false;
         }
 
+        BoundingBox getBound() override {
+            DotDir x = center + (width / 2 * v2n) + (height / 2 * v1n);
+            DotDir y = center - (height / 2 * v1n) + (width / 2 * v2n);
+            DotDir x2 = center - (width / 2 * v2n) - (height / 2 * v1n);
+            DotDir y2 = center - (width / 2 * v2n) + (height / 2 * v1n);
+
+            float maxX = max( max(x.getX(), y.getX()), max(x2.getX(), y2.getX()));
+            float maxY = max( max(x.getY(), y.getY()), max(x2.getY(), y2.getY()));
+            float maxZ = max( max(x.getZ(), y.getZ()), max(x2.getZ(), y2.getZ()));
+
+            float minX = min( min(x.getX(), y.getX()), min(x2.getX(), y2.getX()));
+            float minY = min( min(x.getY(), y.getY()), min(x2.getY(), y2.getY()));
+            float minZ = min( min(x.getZ(), y.getZ()), min(x2.getZ(), y2.getZ()));
+
+            return BoundingBox(
+                DotDir(maxX, maxY, maxZ, 1),
+                DotDir(minX, minY, minZ, 1)
+                );
+        }
+
         //--------------------GETTERS-------------------------
 
         DotDir getNormal(){
@@ -79,7 +97,7 @@ class Plane : public Figure {
         void setNormal(DotDir _normal){
             normal = _normal;
         }
-
+  
         rgb getTexture(const DotDir& interseccion) override {
 
             DotDir v = interseccion - center;

@@ -2,10 +2,11 @@
 #define FIGURE_H
 
 #include "Ray.h"
-#include "Rgb.h"
+#include "DotDir.h"
+#include "BoundingBox.h"
 #include "Image.h"
 
-class Figure{
+class Figure {
     private:
 
         rgb emission;
@@ -18,14 +19,12 @@ class Figure{
         int col_res = 255;
 
     public:
-
         Figure(){}
-
+        
         virtual bool intersects(Ray ray, float& t, DotDir& p) = 0;
-
-        virtual rgb getTexture(const DotDir& interseccion) = 0;
-
         virtual DotDir getCenter() = 0;
+        virtual BoundingBox getBound() = 0;
+        virtual rgb getTexture(const DotDir& interseccion) = 0;
 
         void setRgb(rgb _color){
             emission = _color;

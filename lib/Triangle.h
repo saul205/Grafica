@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "DotDir.h"
-#include "Rgb.h"
 #include "Figure.h"
 
 struct triangleVertexUV{
@@ -154,6 +152,31 @@ class Triangle : public Figure {
             
             return dev;
 
+        }
+
+        DotDir getCenter() override {
+            return DotDir(
+                (v1.getX() + v2.getX() + v0.getX()) / 3,
+                (v1.getY() + v2.getY() + v0.getY()) / 3,
+                (v1.getZ() + v2.getZ() + v0.getZ()) / 3,
+                1
+            );
+        }
+
+        BoundingBox getBound() override {
+
+            float maxX = max( max(v0.getX(), v1.getX()), v2.getX());
+            float maxY = max( max(v0.getY(), v1.getY()), v2.getY());
+            float maxZ = max( max(v0.getZ(), v1.getZ()), v2.getZ());
+
+            float minX = min( min(v0.getX(), v1.getX()), v2.getX());
+            float minY = min( min(v0.getY(), v1.getY()), v2.getY());
+            float minZ = min( min(v0.getZ(), v1.getZ()), v2.getZ());
+
+            return BoundingBox( 
+                DotDir(maxX, maxY, maxZ, 1),
+                DotDir(minX, minY, minZ, 1)
+                );
         }
 
 };
