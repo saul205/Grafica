@@ -51,20 +51,20 @@ void createSphereScene(Scene& escena){
 }
 
 void escenaComprobacion(Scene& escena){
-    escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0, 5, 0, 1), 10, 20, rgb(0, 0, 255));
-    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(-1, 0, -6, 0),   DotDir(-20, 5, 0, 1),   30, 10,    rgb(255, 0, 0));
-    escena.addPlane(DotDir(0, 1, 0, 0), DotDir(-1, 0, 6, 0),    DotDir(20, 5, 0, 1),    30, 10,    rgb(0,255,0));
+    escena.addTriangle(DotDir(0.934172, 0.356822, 0, 1), DotDir(0.934172, -0.356822, 0, 1), DotDir(0.57735, -0.57735, 0.57735, 1), rgb(255, 0, 0));
+    escena.addTriangle(DotDir(0.57735, 0.57735, 0.57735, 1), DotDir(0.356822, 0, 0.934172, 1), DotDir(0.57735, -0.57735, 0.57735, 1), rgb(255, 255, 0));
+    escena.addTriangle(DotDir(0.934172, 0.356822, 0, 1), DotDir(0.57735, 0.57735, 0.57735, 1), DotDir(0.57735, -0.57735, 0.57735, 1), rgb(255, 255, 255));
 }
 
 int main(){
 
-    float W = 1600, H = 900;
+    float W = 1500, H = 1500;
 
     DotDir camera[4];
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, -10, 1);
+    camera[3].setDotDir(0, 0, -0.2, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
 /*
@@ -92,7 +92,7 @@ int main(){
     //    ESCENA DE LA CARA
     //    =============================================
 
-    createFaceScene(scene);
+    //createFaceScene(scene);
 
     //createSphereScene(scene);
 
@@ -140,6 +140,9 @@ int main(){
         }
     }*/
 
+    TriangleMesh t;
+    t.read("canstick.ply");
+    scene.addTriangleMesh(t);
     scene.render("render", 8, 16);
 
     return 0;

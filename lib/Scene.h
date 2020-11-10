@@ -7,8 +7,9 @@
 #include "../lib/Sphere.h"
 #include "../lib/Triangle.h"
 #include "../lib/ToneMapper.h"
+#include "TriangleMesh.h"
 
-class Scene{
+class Scene {
     private:
         Image imagen;
         Sensor renderer;
@@ -99,6 +100,15 @@ class Scene{
                 escribir(output + ".ppm", imagen, color_res);
             }else{
                 escribirbmp(output + ".bmp", imagen, color_res);
+            }
+        }
+
+        void addTriangleMesh(TriangleMesh t){
+            int size = t.getSize();
+            for(float i = 0; i < size; i++){
+                Triangle tri = t[i];
+                tri.setRgb(rgb(i, i, i) / size * 255);
+                figuras.push_back(std::make_shared<Triangle>(tri));
             }
         }
 };
