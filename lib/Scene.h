@@ -108,8 +108,13 @@ class Scene {
             for(float i = 0; i < size; i++){
                 Triangle tri = t[i];
                 tri.setRgb(rgb(i, i, i) / size * 255);
+                //tri.setRgb(rgb(255, 255, 255));
                 figuras.push_back(std::make_shared<Triangle>(tri));
             }
+        }
+
+        std::shared_ptr<Figure> getFigure(int n){
+            return figuras[n];
         }
 };
 

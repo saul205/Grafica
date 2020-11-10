@@ -170,6 +170,15 @@ class Triangle : public Figure {
                 );
         }
 
+        void transform(Transformation t) override {
+            v0 = t * v0;
+            v1 = t * v1;
+            v2 = t * v2;
+
+            v0v1 = v1 - v0;
+            v0v2 = v2 - v0;
+        }
+
 };
 
 #endif

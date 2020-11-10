@@ -51,9 +51,11 @@ void createSphereScene(Scene& escena){
 }
 
 void escenaComprobacion(Scene& escena){
-    escena.addTriangle(DotDir(0.934172, 0.356822, 0, 1), DotDir(0.934172, -0.356822, 0, 1), DotDir(0.57735, -0.57735, 0.57735, 1), rgb(255, 0, 0));
-    escena.addTriangle(DotDir(0.57735, 0.57735, 0.57735, 1), DotDir(0.356822, 0, 0.934172, 1), DotDir(0.57735, -0.57735, 0.57735, 1), rgb(255, 255, 0));
-    escena.addTriangle(DotDir(0.934172, 0.356822, 0, 1), DotDir(0.57735, 0.57735, 0.57735, 1), DotDir(0.57735, -0.57735, 0.57735, 1), rgb(255, 255, 255));
+    int t = escena.addTriangle(DotDir(0, 0, 0, 1), DotDir(2, 0, 0, 1), DotDir(2,2, 0, 1), rgb(255, 0, 0));
+    std::shared_ptr<Figure> triangulo = escena.getFigure(t);
+    Transformation tr;
+    tr.scale(2, 2, 2);
+    triangulo->transform(tr);
 }
 
 int main(){
@@ -64,7 +66,7 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, -0.2, 1);
+    camera[3].setDotDir(0, 0, -2, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
 /*
@@ -142,8 +144,10 @@ int main(){
 
     TriangleMesh t;
     t.read("canstick.ply");
+    t.scale(2, 2, 2);
+    //t.move(DotDir(1, 0 , 0, 1));
     scene.addTriangleMesh(t);
-    scene.render("render", 8, 16);
+    scene.render("render", 16, 16);
 
     return 0;
 }

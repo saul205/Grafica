@@ -5,6 +5,7 @@
 #include "DotDir.h"
 #include "BoundingBox.h"
 #include "Image.h"
+#include "Transformation.h"
 
 class Figure {
     private:
@@ -25,6 +26,10 @@ class Figure {
         virtual DotDir getCenter() = 0;
         virtual BoundingBox getBound() = 0;
         virtual rgb getTexture(const DotDir& interseccion) = 0;
+        
+        virtual void transform(Transformation t){
+            cout << "jaja" << endl;
+        };
 
         void setRgb(rgb _color){
             emission = _color;

@@ -6,6 +6,7 @@
 #include <vector>
 #include "Triangle.h"
 #include <iostream>
+#include "Transformation.h"
 
 class TriangleMesh{
 
@@ -13,6 +14,12 @@ class TriangleMesh{
 
         std::vector<Triangle> triangulos;
         DotDir center, top, bottom;
+
+        void transform(Transformation t){
+            for(Triangle& tri : triangulos){
+                tri.transform(t);
+            }
+        }
 
     public:
 
@@ -66,10 +73,24 @@ class TriangleMesh{
 
             std::vector<DotDir> puntos(vertex);
             float x, y, z;
+            float minX = INFINITY, minY = INFINITY, minZ = INFINITY;
+            float maxX = -INFINITY, maxY = -INFINITY, maxZ = -INFINITY;
             for(int i = 0; i < vertex; i++){
                 reader >> x >> y >> z;
+
+                minX = std::min(minX, x);
+                minY = std::min(minY, y);
+                minZ = std::min(minZ, z);
+                maxX = std::max(maxX, x);
+                maxY = std::max(maxY, y);
+                maxZ = std::max(maxZ, z);
+
                 puntos[i] = DotDir(x, y, z, 1);
             }
+
+            top = DotDir(maxX, maxY, maxZ, 1);
+            bottom = DotDir(minX, minY, minZ, 1);
+            center = bottom + 0.5f * (top - bottom);
 
             int nVertices;
             for(int i = 0; i < faces; i++){
@@ -90,6 +111,24 @@ class TriangleMesh{
 
         float getSize() const {
             return triangulos.size();
+        }
+
+        void move(DotDir newCenter){
+            DotDir d = newCenter - center;
+
+            Transformation t;
+            t.translation(d[0], d[1], d[2]);
+
+            transform(t);
+        }
+
+        void scale(float x, float y, float z){
+            Transformation t;
+            t.scale(x, y, z);
+
+            cout << t.toString() << endl;
+
+            transform(t);
         }
 };
 
