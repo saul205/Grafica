@@ -126,7 +126,7 @@ class TriangleMesh{
             Transformation t;
             t.scale(x, y, z);
 
-            cout << t.toString() << endl;
+            // cout << t.toString() << endl;
 
             transform(t);
         }
