@@ -58,6 +58,10 @@ void escenaComprobacion(Scene& escena){
     triangulo->transform(tr);
 }
 
+void cornellBox(Scene& escena){
+    escena.addPlane(DotDir(0,1,0,0), DotDir(0.3f,0,1,0), DotDir(-2,1,0,0), 2, 4, rgb(0,255,255));
+}
+
 int main(){
 
     float W = 1500, H = 1500;
@@ -69,66 +73,7 @@ int main(){
     camera[3].setDotDir(0, 0, -2, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
-/*
-    std::string file;
-    std::cout << "Introduce una imagen: " << std::endl;
-    std::cin >> file;
-    Image imagen = leer(file);
-    ToneMapper tm;
-        escribir("reinhard1.ppm", imagen, 255);
-    tm.ReinhardToneMapper(imagen);
-        escribir("reinhard2.ppm", imagen, 255);
-*/
 
-    /*std::uniform_real_distribution<float> dist(0.0, 255.0);
-    std::default_random_engine gen;
-    auto random = std::bind(dist, gen);
-
-    // Pusheo un triángulo, las cejas
-    for(int i = 0; i < 100; ++i){
-        scene.addTriangle(DotDir(-3840,2140,2000,1), DotDir(0,2140,2000,1), DotDir(-3840,0,2000,1), rgb(random(),random(),random()));
-    }*/
-
-    
-    //    =================================================
-    //    ESCENA DE LA CARA
-    //    =============================================
-
-    //createFaceScene(scene);
-
-    //createSphereScene(scene);
-
-    //escenaComprobacion(scene);
-
-    /*
-    //    ================================================
-    //    PLANOS TRIÁNGULOS
-    //    ===============================================
-    
-    shared_ptr<Figure> triangle = new Triangle(DotDir(-3840,2140,2000,1), DotDir(0,2140,2000,1), DotDir(-3840,0,2000,1));
-    triangle->setTexture(imagen);
-    triangle->setRgb(rgb(0,0,1.0f));
-    figuras.push_back(triangle);
-    
-    shared_ptr<Figure> triangle2 = new Triangle(DotDir(0,2140,2000,1), DotDir(3800,2140,2000,1), DotDir(0,0,2000,1));
-    shared_ptr<Figure> triangle3 = new Triangle(DotDir(3800,0,2000,1), DotDir(3800,2140,2000,1), DotDir(0,0,2000,1), triangleVertexUV(1,1,1,0,0,1));
-    triangle2->setTexture(imagen);
-    triangle3->setTexture(imagen);
-    figuras.push_back(triangle2);
-    figuras.push_back(triangle3);
-
-    DotDir center(6, 0, -3, 1);
-    DotDir axis(0, 8, 0, 0);
-    DotDir city(10, 0, -3, 1);
-    
-    if(checkRadius(axis, center, city) ){
-        shared_ptr<Figure> esfera = new Sphere(center, axis, city);
-        esfera->setTexture(imagen);
-        figuras.push_back(esfera);
-    } else {
-        cout << "Error en la esfera." << endl;
-    }
-*/
     // 2000 X 2000 PLANO DE TRIANGULOS
     /*std::uniform_real_distribution<float> dist(0.0, 255.0);
     std::default_random_engine gen;
@@ -142,14 +87,15 @@ int main(){
         }
     }*/
 
-    TriangleMesh t;
-    TriangleMesh v;
-    t.read("galleon.ply");
+    //TriangleMesh t;
+    //TriangleMesh v;
+    //t.read("galleon.ply");
     // v.read("canstick.ply");
     // v.scale(16,16,16);
-    t.move(DotDir(0, 0, 1000, 0));
-    scene.addTriangleMesh(t);
+    //t.move(DotDir(0, 0, 1000, 0));
+    // scene.addTriangleMesh(t);
     //scene.addTriangleMesh(v);
+    cornellBox(scene);
     scene.render("render", 16, 8, 0);
 
     return 0;
