@@ -59,7 +59,17 @@ void escenaComprobacion(Scene& escena){
 }
 
 void cornellBox(Scene& escena){
-    escena.addPlane(DotDir(0,1,0,0), DotDir(0.3f,0,1,0), DotDir(-2,1,0,0), 2, 4, rgb(0,255,255));
+
+    escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,0,1), 4, 4, rgb(0,255,255));
+    escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(-2,0,-2,1), 4, 4, rgb(255,0,0));
+    escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,-2,1), 4, 4, rgb(0,255,0));
+    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,-2,-2,1), 4, 4, rgb(155,155,155));
+    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,-2,1), 4, 4, rgb(155,155,155));
+
+    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,-2,1), 2, 2, rgb(255,255,255));
+    escena.addSphere(DotDir(-1,-1.5,-1.5,1), DotDir(0,1,0,0), DotDir(-0.5,-1.5,-1.5,0), rgb(255,255,0));
+    escena.addSphere(DotDir(1,-1.5,-0.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,-0.5,0), rgb(0,0,255));
+
 }
 
 int main(){
@@ -70,7 +80,7 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, -2, 1);
+    camera[3].setDotDir(0, 0, -4, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
 
