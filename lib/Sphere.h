@@ -127,6 +127,19 @@ class Sphere : public Figure{
         base[1] = normalization(base[1]);
     }
 
+    void getBase(DotDir interseccion, DotDir& base[3]) override {
+      base[1] = interseccion - sphereCenter;
+      base[2] = crossProduct(base[1], sphereAxis);
+      base[0] = crossProduct(base[1], base[2]);
+
+      if(base[2].mod() != 1)
+        base[2] = normalization(base[2]);
+      if(base[0].mod() != 1)
+        base[0] = normalization(base[0]);
+      if(base[1].mod() != 1)
+        base[1] = normalization(base[1]);
+    }
+
     DotDir getAxis(){
       return sphereAxis;
     }
@@ -152,6 +165,8 @@ class Sphere : public Figure{
         DotDir(sphereCenter.getX() - radius, sphereCenter.getY() - radius, sphereCenter.getZ() - radius, 1)
       );
     }
+
+    void 
     //--------------------SETTERS-------------------------
 };
 
@@ -175,15 +190,15 @@ class PlanetaryStation{
     DotDir position;
 
     // Base en la estación en UCS
-    // 0 = tangente longitudinal
+    // 0 = tangente latitudinal
     // 1 = normal
-    // 2 = tangente latitudinal
+    // 2 = tangente longitudinal
     DotDir basePosition[3];
 
     // Base del centro del planeta en UCS
-    // 0 = primer eje calculado
+    // 0 = segundo eje calculado
     // 1 = axis
-    // 2 = segundo eje calculado
+    // 2 = primer eje calculado
     DotDir baseCentro[3];
 
   public:
@@ -261,10 +276,10 @@ void conection(const PlanetaryStation& origen, const PlanetaryStation& destino){
 
   DotDir destinoDir = ucsToPositionDestino*dirUCS;
 
-  if(origenDir.getZ() < 0){
+  if(origenDir.getY() < 0){
     cout << "El lanzamiento desde la estación de origen no es posible." << endl;
   }
-  if(destinoDir.getZ() > 0){
+  if(destinoDir.getY() > 0){
       cout << "La recepción en la estación destino no es posible." << endl;
   }
 

@@ -142,12 +142,15 @@ int main(){
         }
     }*/
 
-    //TriangleMesh t;
-    //t.read("canstick.ply");
-    //t.scale(2, 2, 2);
-    //t.move(DotDir(1, 0 , 0, 1));
-    //scene.addTriangleMesh(t);
-    scene.render("render", 16, 16);
+    TriangleMesh t;
+    TriangleMesh v;
+    t.read("galleon.ply");
+    // v.read("canstick.ply");
+    // v.scale(16,16,16);
+    t.move(DotDir(0, 0, 1000, 0));
+    scene.addTriangleMesh(t);
+    //scene.addTriangleMesh(v);
+    scene.render("render", 16, 8, 0);
 
     return 0;
 }

@@ -92,6 +92,19 @@ class Plane : public Figure {
             return center;
         }
 
+        void getBase(DotDir interseccion, DotDir& base[3]) override {
+            base[1] = normal;
+            base[2] = crossProduct(base[1], v1);
+            base[0] = crossProduct(base[1], base[2]);
+
+            if(base[2].mod() != 1)
+                base[2] = normalization(base[2]);
+            if(base[0].mod() != 1)
+                base[0] = normalization(base[0]);
+            if(base[1].mod() != 1)
+                base[1] = normalization(base[1]);
+        }
+
         //--------------------SETTERS-------------------------
 
         void setNormal(DotDir _normal){

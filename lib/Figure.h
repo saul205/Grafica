@@ -7,6 +7,10 @@
 #include "Image.h"
 #include "Transformation.h"
 
+struct BRDF{
+    rgb kt, ks, kd;
+};
+
 class Figure {
     private:
 
@@ -17,10 +21,12 @@ class Figure {
 
         Image textura;
         float new_max  = 1;
-        int col_res = 255;
+        const int col_res = 255;
 
     public:
         Figure(){}
+
+        BRDF material;
         
         virtual bool intersects(Ray ray, float& t, DotDir& p) = 0;
         virtual DotDir getCenter() = 0;
@@ -48,6 +54,8 @@ class Figure {
             new_max = textura.getMaximo();
             hasTexture = true;
         }
+
+        virtual void getBase(DotDir interseccion, DotDir& base[3]) = 0;
 };
 
 #endif

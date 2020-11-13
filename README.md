@@ -1,4 +1,4 @@
 # Informática Gráfica
 ### Integrantes:
 - Alejandro Paricio García (761783)
-- Saúl Flores
+- Saúl Flores (755769)

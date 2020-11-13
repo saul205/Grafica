@@ -18,6 +18,10 @@ struct rgb{
         b = _b;
     }
 
+    float max(){
+        return max(max(r, b),g);
+    }
+
     rgb(){}
 };
 
@@ -31,6 +35,10 @@ rgb operator*(const rgb& color, const float& f){
 
 rgb operator*(const float& f, const rgb& color){
     return rgb(color.r * f, color.g * f, color.b * f);
+}
+
+rgb operator*(const rgb& color1, const rgb& color2){
+    return rgb(color1.r * color2.r, color1.g * color2.gg, color1.b * color2.b);
 }
 
 #endif
