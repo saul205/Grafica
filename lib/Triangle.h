@@ -56,6 +56,7 @@ class Triangle : public Figure {
 
         DotDir v0, v1, v2;
         DotDir v0v1, v0v2;
+        DotDir normal, center;
         triangleVertexUV tvUV;
 
     public:
@@ -68,7 +69,14 @@ class Triangle : public Figure {
             v2 = _v2;
             v0v1 = v1 - v0;
             v0v2 = v2 - v0;
+            normal = crossProduct(v0v1, v0v2);
             tvUV = triangleVertexUV();
+            center = DotDir(
+                (v1.getX() + v2.getX() + v0.getX()) / 3,
+                (v1.getY() + v2.getY() + v0.getY()) / 3,
+                (v1.getZ() + v2.getZ() + v0.getZ()) / 3,
+                1
+            );
         }
 
         Triangle(const DotDir& _v0, const DotDir& _v1, const DotDir& _v2, const triangleVertexUV& _tvUV){
@@ -146,12 +154,20 @@ class Triangle : public Figure {
         }
 
         DotDir getCenter() override {
-            return DotDir(
-                (v1.getX() + v2.getX() + v0.getX()) / 3,
-                (v1.getY() + v2.getY() + v0.getY()) / 3,
-                (v1.getZ() + v2.getZ() + v0.getZ()) / 3,
-                1
-            );
+            return center;
+        }
+
+        void getBase(DotDir interseccion, DotDir base[3]) override {
+            base[1] = normal;
+            base[2] = crossProduct(base[1], v0v1);
+            base[0] = crossProduct(base[1], base[2]);
+
+            if(base[2].mod() != 1)
+                base[2] = normalization(base[2]);
+            if(base[0].mod() != 1)
+                base[0] = normalization(base[0]);
+            if(base[1].mod() != 1)
+                base[1] = normalization(base[1]);
         }
 
         BoundingBox getBound() override {

@@ -25,7 +25,7 @@ class Scene {
             color_res = col_res;
         }
 
-        int addPlane(DotDir vHeight, DotDir vWidth, DotDir center, float height, float width, rgb color){
+        int addPlane(DotDir vHeight, DotDir vWidth, DotDir center, float height, float width, rgb color, bool em = false){
             std::shared_ptr<Figure> plano(new Plane(
                                     vHeight,
                                     vWidth, 
@@ -33,6 +33,7 @@ class Scene {
                                     height,
                                     width
                                     ));
+            plano->setEmission(em);
             plano->setRgb(color);
             figuras.push_back(plano);
             return figuras.size() - 1;

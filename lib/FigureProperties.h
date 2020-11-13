@@ -9,7 +9,7 @@ class FigureProperties{
     
     private:
 
-        float refractionIndex;
+        float refractionIndex = 2.0f;
 
     public:
 
@@ -19,10 +19,11 @@ class FigureProperties{
             return asin(sin(tita1) / refractionIndex);
         }
 
-        // Obtiene el rayo especular 
-        DotDir getSpecularRay(DotDir normal, DotDir wo){
-            return wo - 2.0f*(dotProduct(wo,normal))*normal;
-        }
 };
+
+// Obtiene el rayo especular 
+DotDir getSpecularRay(DotDir normal, DotDir wo){
+    return wo - 2.0f*(dotProduct(wo,normal))*normal;
+}
 
 #endif

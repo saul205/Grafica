@@ -2,9 +2,11 @@
 #define SENSOR_H
 
 #include "ConcurrentBoundedQueue.h"
+#include "FigureProperties.h"
 #include "Transformation.h"
 #include "Plane.h"
 #include "Ray.h"
+#include "Sphere.h"
 #include "Image.h"
 #include "LightSource.h"
 #include <memory>
@@ -23,6 +25,11 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
     std::uniform_real_distribution<float> dist(0.0, pixelSize);
     std::default_random_engine gen;
     auto random = std::bind(dist, gen);
+
+    std::uniform_real_distribution<float> dist2(0.0, 1);
+    std::default_random_engine gen2;
+    auto roussianRoulette = std::bind(dist2, gen2);
+
     DotDir planePoint, dir;
     cuadrante limites; 
     float intersecciones = 0;
@@ -31,9 +38,9 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
         for(int i = limites.minXlimit; i < limites.maxXlimit; ++i){
             for(int j = limites.minYlimit; j < limites.maxYlimit; ++j){
 
-                float red = 0.0, green = 0.0, blue = 0.0;
+                rgb emisionFinal(0, 0, 0);
                 for(int z = 0; z < antiAliasing; ++z){
-
+                    bool intersecta = false;
                     float h = random();
                     float w = random();
 
@@ -48,20 +55,87 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                   
                     std::shared_ptr<Figure> minTObject;
                     DotDir interseccion;
-                    bool intersecta = scene.intersect(rayoMundo, minTObject, interseccion, intersecciones);
-                    
-                    if(intersecta){
-                        rgb color = minTObject->getEmission(interseccion);
-                        red += color.r;
-                        green += color.g;
-                        blue += color.b;
-                    } 
+
+                    //--------Path Tracing---------
+                    rgb emisionAcumulada(1, 1, 1);
+                    rgb emisionFinalRayo(0, 0, 0);
+                    Ray rayoMundoRebotes = rayoMundo;
+                        bool bounce = false;
+                    do {
+
+                        bool intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
+
+                        if(intersecta && minTObject->hasEmission()) {
+                            emisionFinalRayo = minTObject->getEmission(interseccion);
+                            //cout << "emisionFinalRayo:   " << emisionFinalRayo.r << "  "  << emisionFinalRayo.g << "   " << emisionFinalRayo.b << "   "<< endl;
+                        } else if(intersecta){
+                            
+                            //Ruleta Rusa
+                            float pk = minTObject->material.kd.maximo();
+                            float ps = minTObject->material.ks.maximo();
+                            float pt = minTObject->material.kt.maximo();
+                            float maxes = pk + ps + pt;
+                            pk = bounce ? 0.9 * (pk / maxes) : (pk / maxes);
+                            ps = bounce ? 0.9 * (ps / maxes) : (ps / maxes);
+                            pt = bounce ? 0.9 * (pt / maxes) : (pt / maxes);
+
+                            DotDir base[3], wi;
+                            minTObject->getBase(interseccion, base);
+                        
+                            Transformation mundoALocal, localAMundo;
+                            // La normal es base[1]
+                            localAMundo.changeBase(base[0], base[1], base[2], interseccion);
+                            mundoALocal = inverse(localAMundo);
+                            float p = roussianRoulette();
+
+                            if(p < pk){ //Difuso
+
+                                float i = roussianRoulette();
+                                float azimuth = i * 2 * pi;
+
+                                i = roussianRoulette();
+                                float inclination = acos(sqrt(1 - i));
+                                wi = DotDir(sin(inclination)*cos(azimuth), cos(inclination), sin(inclination)*sin(azimuth), 0);
+                                float coseno = dotProduct(base[1], wi);
+                                wi = localAMundo * wi;
+                                emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
+                                Ray newRay(interseccion, wi);
+                                rayoMundoRebotes = newRay;
+ 
+                            }else if(p < pk + ps){ // Specular
+                                // wr = wi
+                                DotDir wo = mundoALocal * rayoMundo.getDir();
+                                //Reflexión perfecta
+                                wi = getSpecularRay(base[1], wo);
+                                wi = localAMundo * wi;
+                                emisionAcumulada = emisionAcumulada*(minTObject->getSpecRgb() / ps);
+
+                                //cout << minTObject->getSpecRgb().r << " - " << minTObject->getSpecRgb().g << " - " << minTObject->getSpecRgb().b << " - " << ps;
+                                //cout << "emisionAcumulada:   " << emisionAcumulada.r << "  "  << emisionAcumulada.g << "   " << emisionAcumulada.b << "   "<< endl;
+                                Ray newRay(interseccion, wi);
+                                rayoMundoRebotes = newRay;
+
+                            }else if(p < pk + ps + pt){ // Refraccion
+                                // Snell's Law
+
+                            }else{ // Absorcion
+                                // 0
+                            } 
+                            //Lanzar nuevo rayo
+
+                            //Calcular BRDF
+                            //luz *= fr(x, wi, wo) * |n * wi| / p(wi)
+                            //Parar si no intersecta, absorbe -> luz del camino = 0
+                            //Si objeto emisor -> luz con valor
+                        }
+                        bounce = true;
+                    } while(intersecta);
+
+                    emisionFinal = emisionFinal + emisionFinalRayo * emisionAcumulada;
                 }  
 
-                red /= (float) antiAliasing;
-                green /= (float) antiAliasing;
-                blue /= (float) antiAliasing;
-                newImagen.setRGB(i + j * planeW, rgb(red, green, blue));
+                emisionFinal = emisionFinal / (float) antiAliasing;
+                newImagen.setRGB(i + j * planeW, emisionFinal*255);
             }
         }
     }

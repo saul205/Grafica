@@ -7,10 +7,21 @@
 #include "Image.h"
 #include "Transformation.h"
 
+struct BRDF{
+    rgb kt,ks,kd;
+
+    BRDF(){
+        kd.set(0,0,0);
+        ks.set(0.7,0.7,0.7);
+        kt.set(0,0,0);
+    }
+};
+
 class Figure {
     private:
 
         rgb emission;
+        bool tieneEmission = false;
         bool hasTexture = false;
     
     protected:
@@ -20,6 +31,8 @@ class Figure {
         int col_res = 255;
 
     public:
+
+        BRDF material;
         Figure(){}
         
         virtual bool intersects(Ray ray, float& t, DotDir& p) = 0;
@@ -36,10 +49,15 @@ class Figure {
         }
 
         rgb getEmission(DotDir& interseccion){
-            if(!hasTexture){
+            /*if(!hasTexture){
                 return (emission / col_res) * new_max;
             } else {
                 return getTexture(interseccion) / new_max;
+            }*/
+            if(!hasTexture){
+                return emission;
+            } else {
+                return getTexture(interseccion);
             }
         };
 
@@ -48,6 +66,24 @@ class Figure {
             new_max = textura.getMaximo();
             hasTexture = true;
         }
+
+        void setEmission(bool emi) {
+             tieneEmission = emi;
+        }
+
+        bool hasEmission(){
+            return tieneEmission;
+        }
+
+        rgb getSpecRgb(){
+            return material.ks;
+        }
+
+        rgb getDifRgb(){
+            return material.kd;
+        }
+
+        virtual void getBase(DotDir interseccion, DotDir base[3]) = 0;
 };
 
 #endif
