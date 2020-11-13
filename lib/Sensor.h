@@ -14,6 +14,7 @@
 #include <functional>
 
 const int sizeCuadrante = 30;
+const float fov = 1;
 
 void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, 
                         const float pixelSize, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, DotDir oLocal,
@@ -37,7 +38,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     float w = random();
 
                     // Como f = 1 la tercera componente es fija
-                    planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
+                    planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, fov, 1);
                     dir = planePoint - oLocal;
 
                     DotDir dirMundo = localAMundo*dir;

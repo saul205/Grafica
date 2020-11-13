@@ -261,10 +261,10 @@ void conection(const PlanetaryStation& origen, const PlanetaryStation& destino){
 
   DotDir destinoDir = ucsToPositionDestino*dirUCS;
 
-  if(origenDir.getZ() < 0){
+  if(origenDir.getY() < 0){
     cout << "El lanzamiento desde la estación de origen no es posible." << endl;
   }
-  if(destinoDir.getZ() > 0){
+  if(destinoDir.getY() > 0){
       cout << "La recepción en la estación destino no es posible." << endl;
   }
 
