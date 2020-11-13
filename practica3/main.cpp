@@ -66,7 +66,7 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, -2, 1);
+    camera[3].setDotDir(0, 5, -7, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
 /*
@@ -96,7 +96,7 @@ int main(){
 
     //createFaceScene(scene);
 
-    //createSphereScene(scene);
+    createSphereScene(scene);
 
     //escenaComprobacion(scene);
 
@@ -142,11 +142,11 @@ int main(){
         }
     }*/
 
-    TriangleMesh t;
-    t.read("canstick.ply");
-    t.scale(2, 2, 2);
+    //TriangleMesh t;
+    //t.read("canstick.ply");
+    //t.scale(2, 2, 2);
     //t.move(DotDir(1, 0 , 0, 1));
-    scene.addTriangleMesh(t);
+    //scene.addTriangleMesh(t);
     scene.render("render", 16, 16);
 
     return 0;

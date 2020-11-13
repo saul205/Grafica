@@ -36,17 +36,21 @@ class TriangleMesh{
             }
 
             bool end = false;
-            int coordinates = 0, elC = 0;
+            int properties[2] = {0, 0};
+            int prop = 0;
             bool countCoor = false;
             float vertex, faces;
             while(!end){
                 reader >> buffer;
                 if(buffer == "element"){
-                    if(elC == 0){
-                        reader >> buffer >> vertex;
-                        elC ++;
-                    } 
-                    else reader >> buffer >> faces;
+                    reader >> buffer;
+
+                    if(buffer == "vertex"){
+                        reader >> vertex;
+                    }else if(buffer == "face"){
+                        reader >> faces;
+                        prop = 1;
+                    }
                     
                     countCoor = !countCoor;
                 }else if(buffer == "end_header"){
@@ -60,14 +64,14 @@ class TriangleMesh{
                 }
                 else{
                     if(buffer == "property" && countCoor){
-                        coordinates ++;
+                        properties[prop]++;
                     }
                     getline(reader, buffer);
                 }
             }
 
-            if(coordinates != 3){
-                std::cout << "No es un triangulo" << endl;
+            if(properties[0] != 3){
+                std::cout << "No es válido" << endl;
                 return;
             }
 
@@ -125,8 +129,6 @@ class TriangleMesh{
         void scale(float x, float y, float z){
             Transformation t;
             t.scale(x, y, z);
-
-            cout << t.toString() << endl;
 
             transform(t);
         }
