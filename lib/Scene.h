@@ -97,6 +97,10 @@ class Scene {
             cout << "N Figuras: " << figuras.size() << endl;
             cout << "N Nodos: " << bv.getSize() << endl;
             renderer.lanzarRayos(bv, imagen, AA, hilos);
+
+            ToneMapper tm;
+            tm.gammaCurve(imagen, 1 / 2.222);
+
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);
             }else{

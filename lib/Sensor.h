@@ -60,7 +60,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     rgb emisionAcumulada(1, 1, 1);
                     rgb emisionFinalRayo(0, 0, 0);
                     Ray rayoMundoRebotes = rayoMundo;
-                        bool bounce = false;
+                    bool bounce = false;
                     do {
 
                         bool intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
@@ -68,6 +68,8 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                         if(intersecta && minTObject->hasEmission()) {
                             emisionFinalRayo = minTObject->getEmission(interseccion);
                             //cout << "emisionFinalRayo:   " << emisionFinalRayo.r << "  "  << emisionFinalRayo.g << "   " << emisionFinalRayo.b << "   "<< endl;
+                            //cout << "emisionFinalRayo:   " << emisionAcumulada.r << "  "  << emisionAcumulada.g << "   " << emisionAcumulada.b << "   "<< endl;
+                            intersecta = false;
                         } else if(intersecta){
                             
                             //Ruleta Rusa
@@ -75,6 +77,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             float ps = minTObject->material.ks.maximo();
                             float pt = minTObject->material.kt.maximo();
                             float maxes = pk + ps + pt;
+
                             pk = bounce ? 0.9 * (pk / maxes) : (pk / maxes);
                             ps = bounce ? 0.9 * (ps / maxes) : (ps / maxes);
                             pt = bounce ? 0.9 * (pt / maxes) : (pt / maxes);
@@ -96,11 +99,14 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 i = roussianRoulette();
                                 float inclination = acos(sqrt(1 - i));
                                 wi = DotDir(sin(inclination)*cos(azimuth), cos(inclination), sin(inclination)*sin(azimuth), 0);
-                                float coseno = dotProduct(base[1], wi);
+                                float coseno = abs(dotProduct(base[1], wi));
                                 wi = localAMundo * wi;
+                                //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
                                 Ray newRay(interseccion, wi);
                                 rayoMundoRebotes = newRay;
+
+                                //cout << "nuevo rayo " << newRay.getOrigen().toString() << " | " << newRay.getDir().toString() << endl;
  
                             }else if(p < pk + ps){ // Specular
                                 // wr = wi
@@ -131,11 +137,13 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                         bounce = true;
                     } while(intersecta);
 
+                    //cout << emisionAcumulada.r << endl;
+                    
                     emisionFinal = emisionFinal + emisionFinalRayo * emisionAcumulada;
                 }  
 
                 emisionFinal = emisionFinal / (float) antiAliasing;
-                newImagen.setRGB(i + j * planeW, emisionFinal*255);
+                newImagen.setRGB(i + j * planeW, emisionFinal);
             }
         }
     }

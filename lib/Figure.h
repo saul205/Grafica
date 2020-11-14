@@ -11,8 +11,8 @@ struct BRDF{
     rgb kt,ks,kd;
 
     BRDF(){
-        kd.set(0,0,0);
-        ks.set(0.7,0.7,0.7);
+        kd.set(0.6,0.6,0.6);
+        ks.set(0,0,0);
         kt.set(0,0,0);
     }
 };

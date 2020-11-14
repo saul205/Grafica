@@ -61,12 +61,13 @@ void escenaComprobacion(Scene& escena){
 void cornellBox(Scene& escena){
 
     escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,0,1), 4, 4, rgb(0,255,255));
+    escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,-5,1), 4, 4, rgb(1000000,1000000,1000000));
     escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(-2,0,-2,1), 4, 4, rgb(255,0,0));
     escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,-2,1), 4, 4, rgb(0,255,0));
     escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,-2,-2,1), 4, 4, rgb(155,155,155));
     escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,-2,1), 4, 4, rgb(155,155,155));
 
-    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,-2,1), 2, 2, rgb(255,255,255), true);
+    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,-2,1), 2, 2, rgb(1000000,1000000,1000000), true);
     escena.addSphere(DotDir(-1,-1.5,-1.5,1), DotDir(0,1,0,0), DotDir(-0.5,-1.5,-1.5,0), rgb(255,255,0));
     escena.addSphere(DotDir(1,-1.5,-0.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,-0.5,0), rgb(0,0,255));
 
@@ -106,7 +107,7 @@ int main(){
     // scene.addTriangleMesh(t);
     //scene.addTriangleMesh(v);
     cornellBox(scene);
-    scene.render("render", 1, 1, 0);
+    scene.render("render", 100, 16);
 
     return 0;
 }
