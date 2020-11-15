@@ -23,6 +23,8 @@ class FigureProperties{
 
 // Obtiene el rayo especular 
 DotDir getSpecularRay(DotDir normal, DotDir wo){
+    //cout << normal.toString() << endl;
+    //cout << wo.toString() << endl;
     return wo - 2.0f*(dotProduct(wo,normal))*normal;
 }
 

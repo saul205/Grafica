@@ -28,7 +28,6 @@ class Figure {
 
         Image textura;
         float new_max  = 1;
-        int col_res = 255;
 
     public:
 
@@ -39,7 +38,7 @@ class Figure {
         virtual DotDir getCenter() = 0;
         virtual BoundingBox getBound() = 0;
         virtual rgb getTexture(const DotDir& interseccion) = 0;
-        virtual void getBase(DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) = 0;
+        virtual void getBase(const DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) = 0;
         virtual void transform(Transformation t){ cout << "jaja" << endl; };
 
         void setRgb(rgb _color){
@@ -61,7 +60,6 @@ class Figure {
 
         void setTexture(const Image& _textura){
             textura = _textura;
-            new_max = textura.getMaximo();
             hasTexture = true;
         }
 

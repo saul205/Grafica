@@ -175,7 +175,7 @@ class Sphere : public Figure{
 // (ambos deben ser puntos) difieren en menos de 10e-6.
 bool checkRadius(DotDir axis, DotDir center, DotDir city){
   DotDir radius = center - city;
-  return (abs(radius.mod() - 0.5*(axis.mod())) < 0.000001) ? true : false;
+  return (abs(radius.mod() - 0.5*(axis.mod())) < 0.0001) ? true : false;
 }
 
 

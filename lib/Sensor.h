@@ -44,7 +44,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     float w = random();
 
                     // Como f = 1 la tercera componente es fija
-                    planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, fov, 1);
+                    planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
                     dir = planePoint - oLocal;
 
                     DotDir dirMundo = localAMundo*dir;
@@ -86,7 +86,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             pt = bounce ? 0.9 * (pt / maxes) : (pt / maxes);
 
                             DotDir base[3], wi;
-                            //cout << "Antes: " <<  base[2].toString() << endl;
+                            //cout << "Antes: " <<  interseccion.toString() << endl;
                             minTObject->getBase(interseccion, base[0], base[1], base[2]);
                             //cout << "Después :" << base[2].toString() << endl;
                             Transformation mundoALocal, localAMundo;
@@ -103,7 +103,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 i = roussianRoulette();
                                 float inclination = acos(sqrt(1 - i));
                                 wi = DotDir(sin(inclination)*cos(azimuth), sin(inclination)*sin(azimuth), cos(inclination), 0);
-                                float coseno = abs(dotProduct(base[1], wi));
+                                float coseno = abs(dotProduct(mundoALocal*base[2], wi));
                                 wi = localAMundo * wi;
                                 //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
@@ -115,13 +115,14 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             }else if(p < pk + ps){ // Specular
                                 //if(bounce) cout << "Rebota" << endl;
                                 // wr = wi
-                                //cout << "Incide: " << rayoMundo.getDir().getX() <<"   " << rayoMundo.getDir().getY() << "  " << rayoMundo.getDir().getZ() << endl;
-                                //cpout << "Interseccion: " << interseccion.getX() <<"   " << interseccion.getY() << "  " << interseccion.getZ() << endl;
-                                DotDir wo = mundoALocal * rayoMundo.getDir();
+                                //cout << " From: " << rayoMundoRebotes.getOrigen().getX() <<"   " << rayoMundoRebotes.getOrigen().getY() << "  " << rayoMundoRebotes.getOrigen().getZ() << endl;
+                                //cout << "Incide: " << rayoMundoRebotes.getDir().getX() <<"   " << rayoMundoRebotes.getDir().getY() << "  " << rayoMundoRebotes.getDir().getZ() << endl;
+                                //cout << "Interseccion: " << interseccion.getX() <<"   " << interseccion.getY() << "  " << interseccion.getZ() << endl;
+                                //DotDir wo = mundoALocal * rayoMundoRebotes.getDir();
                                 //Reflexión perfecta
-                                //cout << "base: " << mundoALocal.toString() << endl;
+                                //cout << "base: " << base[2].toString() << endl;
                                 //cout << "LocalAnetes: " << wo.getX() <<"   " << wo.getY() << "  " << wo.getZ() << endl;
-                                wi = getSpecularRay(base[2], wo);
+                                wi = getSpecularRay(mundoALocal*base[2], mundoALocal * rayoMundoRebotes.getDir());
                                 //cout << "LocalResul: " << wi.getX() <<"   " << wi.getY() << "  " << wi.getZ() << endl;
                                 wi = localAMundo * wi;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getSpecRgb() / ps);
@@ -177,7 +178,7 @@ class Sensor{
     private:
 
         DotDir lMundo, uMundo, fMundo, oMundo;
-        DotDir lLocal, uLocal, fLocal, oLocal;
+        DotDir oLocal;
         Transformation localAMundo;
         float planeW, planeH;
         float pixelSize, centrarEnElPlanoW, centrarEnElPlanoH;
@@ -186,14 +187,10 @@ class Sensor{
 
         Sensor(){}
 
-        Sensor(DotDir _l, DotDir _u, DotDir _f, DotDir _o, float planeWidth, float planeHeight) :
-                lMundo(_l), uMundo(_u), fMundo(_f), oMundo(_o), planeW(planeWidth), planeH(planeHeight) {
+        Sensor(DotDir _r, DotDir _u, DotDir _f, DotDir _o, float planeWidth, float planeHeight) :
+                lMundo(_r), uMundo(_u), fMundo(_f), oMundo(_o), planeW(planeWidth), planeH(planeHeight) {
 
-            lLocal = DotDir(-1, 0, 0, 0);
-            uLocal = DotDir(0, 1, 0, 0);
-            fLocal = DotDir(0, 0, 1, 0);
             oLocal = DotDir(0, 0, 0, 1);
-
             localAMundo.changeBase(lMundo, uMundo, fMundo, oMundo);
         }
 

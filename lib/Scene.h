@@ -70,21 +70,17 @@ class Scene {
             }
         }
 
-        int addSphere(DotDir c, DotDir axe, DotDir reference, const Image& textura){
-            if(checkRadius(c, axe, reference) ){
+        int addSphere(DotDir c, DotDir axe, DotDir reference, const Image& textura, bool em = false){
+            if(checkRadius(axe, c, reference) ){
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setTexture(textura);
+                esfera->setEmission(em);
                 figuras.push_back(esfera);
                 return figuras.size() - 1;
             } else {
                 cout << "Error en la esfera." << endl;
                 return -1;
             }
-        }
-
-        int addSphere(std::shared_ptr<Figure> esfera){
-            figuras.push_back(esfera);
-            return figuras.size() - 1;
         }
 
         int addTriangle(DotDir v1, DotDir v2, DotDir v3, rgb color){
@@ -114,7 +110,7 @@ class Scene {
             renderer.lanzarRayos(bv, imagen, AA, hilos);
 
             ToneMapper tm;
-            tm.gammaCurve(imagen, 0.1);
+            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 100.0f, 1/2.2f);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

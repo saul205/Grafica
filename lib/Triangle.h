@@ -69,7 +69,7 @@ class Triangle : public Figure {
             v2 = _v2;
             v0v1 = v1 - v0;
             v0v2 = v2 - v0;
-            normal = crossProduct(v0v1, v0v2);
+            normal = normalization(crossProduct(v0v1, v0v2));
             tvUV = triangleVertexUV();
             center = DotDir(
                 (v1.getX() + v2.getX() + v0.getX()) / 3,

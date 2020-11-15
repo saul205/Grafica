@@ -23,7 +23,7 @@ class Plane : public Figure {
             v1 = _v1;
             v2 = _v2;
             center = _center;
-            normal = crossProduct(v2, v1);
+            normal = normalization(crossProduct(v2, v1));
             v2n = normalization(v2);
             v1n = normalization(v1);
         }
@@ -49,7 +49,7 @@ class Plane : public Figure {
             t = num / den;
 
             p = ray.getOrigen() + t * ray.getDir();
-
+            //cout << p.toString() << "  " << t << endl;
             DotDir v = p - center;
             
             float p1 = dotProduct(v, v2n);
