@@ -53,6 +53,11 @@ class Scene {
             return figuras.size() - 1;
         }
 
+        int addPlane(std::shared_ptr<Figure> plano){
+            figuras.push_back(plano);
+            return figuras.size() - 1;
+        }
+
         int addSphere(DotDir c, DotDir axe, DotDir reference, rgb color){
             if(checkRadius(axe, c, reference) ){
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
@@ -77,6 +82,11 @@ class Scene {
             }
         }
 
+        int addSphere(std::shared_ptr<Figure> esfera){
+            figuras.push_back(esfera);
+            return figuras.size() - 1;
+        }
+
         int addTriangle(DotDir v1, DotDir v2, DotDir v3, rgb color){
             std::shared_ptr<Figure> triangle(new Triangle(v1, v2, v3));
             triangle->setRgb(color);
@@ -92,6 +102,11 @@ class Scene {
             return figuras.size() - 1;
         }
 
+        int addTriangle(std::shared_ptr<Figure> triangle){
+            figuras.push_back(triangle);
+            return figuras.size() - 1;
+        }
+
         void render(string output, int AA, int hilos = 1, int mode = 1){
             BoundingVolume bv(figuras);
             cout << "N Figuras: " << figuras.size() << endl;
@@ -99,7 +114,7 @@ class Scene {
             renderer.lanzarRayos(bv, imagen, AA, hilos);
 
             ToneMapper tm;
-            tm.gammaCurve(imagen, 1 / 2.222);
+            tm.gammaCurve(imagen, 0.1);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

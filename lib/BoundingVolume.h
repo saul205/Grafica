@@ -97,7 +97,7 @@ class BoundingVolume{
             if(minTObject >= 0){
                 figura = figuras[minTObject];
             }
-
+            //if(!intersect) cout << " Se va" << endl;
             return intersect;
         }
 

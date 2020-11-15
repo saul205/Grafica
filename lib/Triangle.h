@@ -157,17 +157,17 @@ class Triangle : public Figure {
             return center;
         }
 
-        void getBase(DotDir interseccion, DotDir base[3]) override {
-            base[1] = normal;
-            base[2] = crossProduct(base[1], v0v1);
-            base[0] = crossProduct(base[1], base[2]);
+        void getBase(DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) override {
+            base2 = normal;
+            base1 = crossProduct(base2, v0v1);
+            base0 = crossProduct(base2, base1);
 
-            if(base[2].mod() != 1)
-                base[2] = normalization(base[2]);
-            if(base[0].mod() != 1)
-                base[0] = normalization(base[0]);
-            if(base[1].mod() != 1)
-                base[1] = normalization(base[1]);
+            if(base2.mod() != 1)
+                base2 = normalization(base2);
+            if(base0.mod() != 1)
+                base0 = normalization(base0);
+            if(base1.mod() != 1)
+                base1 = normalization(base1);
         }
 
         BoundingBox getBound() override {

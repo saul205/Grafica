@@ -11,7 +11,7 @@ struct BRDF{
     rgb kt,ks,kd;
 
     BRDF(){
-        kd.set(0.6,0.6,0.6);
+        kd.set(0,0,0);
         ks.set(0,0,0);
         kt.set(0,0,0);
     }
@@ -39,10 +39,8 @@ class Figure {
         virtual DotDir getCenter() = 0;
         virtual BoundingBox getBound() = 0;
         virtual rgb getTexture(const DotDir& interseccion) = 0;
-        
-        virtual void transform(Transformation t){
-            cout << "jaja" << endl;
-        };
+        virtual void getBase(DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) = 0;
+        virtual void transform(Transformation t){ cout << "jaja" << endl; };
 
         void setRgb(rgb _color){
             emission = _color;
@@ -83,7 +81,14 @@ class Figure {
             return material.kd;
         }
 
-        virtual void getBase(DotDir interseccion, DotDir base[3]) = 0;
+        void setDifBDRF(rgb difuso){
+            material.kd = difuso;
+        }
+
+        void setSepcBDRF(rgb spec){
+            material.ks = spec;
+        }
+
 };
 
 #endif

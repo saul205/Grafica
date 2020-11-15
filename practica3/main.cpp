@@ -60,17 +60,40 @@ void escenaComprobacion(Scene& escena){
 
 void cornellBox(Scene& escena){
 
-    escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,0,1), 4, 4, rgb(0,255,255));
-    escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,-5,1), 4, 4, rgb(1000000,1000000,1000000));
-    escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(-2,0,-2,1), 4, 4, rgb(255,0,0));
-    escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,-2,1), 4, 4, rgb(0,255,0));
-    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,-2,-2,1), 4, 4, rgb(155,155,155));
-    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,-2,1), 4, 4, rgb(155,155,155));
+    std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,4,1), 4, 4));
+    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano);
 
-    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,-2,1), 2, 2, rgb(1000000,1000000,1000000), true);
-    escena.addSphere(DotDir(-1,-1.5,-1.5,1), DotDir(0,1,0,0), DotDir(-0.5,-1.5,-1.5,0), rgb(255,255,0));
-    escena.addSphere(DotDir(1,-1.5,-0.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,-0.5,0), rgb(0,0,255));
+    //std::shared_ptr<Figure> plano6(new Plane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,-4.1,1), 4, 4));
+    //plano6->setDifBDRF(rgb(0.7,0.7,0.7));
+    //escena.addPlane(plano6);
 
+    std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(-2,0,2,1), 4, 4));
+    plano2->setDifBDRF(rgb(0.7,0.2,0.2));
+    escena.addPlane(plano2);
+    
+    std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(2,0,2,1), 4, 4));
+    plano3->setDifBDRF(rgb(0.2,0.7,0.2));
+    escena.addPlane(plano3);
+
+    std::shared_ptr<Figure> plano4(new Plane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,-2,2,1), 4, 4));
+    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano4);
+
+    std::shared_ptr<Figure> plano5(new Plane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,2,1), 4, 4));
+    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano5);
+
+    escena.addPlane(DotDir(1,0,0,0), DotDir(0,0,1,0), DotDir(0,2,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
+    //escena.addPlane(DotDir(1,0,0,0), DotDir(0,1,0,0), DotDir(0,0,-5,1), 4, 4, rgb(10e5,10e5,10e5), true);
+    
+    std::shared_ptr<Figure> esfera1(new Sphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-0.5,-1.5,2.5,0)));
+    esfera1->setDifBDRF(rgb(0.2,0.2,0.7));
+    escena.addPlane(esfera1);
+
+    std::shared_ptr<Figure> esfera2(new Sphere(DotDir(1,-1.5,3.5,1), DotDir(0,1,0,0), DotDir(5.5,-1.5,3.5,0)));
+    esfera2->setDifBDRF(rgb(0.7,0.7,0.2));
+    escena.addPlane(esfera2);
 }
 
 int main(){
@@ -81,10 +104,10 @@ int main(){
     camera[0].setDotDir(1, 0, 0, 0);
     camera[1].setDotDir(0, 1, 0, 0);
     camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, -4, 1);
+    camera[3].setDotDir(0, 0, 0, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
-
+    cout << crossProduct(DotDir(0,1,0,0), DotDir(0,0,1,0)).toString() << endl;
     // 2000 X 2000 PLANO DE TRIANGULOS
     /*std::uniform_real_distribution<float> dist(0.0, 255.0);
     std::default_random_engine gen;
@@ -107,7 +130,7 @@ int main(){
     // scene.addTriangleMesh(t);
     //scene.addTriangleMesh(v);
     cornellBox(scene);
-    scene.render("render", 100, 16);
+    scene.render("render", 1, 8);
 
     return 0;
 }
