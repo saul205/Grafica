@@ -19,9 +19,11 @@ class Scene {
 
     public:
 
-        Scene(float width, float height, DotDir c1, DotDir c2, DotDir c3, DotDir c4, float col_res = 255){
+
+        // Recibe tamaño de la imagen + target y front vector
+        Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 255){
             imagen = Image("P3", "IMG", width, height, col_res, col_res);
-            renderer = Sensor(c1, c2, c3, c4, width, height);
+            renderer = Sensor(30.0f, width/height, target, width, height, front);
             color_res = col_res;
         }
 
@@ -110,7 +112,7 @@ class Scene {
             renderer.lanzarRayos(bv, imagen, AA, hilos);
 
             ToneMapper tm;
-            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 100.0f, 1/2.2f);
+            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 20.0f, 1/2.2f);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

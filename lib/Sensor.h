@@ -17,13 +17,18 @@
 
 const int sizeCuadrante = 5;
 const float fov = 1;
+const float airRefraction = 1.000293;
 
 void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, 
-                        const float pixelSize, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, Transformation localAMundo){
+                        const float pixelSizeX, const float pixelSizeY, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, Transformation localAMundo){
 
-    std::uniform_real_distribution<float> dist(0.0, pixelSize);
-    std::default_random_engine gen;
-    auto random = std::bind(dist, gen);
+    std::uniform_real_distribution<float> distX(0.0, pixelSizeX);
+    std::default_random_engine genX;
+    auto randomX = std::bind(distX, genX);
+
+    std::uniform_real_distribution<float> distY(0.0, pixelSizeY);
+    std::default_random_engine genY;
+    auto randomY = std::bind(distY, genY);
 
     std::uniform_real_distribution<float> dist2(0.0, 1);
     std::default_random_engine gen2;
@@ -39,11 +44,11 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                 rgb emisionFinal(0, 0, 0);
                 for(int z = 0; z < antiAliasing; ++z){
-                    float h = random();
-                    float w = random();
+                    float h = randomX();
+                    float w = randomY();
 
                     // Como f = 1 la tercera componente es fija
-                    planePoint.setDotDir(- (pixelSize * i - centrarEnElPlanoW + w), - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
+                    planePoint.setDotDir(- (pixelSizeX * i - centrarEnElPlanoW + w), - pixelSizeY * j + centrarEnElPlanoH - h, 1, 1);
 
                     DotDir oLocal = DotDir(0,0,0,1);
 
@@ -60,24 +65,15 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     rgb emisionFinalRayo(0, 0, 0);
                     Ray rayoMundoRebotes = rayoMundo;
                     bool bounce = false;
-                    bool yesyes = false;
                     bool intersecta = true;
-                    float distance = 0;
                     while(intersecta) {
                         
                         intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
-                        //if(bounce) cout << "tr" << endl;
-                        //if(yesyes) {cout << "true" << endl;}
+
                         if(intersecta && minTObject->hasEmission()) {
-                            distance += (interseccion - rayoMundoRebotes.getOrigen()).mod();
-                            emisionFinalRayo = minTObject->getEmission(interseccion) / (distance * distance);
-                            //cout << "emisionFinalRayo:   " << emisionFinalRayo.r << "  "  << emisionFinalRayo.g << "   " << emisionFinalRayo.b << "   "<< endl;
-                            //cout << "emisionAcumulada:   " << emisionAcumulada.r << "  "  << emisionAcumulada.g << "   " << emisionAcumulada.b << "   "<< endl;
-                            //if(bounce) {cout << "jj" << endl;};
+                            emisionFinalRayo = minTObject->getEmission(interseccion);
                             intersecta = false;
                         } else if(intersecta){
-
-                            distance += (interseccion - rayoMundoRebotes.getOrigen()).mod();
                             
                             //Ruleta Rusa
                             float pk = minTObject->material.kd.maximo();
@@ -92,11 +88,11 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             DotDir base[3], wi;
                             //cout << "Antes: " <<  interseccion.toString() << endl;
                             minTObject->getBase(interseccion, base[0], base[1], base[2]);
+                            
                             //cout << "Después :" << base[2].toString() << endl;
                             Transformation mundoALocal, localAMundo;
-                            // La normal es base[1]
-                            localAMundo.changeBase(base[0], base[1], base[2], interseccion);
-                            mundoALocal = inverse(localAMundo);
+
+                            // La normal es base[2]
                             float p = roussianRoulette();
                             //cout << p<< "   " << pk << "   " << ps << endl;
                             if(p < pk){ //Difuso
@@ -108,87 +104,62 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 float inclination = acos(sqrt(1 - i));
                                 wi = DotDir(sin(inclination)*cos(azimuth), sin(inclination)*sin(azimuth), cos(inclination), 0);
                                 
-                                DotDir normal = mundoALocal*base[2];
-
-                                if(dotProduct(normal, mundoALocal * rayoMundoRebotes.getDir()) > 1){
-                                    cout << "Escalar" << dotProduct(normal, mundoALocal * rayoMundoRebotes.getDir());
-                                    normal = DotDir(-normal.getX(), -normal.getY(), -normal.getZ(), 0);
+                                if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0){
+                                    base[2] = DotDir(-base[2].getX(), -base[2].getY(), -base[2].getZ(), 0);
                                 }
+                                localAMundo.changeBase(base[0], base[1], base[2], interseccion);
+                                mundoALocal = inverse(localAMundo);
                                 
-                                
-                                float coseno = abs(dotProduct(normal, wi));
+                                float coseno = abs(dotProduct(mundoALocal * base[2], wi));
 
-                                wi = localAMundo * wi;
+                                
                                 //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
-                                Ray newRay(interseccion, wi);
-                                rayoMundoRebotes = newRay;
-
                                 //cout << "nuevo rayo " << newRay.getOrigen().toString() << " | " << newRay.getDir().toString() << endl;
  
                             }else if(p < pk + ps){ // Specular
-                                //if(bounce) cout << "Rebota" << endl;
-                                // wr = wi
-                                //cout << " From: " << rayoMundoRebotes.getOrigen().getX() <<"   " << rayoMundoRebotes.getOrigen().getY() << "  " << rayoMundoRebotes.getOrigen().getZ() << endl;
-                                //cout << "Incide: " << rayoMundoRebotes.getDir().getX() <<"   " << rayoMundoRebotes.getDir().getY() << "  " << rayoMundoRebotes.getDir().getZ() << endl;
-                                //cout << "Interseccion: " << interseccion.getX() <<"   " << interseccion.getY() << "  " << interseccion.getZ() << endl;
-                                //DotDir wo = mundoALocal * rayoMundoRebotes.getDir();
-                                //Reflexión perfecta
-                                //cout << "base: " << base[2].toString() << endl;
-                                //cout << "LocalAnetes: " << wo.getX() <<"   " << wo.getY() << "  " << wo.getZ() << endl;
+
+                                //Inversión de las normales
+                                if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0){
+                                    base[2] = DotDir(-base[2].getX(), -base[2].getY(), -base[2].getZ(), 0);
+                                }
+                                localAMundo.changeBase(base[0], base[1], base[2], interseccion);
+                                mundoALocal = inverse(localAMundo);
+
+                                //Direccion reflejada
                                 wi = getSpecularRay(mundoALocal*base[2], mundoALocal * rayoMundoRebotes.getDir());
-                                //cout << "LocalResul: " << wi.getX() <<"   " << wi.getY() << "  " << wi.getZ() << endl;
-                                wi = localAMundo * wi;
+
+                                //Producto de la BDRF
                                 emisionAcumulada = emisionAcumulada*(minTObject->getSpecRgb() / ps);
 
-                                //cout << minTObject->getSpecRgb().r << " - " << minTObject->getSpecRgb().g << " - " << minTObject->getSpecRgb().b << " - " << ps;
-                                // cout << "emisionAcumulada:   " << emisionAcumulada.r << "  "  << emisionAcumulada.g << "   " << emisionAcumulada.b << "   "<< endl;
-                                Ray newRay(interseccion, wi);
-                                rayoMundoRebotes = newRay;
-                                //cout << "Resul: " << wi.getX() <<"   " << wi.getY() << "  " << wi.getZ() << endl;
-
                             }else if(p < pk + ps + pt){ // Refraccion
+
+                                //Comprobación si estás dentro o fuera para calculo de indice refracción
+                                float refractionIndx = minTObject->refractionIndex / airRefraction;
+                                if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0){
+                                    refractionIndx = airRefraction / minTObject->refractionIndex;
+                                }
+
+                                //Calculo de matrices
+                                localAMundo.changeBase(base[0], base[1], base[2], interseccion);
+                                mundoALocal = inverse(localAMundo);
                                 // Snell's Law
-                                float inclination = angle(mundoALocal * rayoMundoRebotes.getDir(), mundoALocal * base[2]);
-                                float azimuth = angle(mundoALocal * rayoMundoRebotes.getDir(), mundoALocal * base[0]);
 
-                                FigureProperties f;
+                                DotDir normal = mundoALocal * base[2];
+                                DotDir localRay = mundoALocal * rayoMundoRebotes.getDir();
 
-                                inclination = 180 + f.getSnellRefractionAngle(inclination);
-                                azimuth = 180 + f.getSnellRefractionAngle(azimuth);
 
-                                wi = DotDir(sin(inclination)*cos(azimuth), sin(inclination)*sin(azimuth), cos(inclination), 0);
-                                
-                                DotDir normal = mundoALocal*base[2];
-                                
-                                float coseno = abs(dotProduct(mundoALocal*base[2], wi));
+                                float a = 1 - dotProduct(normal, localRay) * dotProduct(normal, localRay);
 
-                                wi = localAMundo * wi;
-                                //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
-                                emisionAcumulada = emisionAcumulada*(minTObject->getRefRgb()*(coseno/(pi*pt)));
-                                Ray newRay(interseccion, wi);
-                                rayoMundoRebotes = newRay;
+                                wi = sqrt(1.0f - refractionIndx * refractionIndx * a) * normal + refractionIndx * (localRay - dotProduct(normal, localRay) * normal);
+                                emisionAcumulada = emisionAcumulada*(minTObject->getRefRgb() / pt);
 
                             }else{ // Absorcion
                                 intersecta = false;
                             } 
-                            //Lanzar nuevo rayo
-
-                            //Calcular BRDF
-                            //luz *= fr(x, wi, wo) * |n * wi| / p(wi)
-                            //Parar si no intersecta, absorbe -> luz del camino = 0
-                            //Si objeto emisor -> luz con valor
-                            /*bool il = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
-                            bounce = true;
-                            if(il){ 
-                                //cout << "Rebote explota." << endl; cout << "bounce: " << intersecta << endl;
-                                if(minTObject->hasEmission()){
-                                    yesyes= true;
-                                    cout << "lol" << endl;
-                                    intersecta = true;
-                                    cout << "intersecta: " << intersecta << endl;
-                                }
-                            }*/
+                            wi = localAMundo * wi;
+                            Ray newRay(interseccion, normalization(wi));
+                            rayoMundoRebotes = newRay;
                         }
                         bounce = true;
                         //cout << "bounce: " << intersecta << endl;
@@ -217,21 +188,36 @@ class Sensor{
     public:
 
         Sensor(){}
-
-        Sensor(DotDir _r, DotDir _u, DotDir _f, DotDir _o, float planeWidth, float planeHeight) :
+        
+        // Calcula la base de la camara en función del fov, aspect ratio y target
+        // Se calcula sabiendo el valor del vector front
+        Sensor(float fov, float aspect, DotDir target, float planeWidth, float planeHeight, DotDir _f = DotDir(0,0,1,0)) :
                 planeW(planeWidth), planeH(planeHeight) {
 
-            localAMundo.changeBase(_r, _u, _f, _o);
+            float ufRatio = tan(pi * 30 / (2.0f * 180));
+
+            cout << ufRatio << endl;
+
+            DotDir _u = DotDir(0,ufRatio * _f.mod(),0,0);
+
+            DotDir _l = DotDir(aspect * _u.mod(),0,0,0);
+
+            DotDir _o = target - _f;
+
+            cout << _l.toString() << endl;
+            cout << _u.toString() << endl;
+            cout << _f.toString() << endl;
+            cout << _o.toString() << endl;
+
+            localAMundo.changeBase(_l, _u, _f, _o);
         }
 
         // nThreads valor mínimo 1
         void lanzarRayos(const BoundingVolume &scene,  Image& imagen, int antiAliasing, const int nThreads = 1){
             
-            if(planeH <= planeW){
-                pixelSize = 2 / planeH;
-            }else{
-                pixelSize = 2 / planeW;
-            }
+            float pixelSizeX = 2 / planeW;
+            float pixelSizeY = 2 / planeH;
+
             
             ConcurrentBoundedQueue cbq;
             for(int i = 0; i < planeW; i = i + sizeCuadrante){
@@ -248,14 +234,14 @@ class Sensor{
                 }
             }
 
-            centrarEnElPlanoW = pixelSize * planeW / 2;
-            centrarEnElPlanoH = pixelSize * planeH / 2;
+            centrarEnElPlanoW = pixelSizeX * planeW / 2;
+            centrarEnElPlanoH = pixelSizeY * planeH / 2;
 
             std::vector<std::thread> th(nThreads);
             auto start = chrono::steady_clock::now();
 
             for(int i = 0; i < nThreads; ++i){
-                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, localAMundo);
+                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSizeX, pixelSizeY, centrarEnElPlanoW, centrarEnElPlanoH, planeW, localAMundo);
             }
             
             for(int i = 0; i < nThreads; ++i){

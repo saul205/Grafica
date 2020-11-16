@@ -60,8 +60,8 @@ void escenaComprobacion(Scene& escena){
 
 void cornellBox(Scene& escena){
 
-    std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,4,1), 4, 4));
+    plano->setDifBDRF(rgb(0.5,0.5,0.5));
     escena.addPlane(plano);
 
     //std::shared_ptr<Figure> plano6(new Plane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,-4.1,1), 4, 4));
@@ -69,21 +69,25 @@ void cornellBox(Scene& escena){
     //escena.addPlane(plano6);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setDifBDRF(rgb(0.7,0.2,0.2));
+    plano2->setDifBDRF(rgb(0.5,0.2,0.2));
+    plano2->setSepcBDRF(rgb(0.05,0.02,0.02));
     escena.addPlane(plano2);
     
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setDifBDRF(rgb(0.2,0.7,0.2));
+    plano3->setDifBDRF(rgb(0.2,0.5,0.2));
+    plano3->setSepcBDRF(rgb(0.02,0.05,0.02));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(0, 0, 1, 0), DotDir(-1, 0, 0, 0), DotDir(0,-2,2,1), 4, 4));
-    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano4->setDifBDRF(rgb(0.5,0.5,0.5));
+    plano4->setSepcBDRF(rgb(0.05,0.05,0.05));
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,2,2,1), 4, 4));
     plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano5->setSepcBDRF(rgb(0.05,0.05,0.05));
     escena.addPlane(plano5);
     
     //Image imagen = leer("./IMGS/seymour_park.ppm");
@@ -91,7 +95,7 @@ void cornellBox(Scene& escena){
     int x = escena.addSphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,2.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera = escena.getFigure(x);
     esfera->setDifBDRF(rgb(0.1,0.1,0.35));
-    esfera->setSepcBDRF(rgb(0.15,0.15,0.15));
+    esfera->setSepcBDRF(rgb(0.1,0.1,0.1));
     //esfera->setTexture(imagen);
 
     x = escena.addSphere(DotDir(1,0,3.5,1), DotDir(0,1,0,0), DotDir(0.5,0,3.5,0), rgb(0,0,0));
@@ -102,19 +106,14 @@ void cornellBox(Scene& escena){
     std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
     //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));
     esfera3->setRefBDRF(rgb(0.7,0.7,0.7));
+    esfera3->refractionIndex = 1.333;
 }
 
 int main(){
 
-    float W = 1500, H = 1500;
+    float W = 1900, H = 1900;
 
-    DotDir camera[4];
-    camera[0].setDotDir(2, 0, 0, 0);
-    camera[1].setDotDir(0, 2, 0, 0);
-    camera[2].setDotDir(0, 0, 8, 0);
-    camera[3].setDotDir(0, 0, -7, 1);
-
-    Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
+    Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,8,0));
     // cout << crossProduct(DotDir(0,1,0,0), DotDir(0,0,1,0)).toString() << endl;
     // 2000 X 2000 PLANO DE TRIANGULOS
     /*std::uniform_real_distribution<float> dist(0.0, 255.0);
@@ -139,7 +138,7 @@ int main(){
     // scene.addTriangleMesh(t);
     //scene.addTriangleMesh(v);
     cornellBox(scene);
-    scene.render("render", 10, 16);
+    scene.render("render", 20, 16);
 
     return 0;
 }

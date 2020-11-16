@@ -32,6 +32,7 @@ class Figure {
     public:
 
         BRDF material;
+        float refractionIndex = 1.000293;
         Figure(){}
         
         virtual bool intersects(Ray ray, float& t, DotDir& p) = 0;
