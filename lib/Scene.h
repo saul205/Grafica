@@ -123,7 +123,8 @@ class Scene {
             int size = t.getSize();
             for(float i = 0; i < size; i++){
                 Triangle tri = t[i];
-                tri.setRgb(rgb(i, i, i) / size * 255);
+                tri.setDifBDRF(rgb(0.3, 0, 0.3));
+                tri.setSepcBDRF(rgb(0.2, 0, 0.2));
                 //tri.setRgb(rgb(255, 255, 255));
                 figuras.push_back(std::make_shared<Triangle>(tri));
             }

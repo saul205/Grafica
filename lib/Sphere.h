@@ -75,7 +75,7 @@ class Sphere : public Figure{
 
             return true;
           } else {                    // La cámara está dentro de la esfera
-            return false;
+            return (sol1 > sol2) ? sol1 : sol2;
           }
         }
         

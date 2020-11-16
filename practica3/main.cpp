@@ -68,34 +68,40 @@ void cornellBox(Scene& escena){
     //plano6->setDifBDRF(rgb(0.7,0.7,0.7));
     //escena.addPlane(plano6);
 
-    std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
+    std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
     plano2->setDifBDRF(rgb(0.7,0.2,0.2));
     escena.addPlane(plano2);
     
-    std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
+    std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
     plano3->setDifBDRF(rgb(0.2,0.7,0.2));
     escena.addPlane(plano3);
 
-    std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
+    std::shared_ptr<Figure> plano4(new Plane(DotDir(0, 0, 1, 0), DotDir(-1, 0, 0, 0), DotDir(0,-2,2,1), 4, 4));
     plano4->setDifBDRF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
-    escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
+    escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
 
-    std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
+    std::shared_ptr<Figure> plano5(new Plane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,2,2,1), 4, 4));
     plano5->setDifBDRF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
     
-    Image imagen = leer("./IMGS/seymour_park.ppm");
+    //Image imagen = leer("./IMGS/seymour_park.ppm");
 
-    int x = escena.addSphere(DotDir(1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,2.5,0), rgb(0,0,0));
+    int x = escena.addSphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,2.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera = escena.getFigure(x);
-    esfera->setDifBDRF(rgb(0.2,0.2,0.7));
+    esfera->setDifBDRF(rgb(0.1,0.1,0.35));
+    esfera->setSepcBDRF(rgb(0.15,0.15,0.15));
     //esfera->setTexture(imagen);
 
-    x = escena.addSphere(DotDir(-1,-1.5,3.5,1), DotDir(0,1,0,0), DotDir(-0.5,-1.5,3.5,0), rgb(0,0,0));
+    x = escena.addSphere(DotDir(1,-1.5,3.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,3.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
-    esfera2->setDifBDRF(rgb(0.7,0.7,0.2));
+    esfera2->setSepcBDRF(rgb(0.7,0.7,0.7));
+
+    x = escena.addSphere(DotDir(1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,2.5,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
+    //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));
+    esfera3->setRefBDRF(rgb(0.7,0.7,0.7));
 }
 
 int main(){
@@ -126,13 +132,14 @@ int main(){
     //TriangleMesh t;
     //TriangleMesh v;
     //t.read("galleon.ply");
-    // v.read("canstick.ply");
-    // v.scale(16,16,16);
+    //v.read("canstick.ply");
+    //v.scale(16,16,16);
+    //v.move(DotDir(0, 0, 2, 1));
     //t.move(DotDir(0, 0, 1000, 0));
     // scene.addTriangleMesh(t);
     //scene.addTriangleMesh(v);
     cornellBox(scene);
-    scene.render("render", 300, 8);
+    scene.render("render", 10, 16);
 
     return 0;
 }

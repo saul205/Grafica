@@ -44,7 +44,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     float w = random();
 
                     // Como f = 1 la tercera componente es fija
-                    planePoint.setDotDir(pixelSize * i - centrarEnElPlanoW + w, - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
+                    planePoint.setDotDir(- (pixelSize * i - centrarEnElPlanoW + w), - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
                     dir = planePoint - oLocal;
 
                     DotDir dirMundo = localAMundo*dir;
@@ -62,18 +62,22 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     bool bounce = false;
                     bool yesyes = false;
                     bool intersecta = true;
+                    float distance = 0;
                     while(intersecta) {
                         
                         intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
                         //if(bounce) cout << "tr" << endl;
                         //if(yesyes) {cout << "true" << endl;}
                         if(intersecta && minTObject->hasEmission()) {
-                            emisionFinalRayo = minTObject->getEmission(interseccion);
+                            distance += (interseccion - rayoMundoRebotes.getOrigen()).mod();
+                            emisionFinalRayo = minTObject->getEmission(interseccion) / (distance * distance);
                             //cout << "emisionFinalRayo:   " << emisionFinalRayo.r << "  "  << emisionFinalRayo.g << "   " << emisionFinalRayo.b << "   "<< endl;
                             //cout << "emisionAcumulada:   " << emisionAcumulada.r << "  "  << emisionAcumulada.g << "   " << emisionAcumulada.b << "   "<< endl;
                             //if(bounce) {cout << "jj" << endl;};
                             intersecta = false;
                         } else if(intersecta){
+
+                            distance += (interseccion - rayoMundoRebotes.getOrigen()).mod();
                             
                             //Ruleta Rusa
                             float pk = minTObject->material.kd.maximo();
@@ -103,7 +107,11 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 i = roussianRoulette();
                                 float inclination = acos(sqrt(1 - i));
                                 wi = DotDir(sin(inclination)*cos(azimuth), sin(inclination)*sin(azimuth), cos(inclination), 0);
+                                
+                                DotDir normal = mundoALocal*base[2];
+                                
                                 float coseno = abs(dotProduct(mundoALocal*base[2], wi));
+
                                 wi = localAMundo * wi;
                                 //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
@@ -135,7 +143,26 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                             }else if(p < pk + ps + pt){ // Refraccion
                                 // Snell's Law
-                                intersecta = false;
+                                float inclination = angle(mundoALocal * rayoMundoRebotes.getDir(), mundoALocal * base[2]);
+                                float azimuth = angle(mundoALocal * rayoMundoRebotes.getDir(), mundoALocal * base[0]);
+
+                                FigureProperties f;
+
+                                inclination = 180 + f.getSnellRefractionAngle(inclination);
+                                azimuth = 180 + f.getSnellRefractionAngle(azimuth);
+
+                                wi = DotDir(sin(inclination)*cos(azimuth), sin(inclination)*sin(azimuth), cos(inclination), 0);
+                                
+                                DotDir normal = mundoALocal*base[2];
+                                
+                                float coseno = abs(dotProduct(mundoALocal*base[2], wi));
+
+                                wi = localAMundo * wi;
+                                //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
+                                emisionAcumulada = emisionAcumulada*(minTObject->getRefRgb()*(coseno/(pi*pt)));
+                                Ray newRay(interseccion, wi);
+                                rayoMundoRebotes = newRay;
+
                             }else{ // Absorcion
                                 intersecta = false;
                             } 

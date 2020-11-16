@@ -79,12 +79,20 @@ class Figure {
             return material.kd;
         }
 
+        rgb getRefRgb(){
+            return material.kt;
+        }
+
         void setDifBDRF(rgb difuso){
             material.kd = difuso;
         }
 
         void setSepcBDRF(rgb spec){
             material.ks = spec;
+        }
+
+        void setRefBDRF(rgb ref){
+            material.kt = ref;
         }
 
 };
