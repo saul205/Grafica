@@ -109,6 +109,12 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 wi = DotDir(sin(inclination)*cos(azimuth), sin(inclination)*sin(azimuth), cos(inclination), 0);
                                 
                                 DotDir normal = mundoALocal*base[2];
+
+                                if(dotProduct(normal, mundoALocal * rayoMundoRebotes.getDir()) > 1){
+                                    cout << "Escalar" << dotProduct(normal, mundoALocal * rayoMundoRebotes.getDir());
+                                    normal = DotDir(-normal.getX(), -normal.getY(), -normal.getZ(), 0);
+                                }
+                                
                                 
                                 float coseno = abs(dotProduct(normal, wi));
 
