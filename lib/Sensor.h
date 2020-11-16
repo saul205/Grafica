@@ -19,8 +19,7 @@ const int sizeCuadrante = 5;
 const float fov = 1;
 
 void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, 
-                        const float pixelSize, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, DotDir oLocal,
-                        DotDir oMundo, Transformation localAMundo){
+                        const float pixelSize, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, Transformation localAMundo){
 
     std::uniform_real_distribution<float> dist(0.0, pixelSize);
     std::default_random_engine gen;
@@ -45,12 +44,13 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                     // Como f = 1 la tercera componente es fija
                     planePoint.setDotDir(- (pixelSize * i - centrarEnElPlanoW + w), - pixelSize * j + centrarEnElPlanoH - h, 1, 1);
-                    dir = planePoint - oLocal;
 
-                    DotDir dirMundo = localAMundo*dir;
+                    DotDir oLocal = DotDir(0,0,0,1);
+
+                    DotDir dirMundo = localAMundo*(planePoint-oLocal);
 
                     dirMundo = normalization(dirMundo);
-                    Ray rayoMundo( oMundo, dirMundo);
+                    Ray rayoMundo( localAMundo * oLocal, dirMundo);
                   
                     std::shared_ptr<Figure> minTObject;
                     DotDir interseccion;
@@ -110,7 +110,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 
                                 DotDir normal = mundoALocal*base[2];
                                 
-                                float coseno = abs(dotProduct(mundoALocal*base[2], wi));
+                                float coseno = abs(dotProduct(normal, wi));
 
                                 wi = localAMundo * wi;
                                 //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
@@ -204,8 +204,6 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 class Sensor{
     private:
 
-        DotDir lMundo, uMundo, fMundo, oMundo;
-        DotDir oLocal;
         Transformation localAMundo;
         float planeW, planeH;
         float pixelSize, centrarEnElPlanoW, centrarEnElPlanoH;
@@ -215,10 +213,9 @@ class Sensor{
         Sensor(){}
 
         Sensor(DotDir _r, DotDir _u, DotDir _f, DotDir _o, float planeWidth, float planeHeight) :
-                lMundo(_r), uMundo(_u), fMundo(_f), oMundo(_o), planeW(planeWidth), planeH(planeHeight) {
+                planeW(planeWidth), planeH(planeHeight) {
 
-            oLocal = DotDir(0, 0, 0, 1);
-            localAMundo.changeBase(lMundo, uMundo, fMundo, oMundo);
+            localAMundo.changeBase(_r, _u, _f, _o);
         }
 
         // nThreads valor mínimo 1
@@ -252,7 +249,7 @@ class Sensor{
             auto start = chrono::steady_clock::now();
 
             for(int i = 0; i < nThreads; ++i){
-                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, oLocal, oMundo, localAMundo);
+                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSize, centrarEnElPlanoW, centrarEnElPlanoH, planeW, localAMundo);
             }
             
             for(int i = 0; i < nThreads; ++i){

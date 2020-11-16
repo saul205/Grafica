@@ -94,11 +94,11 @@ void cornellBox(Scene& escena){
     esfera->setSepcBDRF(rgb(0.15,0.15,0.15));
     //esfera->setTexture(imagen);
 
-    x = escena.addSphere(DotDir(1,-1.5,3.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,3.5,0), rgb(0,0,0));
+    x = escena.addSphere(DotDir(1,0,3.5,1), DotDir(0,1,0,0), DotDir(0.5,0,3.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
     esfera2->setSepcBDRF(rgb(0.7,0.7,0.7));
 
-    x = escena.addSphere(DotDir(1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,2.5,0), rgb(0,0,0));
+    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
     //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));
     esfera3->setRefBDRF(rgb(0.7,0.7,0.7));
@@ -109,10 +109,10 @@ int main(){
     float W = 1500, H = 1500;
 
     DotDir camera[4];
-    camera[0].setDotDir(1, 0, 0, 0);
-    camera[1].setDotDir(0, 1, 0, 0);
-    camera[2].setDotDir(0, 0, 1, 0);
-    camera[3].setDotDir(0, 0, 0, 1);
+    camera[0].setDotDir(2, 0, 0, 0);
+    camera[1].setDotDir(0, 2, 0, 0);
+    camera[2].setDotDir(0, 0, 8, 0);
+    camera[3].setDotDir(0, 0, -7, 1);
 
     Scene scene(W, H, camera[0], camera[1], camera[2], camera[3]);
     // cout << crossProduct(DotDir(0,1,0,0), DotDir(0,0,1,0)).toString() << endl;
