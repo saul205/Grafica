@@ -195,13 +195,10 @@ class Sensor{
                 planeW(planeWidth), planeH(planeHeight) {
 
             float ufRatio = tan(pi * 30 / (2.0f * 180));
-
             cout << ufRatio << endl;
-
+            
             DotDir _u = DotDir(0,ufRatio * _f.mod(),0,0);
-
             DotDir _l = DotDir(aspect * _u.mod(),0,0,0);
-
             DotDir _o = target - _f;
 
             cout << _l.toString() << endl;
@@ -243,7 +240,6 @@ class Sensor{
             for(int i = 0; i < nThreads; ++i){
                 th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSizeX, pixelSizeY, centrarEnElPlanoW, centrarEnElPlanoH, planeW, localAMundo);
             }
-            
             for(int i = 0; i < nThreads; ++i){
                 th[i].join();
             }
