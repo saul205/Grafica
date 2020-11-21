@@ -168,7 +168,8 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             }
                             else{ // Absorcion
                                 intersecta = false;
-                            } 
+                            }
+
                             wi = localAMundo * wi;
                             Ray newRay(interseccion, normalization(wi));
                             rayoMundoRebotes = newRay;
@@ -178,8 +179,8 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             std::default_random_engine generator;
                             float light = distLight(generator);
 
-                            wi = luces[light].getPosition() - interseccion;
-                            Ray newShadowRay(interseccion, normalization(wi));
+                            DotDir shadowRay = luces[light].getPosition() - interseccion;
+                            Ray newShadowRay(interseccion, normalization(shadowRay));
                             
                             //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
 
@@ -187,8 +188,8 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                             bool luzIntersecta = scene.intersect(newShadowRay, minTObject, interseccion, intersecciones);
 
-                            if(!luzIntersecta || (interseccion - punto).mod() > wi.mod()){
-                                emisionFinalRayo = emisionFinalRayo + luces[light].getEmission() / (wi.mod() * wi.mod());
+                            if(!luzIntersecta || (interseccion - punto).mod() > shadowRay.mod()){
+                                emisionFinalRayo = emisionFinalRayo + (luces[light].getEmission() / (shadowRay.mod() * shadowRay.mod()));
                             }
                         }
                         bounce = true;
