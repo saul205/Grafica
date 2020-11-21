@@ -102,11 +102,12 @@ void cornellBox(Scene& escena){
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
     esfera2->setSepcBDRF(rgb(0.7,0.7,0.7));
 
-    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(0,0,0));
+    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
     //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));
     esfera3->setRefBDRF(rgb(0.7,0.7,0.7));
-    esfera3->refractionIndex = 1.333;
+    //esfera3->setSepcBDRF(rgb(0.7,0.7,0.7));
+    esfera3->refractionIndex = 1.55;
 }
 
 int main(){
@@ -138,7 +139,7 @@ int main(){
     // scene.addTriangleMesh(t);
     //scene.addTriangleMesh(v);
     cornellBox(scene);
-    scene.render("render", 20, 16);
+    scene.render("render", 20, 8);
 
     return 0;
 }

@@ -66,6 +66,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     Ray rayoMundoRebotes = rayoMundo;
                     bool bounce = false;
                     bool intersecta = true;
+    
                     while(intersecta) {
                         
                         intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
@@ -111,7 +112,6 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 mundoALocal = inverse(localAMundo);
                                 
                                 float coseno = abs(dotProduct(mundoALocal * base[2], wi));
-
                                 
                                 //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
@@ -135,23 +135,28 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             }else if(p < pk + ps + pt){ // Refraccion
 
                                 //Comprobación si estás dentro o fuera para calculo de indice refracción
-                                float refractionIndx = minTObject->refractionIndex / airRefraction;
-                                if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0){
-                                    refractionIndx = airRefraction / minTObject->refractionIndex;
-                                }
+                                //float refractionIndx = minTObject->refractionIndex;
+                                //if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0){
+                                //    base[2] = DotDir(-base[2].getX(), -base[2].getY(), -base[2].getZ(), 0);
+                                //}
 
                                 //Calculo de matrices
                                 localAMundo.changeBase(base[0], base[1], base[2], interseccion);
                                 mundoALocal = inverse(localAMundo);
+                    
                                 // Snell's Law
-
-                                DotDir normal = mundoALocal * base[2];
-                                DotDir localRay = mundoALocal * rayoMundoRebotes.getDir();
-
-
-                                float a = 1 - dotProduct(normal, localRay) * dotProduct(normal, localRay);
-
-                                wi = sqrt(1.0f - refractionIndx * refractionIndx * a) * normal + refractionIndx * (localRay - dotProduct(normal, localRay) * normal);
+                                DotDir normal = normalization(mundoALocal * base[2]);
+                                DotDir i = normalization(mundoALocal * rayoMundoRebotes.getDir());
+                                
+                                //cout << i.toString() << endl;
+                                //cout << normal.toString() <<endl;
+                                //cout << i.toString() <<endl;
+                                float tita1 =  dotProduct(normal, i);
+                                float n1n2 = 1.0f / minTObject->refractionIndex;
+                                //cout << tita1 << endl;
+                                //cout << n1n2*n1n2*sin(tita1)*sin(tita1) << endl;
+                                wi = n1n2*(i + cos(tita1)*normal) - normal*sqrtf(1.0f - n1n2*n1n2*sin(tita1)*sin(tita1));
+                                //cout << wi.toString() << endl;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getRefRgb() / pt);
 
                             }else{ // Absorcion
