@@ -16,6 +16,7 @@ class Scene {
         float color_res;
 
         std::vector<shared_ptr<Figure>> figuras;
+        std::vector<LightSource> luces;
 
     public:
 
@@ -105,14 +106,19 @@ class Scene {
             return figuras.size() - 1;
         }
 
+        int addLight(DotDir position, rgb emision){
+            luces.push_back(LightSource(emision, position));
+            return luces.size() - 1;
+        }
+
         void render(string output, int AA, int hilos = 1, int mode = 1){
             BoundingVolume bv(figuras);
             cout << "N Figuras: " << figuras.size() << endl;
             cout << "N Nodos: " << bv.getSize() << endl;
-            renderer.lanzarRayos(bv, imagen, AA, hilos);
+            renderer.lanzarRayos(bv, luces, imagen, AA, hilos);
 
             ToneMapper tm;
-            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 20.0f, 1/2.2f);
+            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 5.0f, 2.2f);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

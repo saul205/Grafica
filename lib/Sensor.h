@@ -19,7 +19,7 @@ const int sizeCuadrante = 5;
 const float fov = 1;
 const float airRefraction = 1.000293;
 
-void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, 
+void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, vector<LightSource> luces,
                         const float pixelSizeX, const float pixelSizeY, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, Transformation localAMundo){
 
     std::uniform_real_distribution<float> distX(0.0, pixelSizeX);
@@ -72,7 +72,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                         intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
 
                         if(intersecta && minTObject->hasEmission()) {
-                            emisionFinalRayo = minTObject->getEmission(interseccion);
+                            emisionFinalRayo = emisionFinalRayo + minTObject->getEmission(interseccion);
                             intersecta = false;
                         } else if(intersecta){
                             
@@ -81,6 +81,12 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             float ps = minTObject->material.ks.maximo();
                             float pt = minTObject->material.kt.maximo();
                             float maxes = pk + ps + pt;
+                            float pl = 0;
+
+                            if(bounce){
+                                pl = maxes * 0.1;
+                                maxes += maxes * 0.1;
+                            }
 
                             pk = bounce ? 0.9 * (pk / maxes) : (pk / maxes);
                             ps = bounce ? 0.9 * (ps / maxes) : (ps / maxes);
@@ -159,12 +165,33 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 //cout << wi.toString() << endl;
                                 emisionAcumulada = emisionAcumulada*(minTObject->getRefRgb() / pt);
 
-                            }else{ // Absorcion
+                            }
+                            else{ // Absorcion
                                 intersecta = false;
                             } 
                             wi = localAMundo * wi;
                             Ray newRay(interseccion, normalization(wi));
                             rayoMundoRebotes = newRay;
+
+                            int totalLights = luces.size();
+                            std::uniform_real_distribution<float> distLight(0.0, totalLights);
+                            std::default_random_engine generator;
+                            float light = distLight(generator);
+
+                            wi = luces[light].getPosition() - interseccion;
+                            Ray newShadowRay(interseccion, normalization(wi));
+
+                            float coseno = abs(dotProduct(base[2], wi));
+                            
+                            //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
+
+                            DotDir punto = interseccion;
+
+                            bool luzIntersecta = scene.intersect(newShadowRay, minTObject, interseccion, intersecciones);
+
+                            if(!luzIntersecta || (interseccion - punto).mod() > wi.mod()){
+                                emisionFinalRayo = emisionFinalRayo + luces[light].getEmission() / (wi.mod() * wi.mod());
+                            }
                         }
                         bounce = true;
                         //cout << "bounce: " << intersecta << endl;
@@ -215,7 +242,7 @@ class Sensor{
         }
 
         // nThreads valor mínimo 1
-        void lanzarRayos(const BoundingVolume &scene,  Image& imagen, int antiAliasing, const int nThreads = 1){
+        void lanzarRayos(const BoundingVolume &scene, vector<LightSource> luces, Image& imagen, int antiAliasing, const int nThreads = 1){
             
             float pixelSizeX = 2 / planeW;
             float pixelSizeY = 2 / planeH;
@@ -243,7 +270,7 @@ class Sensor{
             auto start = chrono::steady_clock::now();
 
             for(int i = 0; i < nThreads; ++i){
-                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, pixelSizeX, pixelSizeY, centrarEnElPlanoW, centrarEnElPlanoH, planeW, localAMundo);
+                th[i] = thread(&lanzarRayosParalelizado, std::ref(imagen), std::ref(cbq), antiAliasing, scene, luces, pixelSizeX, pixelSizeY, centrarEnElPlanoW, centrarEnElPlanoH, planeW, localAMundo);
             }
             for(int i = 0; i < nThreads; ++i){
                 th[i].join();
