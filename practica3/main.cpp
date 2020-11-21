@@ -83,7 +83,7 @@ void cornellBox(Scene& escena){
     plano4->setSepcBDRF(rgb(0.05,0.05,0.05));
     escena.addPlane(plano4);
 
-    //escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
+    escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
     
     escena.addLight(DotDir(0,0,0,1), rgb(10e5,10e5,10e5));
 

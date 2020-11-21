@@ -180,8 +180,6 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                             wi = luces[light].getPosition() - interseccion;
                             Ray newShadowRay(interseccion, normalization(wi));
-
-                            float coseno = abs(dotProduct(base[2], wi));
                             
                             //cout << (minTObject->getDifRgb()*(coseno/(pi*pk))).r << endl;
 
