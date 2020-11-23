@@ -1,23 +1,12 @@
-#ifndef LAB_H
-#define LAB_H
+#include "Lab.h"
 
-#include "Image.h"
+lab::lab(float _l, float _a, float _b){
+    l = _l;
+    a = _a;
+    b = _b;
+}
 
-struct lab{
-    float l = 0.0f;
-    float a = 0.0f;
-    float b = 0.0f;
-
-    lab(float _l, float _a, float _b){
-        l = _l;
-        a = _a;
-        b = _b;
-    }
-
-    lab(){}
-};
-
-
+// Convierte la imagen de RGB a lab
 void RGBToLab(Image& img, std::vector<lab>& data){
 
     data.clear();
@@ -25,6 +14,8 @@ void RGBToLab(Image& img, std::vector<lab>& data){
 
     for(int i = 0; i < img.getHeight()*img.getWidth(); ++i){
         
+        // Múltiples factores de conversión para obtener el LAB
+        // a partir de los valores RGB
         rgb color = img.get(i);
         float r = color.r / 255.0f;
         float g = color.g / 255.0f;
@@ -57,10 +48,13 @@ void RGBToLab(Image& img, std::vector<lab>& data){
     }
 }
 
+// Convierte la imagen de lab a RGB
 void LabToRGB(Image& img, std::vector<lab>& data){
 
     for(int i = 0; i < img.getHeight()*img.getWidth(); ++i){
         
+        // Múltiples factores de conversión para obtener el RGB
+        // a partir de los valores lab
         float refX = 95.047f;
         float refY = 100.000f;
         float refZ = 108.883f;
@@ -95,5 +89,3 @@ void LabToRGB(Image& img, std::vector<lab>& data){
         img.setRGB(i, rgb(red*255.0f, green*255.0f, blue*255.0f));
     }
 }
-
-#endif
