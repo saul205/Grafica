@@ -2,7 +2,7 @@
 
 void ToneMapper::clamping(Image &img)
 {
-    const float maximo = img.getMaximo();
+
     for (int i = 0; i < img.getHeight(); ++i)
     {
         for (int j = 0; j < img.getWidth(); ++j)
@@ -81,7 +81,7 @@ void ToneMapper::gammaCurve(Image &img, const float gamma)
 
 void ToneMapper::gammaCurveAndClamping(Image &img, const float clamping, const float gamma)
 {
-    const float maximo = img.getMaximo();
+
     for (int i = 0; i < img.getHeight(); ++i)
     {
         for (int j = 0; j < img.getWidth(); ++j)

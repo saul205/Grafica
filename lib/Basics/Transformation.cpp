@@ -103,7 +103,6 @@ string Transformation::toString() const
 Transformation transpuesta(const Transformation &t1)
 {
     Transformation t;
-    int i, j;
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
