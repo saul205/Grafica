@@ -18,6 +18,7 @@ const int sizeCuadrante = 5;
 const float fov = 1;
 const float airRefraction = 1.000293;
 
+// Calcula la proporción entre refracción y reflexión usando las leyes de Fresnel
 float fresnel(const DotDir& incidente, const DotDir& normal, const float& refractionIndex){
     float cosi = dotProduct(incidente, normal);
     if(cosi < -1) cosi = -1;
@@ -39,6 +40,7 @@ float fresnel(const DotDir& incidente, const DotDir& normal, const float& refrac
     }
 }
 
+// Obtiene las probabilidades correspondientes al comportamiento del material
 void getMaterialProbabilities(shared_ptr<Figure> f, Ray rayo, DotDir normal, float& pk, float& ps, float& pt, bool bounce){
 
     if (f->material.isDielectrico()){
@@ -94,6 +96,7 @@ DotDir getRefractedRay(DotDir incidente, DotDir normal, float refractionIndex){
     return k < 0 ? DotDir(0,0,0,1) : eta * incidente + (eta * cosi - sqrtf(k)) * n;
 }
 
+// Lleva a cabo el proceso de pathtracing
 void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, vector<LightSource> luces,
                         const float pixelSizeX, const float pixelSizeY, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, Transformation localAMundo){
 
@@ -209,8 +212,6 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                         bounce = true;
                     }
 
-                    //cout << emisionAcumulada.r<< "  " << emisionAcumulada.r << "  " << emisionAcumulada.b << endl;
-                    //cout << emisionFinalRayo.r << "  " << emisionFinalRayo.g << "  " << emisionFinalRayo.b << endl;
                     emisionFinal = emisionFinal + emisionFinalRayo * emisionAcumulada;
                 }  
 

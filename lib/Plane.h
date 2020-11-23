@@ -62,6 +62,8 @@ class Plane : public Figure {
             return false;
         }
 
+        //--------------------GETTERS-------------------------
+
         BoundingBox getBound() override {
             DotDir x = center + (width / 2 * v2n) + (height / 2 * v1n);
             DotDir y = center - (height / 2 * v1n) + (width / 2 * v2n);
@@ -81,8 +83,6 @@ class Plane : public Figure {
                 DotDir(minX, minY, minZ, 1)
                 );
         }
-
-        //--------------------GETTERS-------------------------
 
         DotDir getNormal(){
             return normal;
@@ -105,12 +105,6 @@ class Plane : public Figure {
                 base1 = normalization(base1);
         }
 
-        //--------------------SETTERS-------------------------
-
-        void setNormal(DotDir _normal){
-            normal = _normal;
-        }
-  
         rgb getTexture(const DotDir& interseccion) override {
 
             DotDir v = interseccion - center;
@@ -120,6 +114,14 @@ class Plane : public Figure {
 
             return textura.getRGB(p1*textura.getHeight(), p2*textura.getWidth());
         };
+
+        //--------------------SETTERS-------------------------
+
+        void setNormal(DotDir _normal){
+            normal = _normal;
+        }
+  
+        
 
 };
 

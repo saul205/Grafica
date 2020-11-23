@@ -6,6 +6,14 @@
 #include <algorithm>
 
 class BoundingVolume{
+
+    /*
+     * Es el nodo de la la lista que tiene la infromación de una
+     * figura precalculada, su índice (a qué figura de la lista de
+     * figuras representa), su bounding box y su centroide.
+     * Se usa para tener los datos precalculados en lugar de tener
+     * que calcularlos constantemente.
+     */
     struct PrimitiveInfo{
 
         PrimitiveInfo(){}
@@ -22,6 +30,11 @@ class BoundingVolume{
         DotDir centroid;
     };
 
+    /*
+     * Nodo del árbol en construcción, con hijos izquierdo y derecho,
+     * lista de primitivas que contiene, boundingBox y eje por el que se parte
+     * la bounding box en la división en hijos.
+     */
     struct Node{
 
         void InitLeaf(const BoundingBox& b){
@@ -47,6 +60,11 @@ class BoundingVolume{
         std::shared_ptr<Node> left, right;
     };
 
+    /*
+     * Nodo del árbol aplanado, contiene la bounding box, los índices de las figuras
+     * que contiene, el axis por el que se parte para llegar a sus hijosy los índices
+     * de su hijo izquierdo y derecho.
+     */
     struct LinearNode{
         BoundingBox bound;
         std::vector<int> primitives;
@@ -55,6 +73,8 @@ class BoundingVolume{
 
     public:
 
+        // Devuelve cierto si y solo si el rayo ray intersecta con alguna figura, de ser así, 
+        // el valor de interseccion es el del punto de interseccion
         bool intersect(Ray ray, std::shared_ptr<Figure>& figura, DotDir& interseccion, float &intersecciones) const {
             bool intersect = false;
             std::vector<int> nodosAVisitar;
@@ -101,6 +121,7 @@ class BoundingVolume{
             return intersect;
         }
 
+        // Construye la bounding volume hierarchy
         BoundingVolume(std::vector<std::shared_ptr<Figure>> figuras) : figuras(figuras){
             if(figuras.empty()){
                 return;
@@ -120,15 +141,9 @@ class BoundingVolume{
             nodos.reserve(totalNodes);
             int offset = 0;
             int offset2 = flattenTree(root, offset);
-
-            /*cout << "Total nodes: " << totalNodes << endl;
-            for(LinearNode l : nodos){
-                cout << l.primitives.size() << endl;
-                cout << l.bound.getTop().toString() << endl;
-                cout << l.bound.getBottom().toString() << endl;
-            }*/
         }
 
+        // Construye el árbol de la BVH y devuelve la raíz del mismo
         std::shared_ptr<Node> recursiveBuild(std::vector<PrimitiveInfo> &primitiveInfo, int start, int end, int &totalNodes){
             std::shared_ptr<Node> nodo(new Node()); 
             int nPrimitives = end - start;

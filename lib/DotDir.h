@@ -31,6 +31,7 @@ class DotDir {
          c[3] = w;
      }
 
+     // GETTERS de los componentes
      float getX() const {
        return c[0];
      }
@@ -46,7 +47,8 @@ class DotDir {
      float getW() const {
        return c[3];
      }
-
+    
+     //Establece valores en las componentes
      void setDotDir(float x, float y, float z, float w){
          c[0] = x;
          c[1] = y;
@@ -54,14 +56,18 @@ class DotDir {
          c[3] = w;
      }
 
+     //Devuelve el modulo
      float mod() const {
          return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
      }
 
+     //Imprime una cadena con el vector
      string toString() const{
        return to_string(c[0]) + ", " + to_string(c[1]) + ", " + to_string(c[2]) + ", " + to_string(c[3]);
      }
 
+     //i >= 0 AND i <= 3
+     // Devuelve el dato de la componente i-ésima.
      float operator[](const int i) const {
        if(i < 0 || i > 3){
          return 0;
@@ -70,6 +76,8 @@ class DotDir {
        return c[i];
      }
 
+     //i >= 0 AND i <= 3
+     // Devuelve el dato de la componente i-ésima.
      float operator[](int i) {
        if(i < 0 || i > 3){
          return 0;
@@ -79,10 +87,12 @@ class DotDir {
      }
 };
 
+//Divide alas componentes de un vector por div
 DotDir operator/(const DotDir& dd1, float div){
-  return DotDir(dd1.c[0] / div, dd1.c[1] / div, dd1.c[2] / div, dd1.c[2]);
+  return DotDir(dd1.c[0] / div, dd1.c[1] / div, dd1.c[2] / div, dd1.c[3]);
 }
 
+// Suma de DotDir
 DotDir operator+(const DotDir& dd1, const DotDir& dd2){
   // Dirección + Dirección = Dirección OK, w = 0
   // Punto + Punto = NO HACER NO OK, w = 0
@@ -91,6 +101,7 @@ DotDir operator+(const DotDir& dd1, const DotDir& dd2){
   return DotDir(dd1.c[0] + dd2.c[0], dd1.c[1] + dd2.c[1], dd1.c[2] + dd2.c[2], dd1.c[3] + dd2.c[3]);
 }
 
+//Resta de DotDir
 DotDir operator-(const DotDir& dd1, const DotDir& dd2){
   // Dirección - Dirección = Dirección OK, w = 0
   // Punto - Punto = Dirección OK, w = 0
@@ -99,9 +110,11 @@ DotDir operator-(const DotDir& dd1, const DotDir& dd2){
   return DotDir(dd1.c[0] - dd2.c[0], dd1.c[1] - dd2.c[1], dd1.c[2] - dd2.c[2], dd1.c[3] - dd2.c[3]);
 }
 
+// Multiplicación de DotDir por float
 DotDir operator*(const DotDir& dd1, float t){
   return DotDir(dd1.c[0] * t, dd1.c[1] * t, dd1.c[2] * t, dd1.c[3]);
 }
+
 DotDir operator*(float t, const DotDir& dd1){
   // Dirección - Dirección = Dirección OK, w = 0
   // Punto - Punto = Dirección OK, w = 0

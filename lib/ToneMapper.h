@@ -14,6 +14,7 @@ class ToneMapper{
 
     ToneMapper(){}
 
+    // Clamping a 1
     void clamping(Image& img){
         const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
@@ -29,6 +30,7 @@ class ToneMapper{
         }
     }
 
+    // Equalización
     void equalization(Image& img){
 
         // Buscar máximo o cogerlo directamente?
@@ -51,6 +53,7 @@ class ToneMapper{
         }
     }
 
+    // Clamp y equalización
     void equalizeAndClamp(Image& img, const float clamping){
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
@@ -65,6 +68,7 @@ class ToneMapper{
         }
     }
 
+    // curva Gamma
     void gammaCurve(Image& img, const float gamma = 2.2){
         const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
@@ -80,6 +84,7 @@ class ToneMapper{
         }
     }
 
+    // curva Gamma + clamping
     void gammaCurveAndClamping(Image& img, const float clamping, const float gamma = 2.2){
         const float maximo = img.getMaximo();
         for(int i = 0; i < img.getHeight(); ++i){
@@ -95,6 +100,7 @@ class ToneMapper{
         }
     }
 
+    // Reinhard - versión antigua
     void Reinhard(Image& img, float exp, float white = 2, const float gamma = 2.2){
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
@@ -109,7 +115,7 @@ class ToneMapper{
         }
     }
 
-
+    // REinhard - versión nueva
     void ReinhardToneMapper(Image& img, const float a = 1.5f, const float delta = 0.18f){
         std::vector<lab> data;
         RGBToLab(img, data);
@@ -157,6 +163,7 @@ class ToneMapper{
         return ((x *(A*x + C*B) + D*E) / (x*(A*x + B) + D*F)) - E/F;
     } 
 
+    // Tone Mapper Uncharted 2 Filmic
     void Filmic(Image& img, float W = 10, float exp = 2.0) {
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){

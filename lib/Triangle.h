@@ -153,10 +153,12 @@ class Triangle : public Figure {
 
         }
 
+        // Devuelve el centro del triangulo
         DotDir getCenter() override {
             return center;
         }
 
+        // Devuelve una base creada en el punto de intersección del triangulo
         void getBase(DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) override {
             base2 = normal;
             base1 = crossProduct(base2, v0v1);
@@ -170,6 +172,7 @@ class Triangle : public Figure {
                 base1 = normalization(base1);
         }
 
+        // Devuelve una bounding box que cubre el triangulo
         BoundingBox getBound() override {
 
             float maxX = max( max(v0.getX(), v1.getX()), v2.getX());
@@ -186,6 +189,7 @@ class Triangle : public Figure {
                 );
         }
 
+        // Aplica una transformación sobre el triángulo
         void transform(Transformation t) override {
             v0 = t * v0;
             v1 = t * v1;

@@ -185,6 +185,7 @@ void escribir(std::string nombre, Image& img, const int col_res){
         write += std::to_string(col_res) + "\n";
         f << write;
         
+        // Escribe las filas de la imagen
         for(int i = 0; i < img.getHeight(); ++i){
             f << img.toStringRow(i, col_res, maximo) << "\n";
         }

@@ -15,6 +15,7 @@ class TriangleMesh{
         std::vector<Triangle> triangulos;
         DotDir center, top, bottom;
 
+        // Aplica una transformación a la malla de triangulos
         void transform(Transformation t){
             for(Triangle& tri : triangulos){
                 tri.transform(t);
@@ -25,6 +26,9 @@ class TriangleMesh{
 
         TriangleMesh(){}
 
+        // Lee una malla de triángulos compuestas únicamente de triángulos
+        // no coloreados del fichero file.
+        // File debe tener formato .ply
         void read(string file){
             std::ifstream reader(file);
             string buffer;
@@ -109,14 +113,17 @@ class TriangleMesh{
             }
         }
 
+        // Devuelve el triángulo de índice n de la lista
         Triangle operator[](int n) {
             return triangulos[n];
         } 
 
+        // Devuelve el número de triángulos de la malla
         float getSize() const {
             return triangulos.size();
         }
 
+        // Desplaza la malla al nuevo punto
         void move(DotDir newCenter){
             DotDir d = newCenter - center;
 
@@ -126,6 +133,7 @@ class TriangleMesh{
             transform(t);
         }
 
+        // Escala la malla de triángulos
         void scale(float x, float y, float z){
             Transformation t;
             t.scale(x, y, z);

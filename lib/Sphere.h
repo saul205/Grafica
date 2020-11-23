@@ -178,7 +178,7 @@ bool checkRadius(DotDir axis, DotDir center, DotDir city){
   return (abs(radius.mod() - 0.5*(axis.mod())) < 0.0001) ? true : false;
 }
 
-
+// Esto es de la practica 1
 class PlanetaryStation{
   private:
 
