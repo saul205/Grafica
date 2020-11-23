@@ -1,0 +1,3 @@
+/home/alejandro/Desktop/Grafica/build/CMakeFiles/rebuild_cache.dir
+/home/alejandro/Desktop/Grafica/build/CMakeFiles/pathTracer.dir
+/home/alejandro/Desktop/Grafica/build/CMakeFiles/edit_cache.dir
