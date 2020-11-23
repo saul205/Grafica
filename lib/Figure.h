@@ -50,6 +50,8 @@ class Figure {
         virtual void getBase(const DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) = 0;
         virtual void transform(Transformation t){ cout << "jaja" << endl; };
 
+        // ---- SETTERS y GETTERS ----
+
         void setRgb(rgb _color){
             emission = _color;
         }
