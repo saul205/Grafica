@@ -10,10 +10,18 @@
 struct BRDF{
     rgb kt,ks,kd;
 
-    BRDF(){
+    bool dielectrico = false;
+
+    BRDF(bool di = false){
         kd.set(0,0,0);
         ks.set(0,0,0);
         kt.set(0,0,0);
+
+        dielectrico = di;
+    }
+
+    bool isDielectrico(){
+        return dielectrico;
     }
 };
 
@@ -87,8 +95,9 @@ class Figure {
             material.ks = spec;
         }
 
-        void setRefBDRF(rgb ref){
-            material.kt = ref;
+        void setRefBDRF(rgb k){
+            material.ks = k;
+            material.dielectrico = true;
         }
 
 };

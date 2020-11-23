@@ -84,7 +84,7 @@ void cornellBox(Scene& escena){
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 1.5, 1.5, rgb(10e5,10e5,10e5), true);
-    // escena.addLight(DotDir(0,0,-1000,1), rgb(10e5,10e5,10e5));
+    //escena.addLight(DotDir(0,0,0,1), rgb(10e5,10e5,10e5));
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,2,2,1), 4, 4));
     plano5->setDifBDRF(rgb(0.7,0.7,0.7));
@@ -101,8 +101,8 @@ void cornellBox(Scene& escena){
 
     x = escena.addSphere(DotDir(1.25,-1.5,1,1), DotDir(0,1,0,0), DotDir(0.75,-1.5,1,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
-    esfera2->setRefBDRF(rgb(0.7,0.7,0.7));
-    esfera->setSepcBDRF(rgb(0.7,0.7,0.7));
+    esfera2->setRefBDRF(rgb(0, 0, 0));
+    esfera2->setSepcBDRF(rgb(0, 0, 0));
     esfera2->refractionIndex = 1.55;
 
     //x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));

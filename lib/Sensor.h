@@ -18,10 +18,45 @@ const int sizeCuadrante = 5;
 const float fov = 1;
 const float airRefraction = 1.000293;
 
-void getMaterialProbabilities(shared_ptr<Figure> f, float& pk, float& ps, float& pt, bool bounce){
-    pk = f->material.kd.maximo();
-    ps = f->material.ks.maximo();
-    pt = f->material.kt.maximo();
+float fresnel(const DotDir& incidente, const DotDir& normal, const float& refractionIndex){
+    float cosi = dotProduct(incidente, normal);
+    if(cosi < -1) cosi = -1;
+    if(cosi > 1) cosi = 1;
+
+    float etai = 1, etat = refractionIndex;
+    if(cosi > 0){ std::swap(etai, etat); }
+
+    float sint = etai / etat * sqrtf(std::max(0.f, 1 - cosi * cosi));
+
+    if(sint >= 1.0f){
+        return 1.0f;
+    }else{
+        float cost = sqrtf(std::max(0.f, 1 - sint * sint));
+        cosi = fabsf(cosi);
+        float Rs = (etat * cosi - etai * cost) / (etat * cosi + etai * cost);
+        float Rp = (etai * cosi - etat * cost) / (etai * cosi + etat * cost);
+        return (Rs * Rs + Rp * Rp) / 2;
+    }
+}
+
+void getMaterialProbabilities(shared_ptr<Figure> f, Ray rayo, DotDir normal, float& pk, float& ps, float& pt, bool bounce){
+
+    if (f->material.isDielectrico()){
+        float kr = fresnel(rayo.getDir(), normal, f->refractionIndex);
+        //cout << "KR " << kr << endl;
+        ps = kr;
+        pt = 1.0f - ps;
+        pk = 0;
+
+        f->material.ks = rgb(kr, kr, kr);
+        f->material.kt = rgb(1 - kr, 1 - kr, 1 - kr);
+    }
+    else{
+        pk = f->material.kd.maximo();
+        ps = f->material.ks.maximo();
+        pt = f->material.kt.maximo();
+    }
+
     float maxes = pk + ps + pt;
     pk = bounce ? 0.9 * (pk / maxes) : (pk / maxes);
     ps = bounce ? 0.9 * (ps / maxes) : (ps / maxes);
@@ -107,13 +142,14 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             emisionFinalRayo = emisionFinalRayo + minTObject->getEmission(interseccion);
                             intersecta = false;
                         } else if(intersecta){
-                            
-                            //Ruleta Rusa
-                            float pk, ps, pt, p = roussianRoulette();
-                            getMaterialProbabilities(minTObject, pk, ps, pt, bounce);
 
                             DotDir base[3], wi;
                             minTObject->getBase(interseccion, base[0], base[1], base[2]);
+                            
+                            //Ruleta Rusa
+                            float pk, ps, pt, p = roussianRoulette();
+                            getMaterialProbabilities(minTObject, rayoMundoRebotes, base[1], pk, ps, pt, bounce);
+
                             Transformation mundoALocal, localToMundo;
 
                             if(p < pk){                 //Difuso
@@ -167,7 +203,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                 bool luzIntersecta = scene.intersect(newShadowRay, minTObject, interseccion, intersecciones);
 
                                 if(!luzIntersecta || (interseccion - punto).mod() > shadowRay.mod())
-                                    emisionFinalRayo = emisionFinalRayo + (luces[light].getEmission() / (shadowRay.mod() * shadowRay.mod()));
+                                    emisionFinalRayo = emisionFinalRayo + emisionAcumulada*(luces[light].getEmission() / (shadowRay.mod() * shadowRay.mod()));
                             }
                         }
                         bounce = true;
