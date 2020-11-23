@@ -83,9 +83,8 @@ void cornellBox(Scene& escena){
     plano4->setSepcBDRF(rgb(0.05,0.05,0.05));
     escena.addPlane(plano4);
 
-    //escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
-    
-    escena.addLight(DotDir(0,0,2,1), rgb(10e5,10e5,10e5));
+    escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 1.5, 1.5, rgb(10e5,10e5,10e5), true);
+    // escena.addLight(DotDir(0,0,-1000,1), rgb(10e5,10e5,10e5));
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,2,2,1), 4, 4));
     plano5->setDifBDRF(rgb(0.7,0.7,0.7));
@@ -100,16 +99,18 @@ void cornellBox(Scene& escena){
     esfera->setSepcBDRF(rgb(0.1,0.1,0.1));
     //esfera->setTexture(imagen);
 
-    x = escena.addSphere(DotDir(1,0,3.5,1), DotDir(0,1,0,0), DotDir(0.5,0,3.5,0), rgb(0,0,0));
+    x = escena.addSphere(DotDir(1.25,-1.5,1,1), DotDir(0,1,0,0), DotDir(0.75,-1.5,1,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
-    esfera2->setSepcBDRF(rgb(0.7,0.7,0.7));
+    esfera2->setRefBDRF(rgb(0.7,0.7,0.7));
+    esfera->setSepcBDRF(rgb(0.7,0.7,0.7));
+    esfera2->refractionIndex = 1.55;
 
-    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
-    std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
+    //x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
+    //std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
     //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));
-    esfera3->setRefBDRF(rgb(0.7,0.7,0.7));
     //esfera3->setSepcBDRF(rgb(0.7,0.7,0.7));
-    esfera3->refractionIndex = 1.55;
+    //esfera3->setSepcBDRF(rgb(0.7,0.7,0.7));
+    //esfera3->refractionIndex = 1.55;
 }
 
 int main(){
@@ -141,7 +142,7 @@ int main(){
     // scene.addTriangleMesh(t);
     //scene.addTriangleMesh(v);
     cornellBox(scene);
-    scene.render("render", 50, 8);
+    scene.render("render", 10, 8);
 
     return 0;
 }

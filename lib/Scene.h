@@ -1,12 +1,12 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../lib/BoundingVolume.h"
-#include "../lib/Sensor.h"
-#include "../lib/Plane.h"
-#include "../lib/Sphere.h"
-#include "../lib/Triangle.h"
-#include "../lib/ToneMapper.h"
+#include "BoundingVolume.h"
+#include "Sensor.h"
+#include "Plane.h"
+#include "Sphere.h"
+#include "Triangle.h"
+#include "ToneMapper.h"
 #include "TriangleMesh.h"
 
 class Scene {
@@ -118,7 +118,7 @@ class Scene {
             renderer.lanzarRayos(bv, luces, imagen, AA, hilos);
 
             ToneMapper tm;
-            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 5.0f, 2.2f);
+            tm.gammaCurveAndClamping(imagen,  imagen.getMaximo() / 20.0f, 1/4.f);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

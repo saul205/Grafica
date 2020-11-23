@@ -47,11 +47,6 @@ class Figure {
         }
 
         rgb getEmission(DotDir& interseccion){
-            /*if(!hasTexture){
-                return (emission / col_res) * new_max;
-            } else {
-                return getTexture(interseccion) / new_max;
-            }*/
             if(!hasTexture){
                 return emission;
             } else {
