@@ -70,25 +70,22 @@ void cornellBox(Scene& escena){
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
     plano2->setDifBDRF(rgb(0.5,0.2,0.2));
-    plano2->setSepcBDRF(rgb(0.05,0.02,0.02));
     escena.addPlane(plano2);
     
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
     plano3->setDifBDRF(rgb(0.2,0.5,0.2));
-    plano3->setSepcBDRF(rgb(0.02,0.05,0.02));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(0, 0, 1, 0), DotDir(-1, 0, 0, 0), DotDir(0,-2,2,1), 4, 4));
     plano4->setDifBDRF(rgb(0.5,0.5,0.5));
-    plano4->setSepcBDRF(rgb(0.05,0.05,0.05));
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,1.995,2,1), 1.5, 1.5, rgb(10e5,10e5,10e5), true);
-    //escena.addLight(DotDir(0,0,0,1), rgb(10e5,10e5,10e5));
+    // escena.addLight(DotDir(0,-1.95,0,1), rgb(10e5,10e5,10e5));
+    // escena.addLight(DotDir(1,0,0,1), rgb(10e5,10e5,10e5));
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0, 0, -1, 0), DotDir(-1, 0, 0, 0), DotDir(0,2,2,1), 4, 4));
     plano5->setDifBDRF(rgb(0.7,0.7,0.7));
-    plano5->setSepcBDRF(rgb(0.05,0.05,0.05));
     escena.addPlane(plano5);
     
     //Image imagen = leer("./IMGS/seymour_park.ppm");
@@ -96,13 +93,12 @@ void cornellBox(Scene& escena){
     int x = escena.addSphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,2.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera = escena.getFigure(x);
     esfera->setDifBDRF(rgb(0.1,0.1,0.35));
-    esfera->setSepcBDRF(rgb(0.1,0.1,0.1));
+    esfera->setSpecBDRF(rgb(0.1,0.1,0.1));
     //esfera->setTexture(imagen);
 
     x = escena.addSphere(DotDir(1.25,-1.5,1,1), DotDir(0,1,0,0), DotDir(0.75,-1.5,1,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
-    esfera2->setRefBDRF(rgb(0, 0, 0));
-    esfera2->setSepcBDRF(rgb(0, 0, 0));
+    esfera2->setDielectrico();
     esfera2->refractionIndex = 1.55;
 
     //x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
@@ -113,14 +109,24 @@ void cornellBox(Scene& escena){
     //esfera3->refractionIndex = 1.55;
 }
 
-int main(){
+int main(int argc, char** argv){
+
+    if(argc != 2){
+        cout << "Se debe introducir un único parámetro, correspondiente a los ppp del path tracer." << endl;
+        exit(0);
+    }
 
     float W = 1900, H = 1900;
-
     Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,8,0));
-    // cout << crossProduct(DotDir(0,1,0,0), DotDir(0,0,1,0)).toString() << endl;
+
+    cornellBox(scene);
+    scene.render("render", atoi(argv[1]), 8);
+
+    return 0;
+}
+    /*/ cout << crossProduct(DotDir(0,1,0,0), DotDir(0,0,1,0)).toString() << endl;
     // 2000 X 2000 PLANO DE TRIANGULOS
-    /*std::uniform_real_distribution<float> dist(0.0, 255.0);
+    std::uniform_real_distribution<float> dist(0.0, 255.0);
     std::default_random_engine gen;
     auto random = std::bind(dist, gen);
 
@@ -130,7 +136,7 @@ int main(){
             scene.addTriangle(DotDir(i, j, 10, 1), DotDir(i + 1, j, 10, 1), DotDir(i, j - 1, 10, 1), rgb(random(), random(), random()));
             scene.addTriangle(DotDir(i + 1, j - 1, 10, 1), DotDir(i + 1, j, 10, 1), DotDir(i, j - 1, 10, 1), rgb(random(), random(), random()));
         }
-    }*/
+    }
 
     //TriangleMesh t;
     //TriangleMesh v;
@@ -140,9 +146,4 @@ int main(){
     //v.move(DotDir(0, 0, 2, 1));
     //t.move(DotDir(0, 0, 1000, 0));
     // scene.addTriangleMesh(t);
-    //scene.addTriangleMesh(v);
-    cornellBox(scene);
-    scene.render("render", 10, 8);
-
-    return 0;
-}
+    //scene.addTriangleMesh(v);*/

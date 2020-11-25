@@ -16,99 +16,17 @@
 
 const int sizeCuadrante = 5;
 const float fov = 1;
-const float airRefraction = 1.000293;
-
-// Calcula la proporción entre refracción y reflexión usando las leyes de Fresnel
-float fresnel(const DotDir& incidente, const DotDir& normal, const float& refractionIndex){
-    float cosi = dotProduct(incidente, normal);
-    if(cosi < -1) cosi = -1;
-    if(cosi > 1) cosi = 1;
-
-    float etai = 1, etat = refractionIndex;
-    if(cosi > 0){ std::swap(etai, etat); }
-
-    float sint = etai / etat * sqrtf(std::max(0.f, 1 - cosi * cosi));
-
-    if(sint >= 1.0f){
-        return 1.0f;
-    }else{
-        float cost = sqrtf(std::max(0.f, 1 - sint * sint));
-        cosi = fabsf(cosi);
-        float Rs = (etat * cosi - etai * cost) / (etat * cosi + etai * cost);
-        float Rp = (etai * cosi - etat * cost) / (etai * cosi + etat * cost);
-        return (Rs * Rs + Rp * Rp) / 2;
-    }
-}
-
-// Obtiene las probabilidades correspondientes al comportamiento del material
-void getMaterialProbabilities(shared_ptr<Figure> f, Ray rayo, DotDir normal, float& pk, float& ps, float& pt, bool bounce){
-
-    if (f->material.isDielectrico()){
-        float kr = fresnel(rayo.getDir(), normal, f->refractionIndex);
-        //cout << "KR " << kr << endl;
-        ps = kr;
-        pt = 1.0f - ps;
-        pk = 0;
-
-        f->material.ks = rgb(kr, kr, kr);
-        f->material.kt = rgb(1 - kr, 1 - kr, 1 - kr);
-    }
-    else{
-        pk = f->material.kd.maximo();
-        ps = f->material.ks.maximo();
-        pt = f->material.kt.maximo();
-    }
-
-    float maxes = pk + ps + pt;
-    pk = bounce ? 0.9 * (pk / maxes) : (pk / maxes);
-    ps = bounce ? 0.9 * (ps / maxes) : (ps / maxes);
-    pt = bounce ? 0.9 * (pt / maxes) : (pt / maxes);
-}
-
-
-// Obtiene un rayo a partir del muestreo del coseno
-DotDir getCosineSamplingRay(float r1, float r2){
-    float azimuth = r1 * 2 * pi;
-    float inclination = acos(sqrt(r2));
-    return DotDir(sin(inclination)*cos(azimuth), sin(inclination)*sin(azimuth), cos(inclination), 0);                           
-}
-
-// Obtiene el rayo especular a partir de la normal y el incidente
-DotDir getSpecularRay(DotDir normal, DotDir wo){
-    return wo - 2.0f*(dotProduct(wo,normal))*normal;
-}
-
-// Obtiene un rayo refractado
-DotDir getRefractedRay(DotDir incidente, DotDir normal, float refractionIndex){
-    float cosi = dotProduct(incidente, normal);
-    if(cosi < -1) cosi = -1;
-    if(cosi > 1) cosi = 1;
-
-    float etai = 1, etat = refractionIndex; 
-    DotDir n = normal; 
-    if (cosi < 0) { cosi = -cosi; }
-    else { 
-        std::swap(etai, etat); 
-        n = DotDir(-normal.getX(), -normal.getY(), -normal.getZ(), 1); 
-    } 
-    float eta = etai / etat; 
-    float k = 1 - eta * eta * (1 - cosi * cosi); 
-    return k < 0 ? DotDir(0,0,0,1) : eta * incidente + (eta * cosi - sqrtf(k)) * n;
-}
 
 // Lleva a cabo el proceso de pathtracing
 void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, vector<LightSource> luces,
-                        const float pixelSizeX, const float pixelSizeY, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, Transformation localAMundo){
+                        const float pixelSizeX, const float pixelSizeY, float centrarEnElPlanoW, float centrarEnElPlanoH, float planeW, Transformation camAMundo){
 
     std::uniform_int_distribution<int> dist(0, luces.size()-1);
-    std::default_random_engine gen;
-    auto lucesRoussianRoulette = std::bind(dist, gen);
-
     std::uniform_real_distribution<float> dist2(0.0, 1);
-    std::default_random_engine gen2;
+    std::default_random_engine gen, gen2;
+    auto lucesRoussianRoulette = std::bind(dist, gen);
     auto roussianRoulette = std::bind(dist2, gen2);
 
-    DotDir planePoint, dir;
     cuadrante limites; 
     float intersecciones = 0;
     while(cbq.dequeue(limites)){
@@ -121,21 +39,18 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     float h = roussianRoulette()*pixelSizeX;
                     float w = roussianRoulette()*pixelSizeY;
 
-                    // Como f = 1 la tercera componente es fija
-                    planePoint.setDotDir(- (pixelSizeX * i - centrarEnElPlanoW + w), - pixelSizeY * j + centrarEnElPlanoH - h, 1, 1);
+                    // f = 1 la tercera componente es fija
+                    DotDir planePoint(- (pixelSizeX * i - centrarEnElPlanoW + w), - pixelSizeY * j + centrarEnElPlanoH - h, 1, 1);
 
-                    DotDir oLocal = DotDir(0,0,0,1);
-                    Ray rayoMundo( localAMundo*oLocal, normalization(localAMundo*(planePoint-oLocal)));
-                  
+                    DotDir oLocal = DotDir(0,0,0,1), interseccion;
+                    Ray rayoMundo( camAMundo*oLocal, normalization(camAMundo*(planePoint-oLocal)));
                     std::shared_ptr<Figure> minTObject;
-                    DotDir interseccion;
-
-                    //--------Path Tracing---------
-                    rgb emisionAcumulada(1, 1, 1);
-                    rgb emisionFinalRayo(0, 0, 0);
+                    
+                    //--------Path Tracing, camino para un rayo---------
+                    rgb emisionAcumulada(1, 1, 1), emisionFinalRayo(0, 0, 0);
                     Ray rayoMundoRebotes = rayoMundo;
-                    bool bounce = false;
-                    bool intersecta = true;
+                    // Marcan si es el primer rebote y si ha intersectado, respectivamente 
+                    bool bounce = false, intersecta = true;
     
                     while(intersecta) {
                         
@@ -146,49 +61,40 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             intersecta = false;
                         } else if(intersecta){
 
+                            // Cambia la dirección de la normal si es necesario 
                             DotDir base[3], wi;
                             minTObject->getBase(interseccion, base[0], base[1], base[2]);
-                            
+                            if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0 )
+                                base[2] = -base[2];
+
+                            // Calcula las transformaciones entre mundo y local                         
+                            Transformation mundoToLocal, localToMundo;
+                            localToMundo.changeBase(base[0], base[1], base[2], interseccion);
+                            mundoToLocal = inverse(localToMundo);
+
+                            // Calcula la normal y el rayo en coordenadas locales a la intersección
+                            DotDir incide = normalization(mundoToLocal*rayoMundoRebotes.getDir());
+                            DotDir normalLocal = normalization(mundoToLocal*base[2]);
+
                             //Ruleta Rusa
                             float pk, ps, pt, p = roussianRoulette();
-                            getMaterialProbabilities(minTObject, rayoMundoRebotes, base[1], pk, ps, pt, bounce);
+                            getMaterialProbabilities(minTObject, incide, normalLocal, pk, ps, pt, bounce);
 
-                            Transformation mundoALocal, localToMundo;
+                            if(p < pk){                         //Difuso
 
-                            if(p < pk){                 //Difuso
- 
                                 wi = getCosineSamplingRay(roussianRoulette(), roussianRoulette());
-
-                                if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0)
-                                    base[2] = DotDir(-base[2].getX(), -base[2].getY(), -base[2].getZ(), 0);
-                                localToMundo.changeBase(base[0], base[1], base[2], interseccion);
-                                mundoALocal = inverse(localToMundo);
-                                
-                                float coseno = abs(dotProduct(mundoALocal * base[2], wi));
+                                float coseno = abs(dotProduct(normalLocal, wi));
                                 emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
- 
-                            }else if(p < pk + ps){      // Especular
+                            }else if(p < pk + ps){              // Especular
 
-                                if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0)
-                                    base[2] = DotDir(-base[2].getX(), -base[2].getY(), -base[2].getZ(), 0);
-                                localToMundo.changeBase(base[0], base[1], base[2], interseccion);
-                                mundoALocal = inverse(localToMundo);
-
-                                //Direccion reflejada
-                                wi = getSpecularRay(mundoALocal*base[2], mundoALocal * rayoMundoRebotes.getDir());
+                                wi = getSpecularRay(normalLocal, incide);
                                 emisionAcumulada = emisionAcumulada*(minTObject->getSpecRgb() / ps);
+                            }else if(p < pk + ps + pt){         // Refraccion
 
-                            }else if(p < pk + ps + pt){ // Refraccion
-
-                                //Calculo de matrices
-                                localToMundo.changeBase(base[0], base[1], base[2], interseccion);
-                                mundoALocal = inverse(localToMundo);
-
-                                // Inversión de las normales ya incluida
-                                wi = getRefractedRay(mundoALocal*rayoMundoRebotes.getDir(), mundoALocal*base[2], minTObject->refractionIndex);
+                                wi = getRefractedRay(incide, normalLocal, minTObject->refractionIndex);
                                 emisionAcumulada = emisionAcumulada*(minTObject->getRefRgb() / pt);
                             }
-                            else{ // Absorcion
+                            else{                               // Absorcion
                                 intersecta = false;
                             }
 
@@ -196,31 +102,27 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             Ray newRay(interseccion, normalization(wi));
                             rayoMundoRebotes = newRay;
                             
+                            // Next event estimation
                             if(luces.size() > 0){
-
                                 int light = lucesRoussianRoulette();
                                 DotDir shadowRay = luces[light].getPosition() - interseccion;
                                 Ray newShadowRay(interseccion, normalization(shadowRay));
                                 DotDir punto = interseccion;
 
                                 bool luzIntersecta = scene.intersect(newShadowRay, minTObject, interseccion, intersecciones);
-
                                 if(!luzIntersecta || (interseccion - punto).mod() > shadowRay.mod())
                                     emisionFinalRayo = emisionFinalRayo + emisionAcumulada*(luces[light].getEmission() / (shadowRay.mod() * shadowRay.mod()));
                             }
                         }
                         bounce = true;
                     }
-
                     emisionFinal = emisionFinal + emisionFinalRayo * emisionAcumulada;
                 }  
-
                 emisionFinal = emisionFinal / (float) antiAliasing;
                 newImagen.setRGB(i + j * planeW, emisionFinal);
             }
         }
     }
-    //cout << "Intersecciones: " << intersecciones << endl;
 }
 
 class Sensor{

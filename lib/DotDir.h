@@ -13,7 +13,9 @@ class DotDir {
     float c[4];
   public:
 
+     DotDir operator-() const;
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
+     friend DotDir operator+(const DotDir& dd1, const float& f);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator*(float t, const DotDir& dd1);
      friend DotDir operator*(const DotDir& dd1, float t);
@@ -87,9 +89,19 @@ class DotDir {
      }
 };
 
+// Niega el punto
+DotDir DotDir::operator-() const{
+  return DotDir(-c[0], -c[1], -c[2], c[3]); 
+}
+
 //Divide alas componentes de un vector por div
 DotDir operator/(const DotDir& dd1, float div){
   return DotDir(dd1.c[0] / div, dd1.c[1] / div, dd1.c[2] / div, dd1.c[3]);
+}
+
+// Suma de DotDir y float
+DotDir operator+(const DotDir& dd1, const float& f){
+  return DotDir(dd1.c[0] + f, dd1.c[1] + f, dd1.c[2] + f, dd1.c[3]);
 }
 
 // Suma de DotDir

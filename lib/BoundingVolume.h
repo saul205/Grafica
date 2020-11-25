@@ -86,9 +86,7 @@ class BoundingVolume{
                 newT = INFINITY;
                 intersecciones ++;
                 bool intersecta = nodos[nodeIndex].bound.intersects(ray, newT);
-                /*if(intersecta && ray.getDir().getX() > -0.001 && ray.getDir().getX() < 0.001 && ray.getDir().getY() > -0.001 && ray.getDir().getY() < 0.001){
-                    cout << nodeIndex << " " << newT << "   " << minT << endl;
-                }*/
+
                 if(intersecta && newT < minT){
                     if(nodos[nodeIndex].primitives.size() > 0){
                         DotDir point;
@@ -107,7 +105,6 @@ class BoundingVolume{
                         }
                     }
                     else{
-                        //cout << "Soy " << nodeIndex << " añado " << nodeIndex + 1 << " | " << nodos[nodeIndex].secondChildOffset << endl;
                         nodosAVisitar.push_back(nodos[nodeIndex].secondChildOffset);
                         nodosAVisitar.push_back(nodos[nodeIndex].firstChildOffset);
                     }
@@ -117,7 +114,6 @@ class BoundingVolume{
             if(minTObject >= 0){
                 figura = figuras[minTObject];
             }
-            //if(!intersect) cout << " Se va" << endl;
             return intersect;
         }
 

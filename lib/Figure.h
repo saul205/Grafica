@@ -48,7 +48,7 @@ class Figure {
         virtual BoundingBox getBound() = 0;
         virtual rgb getTexture(const DotDir& interseccion) = 0;
         virtual void getBase(const DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) = 0;
-        virtual void transform(Transformation t){ cout << "jaja" << endl; };
+        virtual void transform(Transformation t){ };
 
         // ---- SETTERS y GETTERS ----
 
@@ -93,15 +93,44 @@ class Figure {
             material.kd = difuso;
         }
 
-        void setSepcBDRF(rgb spec){
+        void setSpecBDRF(rgb spec){
             material.ks = spec;
         }
 
-        void setRefBDRF(rgb k){
-            material.ks = k;
+        void setRefBDRF(rgb ref){
+            material.kt = ref;
+        }
+
+        void setDielectrico(){
             material.dielectrico = true;
         }
 
 };
+
+// Obtiene las probabilidades correspondientes al comportamiento del material
+void getMaterialProbabilities(shared_ptr<Figure>& f, DotDir dirrayo, DotDir normal, float& pk, float& ps, float& pt, bool bounce){
+
+    if (f->material.isDielectrico()){
+
+        float r = fresnel(dirrayo, normal, f->refractionIndex);
+        float t = 1.f - r;
+
+        ps = bounce ? 0.9 * r : r;
+        pt = bounce ? 0.9 * t : t;
+        pk = 0.f;
+        f->material.kd = rgb(0., 0., 0.);
+        f->material.ks = rgb(r, r, r);
+        f->material.kt = rgb(t, t, t);
+    }
+    else{
+        pk = f->material.kd.maximo();
+        ps = f->material.ks.maximo();
+        pt = f->material.kt.maximo();
+        float maxes = pk + ps + pt;
+        pk = bounce ? 0.9 * (pk / maxes) : (pk / maxes);
+        ps = bounce ? 0.9 * (ps / maxes) : (ps / maxes);
+        pt = bounce ? 0.9 * (pt / maxes) : (pt / maxes);
+    }
+}
 
 #endif

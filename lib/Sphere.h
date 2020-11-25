@@ -70,7 +70,6 @@ class Sphere : public Figure{
           float sol2 = ((-b) - squareRoot) / 2.0f;
           if(sol1 > 0 && sol2 > 0){
             t = (sol1 < sol2) ? sol1 : sol2;
-            //cout << t << endl;
             p = ray.getOrigen() + t * ray.getDir();
 
             return true;
@@ -95,10 +94,6 @@ class Sphere : public Figure{
 
       u = u*textura.getWidth();
       v = v*textura.getHeight();
-
-      // cout << interseccionLocal.getX() << "  " << radius*cos(inclination)*sin(azimuth) << endl;
-      // cout << interseccionLocal.getY() << "  " << -radius*cos(azimuth) << endl;
-      // cout << interseccionLocal.getZ() << "  " << -radius*sin(inclination)*sin(azimuth) << endl;
 
       rgb dev = textura.getRGB(v, u);
       return dev;
@@ -132,12 +127,9 @@ class Sphere : public Figure{
       base1 = crossProduct(base2, sphereAxis);
       base0 = crossProduct(base2, base1);
 
-      if(base2.mod() != 1)
-        base2 = normalization(base2);
-      if(base0.mod() != 1)
-        base0 = normalization(base0);
-      if(base1.mod() != 1)
-        base1 = normalization(base1);
+      base2 = normalization(base2);
+      base0 = normalization(base0);
+      base1 = normalization(base1);
     }
 
     DotDir getAxis(){
@@ -158,8 +150,6 @@ class Sphere : public Figure{
 
     BoundingBox getBound(){
 
-      //cout << sphereCenter.getX() + radius << " " << sphereCenter.getX() - radius << endl;
-      //cout << sphereCenter.getY() + radius << " " << sphereCenter.getY() - radius << endl;
       return BoundingBox(
         DotDir(sphereCenter.getX() + radius, sphereCenter.getY() + radius, sphereCenter.getZ() + radius, 1),
         DotDir(sphereCenter.getX() - radius, sphereCenter.getY() - radius, sphereCenter.getZ() - radius, 1)
