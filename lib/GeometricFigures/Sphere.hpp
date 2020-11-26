@@ -1,8 +1,8 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "Transformation.h"
-#include "Figure.h"
+#include "Transformation.hpp"
+#include "Figure.hpp"
 
 const double pi = 3.141592653589793;
 

@@ -1,7 +1,7 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "DotDir.h"
+#include "DotDir.hpp"
 
 class Ray{
     private:

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include "Rgb.h"
+#include "Rgb.hpp"
 
 class Image{
     

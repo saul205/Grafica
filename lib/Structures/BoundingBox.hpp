@@ -1,8 +1,8 @@
 #ifndef BOUNDINGBOX_H
 #define BOUNDINGBOX_H
 
-#include "DotDir.h"
-#include "Ray.h"
+#include "DotDir.hpp"
+#include "Ray.hpp"
 #include <float.h>
 
 class BoundingBox{

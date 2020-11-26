@@ -62,10 +62,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alejandro/Desktop/Grafica
+CMAKE_SOURCE_DIR = /home/alejandro/Desktop/pathTracer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alejandro/Desktop/Grafica/build
+CMAKE_BINARY_DIR = /home/alejandro/Desktop/pathTracer/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/pathTracer.dir/depend.make
@@ -78,250 +78,250 @@ include CMakeFiles/pathTracer.dir/flags.make
 
 CMakeFiles/pathTracer.dir/practica3/main.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/practica3/main.cpp.o: ../practica3/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/pathTracer.dir/practica3/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/practica3/main.cpp.o -c /home/alejandro/Desktop/Grafica/practica3/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/pathTracer.dir/practica3/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/practica3/main.cpp.o -c /home/alejandro/Desktop/pathTracer/practica3/main.cpp
 
 CMakeFiles/pathTracer.dir/practica3/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/practica3/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/practica3/main.cpp > CMakeFiles/pathTracer.dir/practica3/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/practica3/main.cpp > CMakeFiles/pathTracer.dir/practica3/main.cpp.i
 
 CMakeFiles/pathTracer.dir/practica3/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/practica3/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/practica3/main.cpp -o CMakeFiles/pathTracer.dir/practica3/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/practica3/main.cpp -o CMakeFiles/pathTracer.dir/practica3/main.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.o: ../lib/Basics/DotDir.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Basics/DotDir.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Basics/DotDir.cpp
 
 CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Basics/DotDir.cpp > CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Basics/DotDir.cpp > CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Basics/DotDir.cpp -o CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Basics/DotDir.cpp -o CMakeFiles/pathTracer.dir/lib/Basics/DotDir.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.o: ../lib/Basics/Ray.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Basics/Ray.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Basics/Ray.cpp
 
 CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Basics/Ray.cpp > CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Basics/Ray.cpp > CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Basics/Ray.cpp -o CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Basics/Ray.cpp -o CMakeFiles/pathTracer.dir/lib/Basics/Ray.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.o: ../lib/Basics/Transformation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Basics/Transformation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Basics/Transformation.cpp
 
 CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Basics/Transformation.cpp > CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Basics/Transformation.cpp > CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Basics/Transformation.cpp -o CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Basics/Transformation.cpp -o CMakeFiles/pathTracer.dir/lib/Basics/Transformation.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.o: ../lib/GeometricFigures/Figure.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.o -c /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Figure.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Figure.cpp
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Figure.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Figure.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Figure.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Figure.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Figure.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.o: ../lib/GeometricFigures/LightSource.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.o -c /home/alejandro/Desktop/Grafica/lib/GeometricFigures/LightSource.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/LightSource.cpp
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/GeometricFigures/LightSource.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/LightSource.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/GeometricFigures/LightSource.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/LightSource.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/LightSource.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.o: ../lib/GeometricFigures/Plane.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.o -c /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Plane.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Plane.cpp
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Plane.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Plane.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Plane.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Plane.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Plane.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.o: ../lib/GeometricFigures/Sphere.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.o -c /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Sphere.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Sphere.cpp
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Sphere.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Sphere.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Sphere.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Sphere.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Sphere.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.o: ../lib/GeometricFigures/Triangle.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.o -c /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Triangle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Triangle.cpp
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Triangle.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Triangle.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/GeometricFigures/Triangle.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/Triangle.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/Triangle.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.o: ../lib/GeometricFigures/TriangleMesh.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.o -c /home/alejandro/Desktop/Grafica/lib/GeometricFigures/TriangleMesh.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/TriangleMesh.cpp
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/GeometricFigures/TriangleMesh.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/TriangleMesh.cpp > CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/GeometricFigures/TriangleMesh.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/GeometricFigures/TriangleMesh.cpp -o CMakeFiles/pathTracer.dir/lib/GeometricFigures/TriangleMesh.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.o: ../lib/Imaging/Image.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Imaging/Image.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Imaging/Image.cpp
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Imaging/Image.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Imaging/Image.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Imaging/Image.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Imaging/Image.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/Image.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.o: ../lib/Imaging/Lab.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Imaging/Lab.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Imaging/Lab.cpp
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Imaging/Lab.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Imaging/Lab.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Imaging/Lab.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Imaging/Lab.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/Lab.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.o: ../lib/Imaging/Rgb.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Imaging/Rgb.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Imaging/Rgb.cpp
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Imaging/Rgb.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Imaging/Rgb.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Imaging/Rgb.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Imaging/Rgb.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/Rgb.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.o: ../lib/Imaging/ToneMapper.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Imaging/ToneMapper.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Imaging/ToneMapper.cpp
 
 CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Imaging/ToneMapper.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Imaging/ToneMapper.cpp > CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Imaging/ToneMapper.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Imaging/ToneMapper.cpp -o CMakeFiles/pathTracer.dir/lib/Imaging/ToneMapper.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.o: ../lib/Sensor/Sensor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Sensor/Sensor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Sensor/Sensor.cpp
 
 CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Sensor/Sensor.cpp > CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Sensor/Sensor.cpp > CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Sensor/Sensor.cpp -o CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Sensor/Sensor.cpp -o CMakeFiles/pathTracer.dir/lib/Sensor/Sensor.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.o: ../lib/Structures/BoundingBox.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Structures/BoundingBox.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Structures/BoundingBox.cpp
 
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Structures/BoundingBox.cpp > CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Structures/BoundingBox.cpp > CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Structures/BoundingBox.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Structures/BoundingBox.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingBox.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.o: ../lib/Structures/BoundingVolume.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Structures/BoundingVolume.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Structures/BoundingVolume.cpp
 
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Structures/BoundingVolume.cpp > CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Structures/BoundingVolume.cpp > CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Structures/BoundingVolume.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Structures/BoundingVolume.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/BoundingVolume.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.o: ../lib/Structures/ConcurrentQueue.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Structures/ConcurrentQueue.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Structures/ConcurrentQueue.cpp
 
 CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Structures/ConcurrentQueue.cpp > CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Structures/ConcurrentQueue.cpp > CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Structures/ConcurrentQueue.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Structures/ConcurrentQueue.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.s
 
 CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.o: CMakeFiles/pathTracer.dir/flags.make
 CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.o: ../lib/Structures/Scene.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.o -c /home/alejandro/Desktop/Grafica/lib/Structures/Scene.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.o -c /home/alejandro/Desktop/pathTracer/lib/Structures/Scene.cpp
 
 CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/Grafica/lib/Structures/Scene.cpp > CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/alejandro/Desktop/pathTracer/lib/Structures/Scene.cpp > CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.i
 
 CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/Grafica/lib/Structures/Scene.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/alejandro/Desktop/pathTracer/lib/Structures/Scene.cpp -o CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.s
 
 # Object files for target pathTracer
 pathTracer_OBJECTS = \
@@ -369,7 +369,7 @@ pathTracer: CMakeFiles/pathTracer.dir/lib/Structures/ConcurrentQueue.cpp.o
 pathTracer: CMakeFiles/pathTracer.dir/lib/Structures/Scene.cpp.o
 pathTracer: CMakeFiles/pathTracer.dir/build.make
 pathTracer: CMakeFiles/pathTracer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alejandro/Desktop/Grafica/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking CXX executable pathTracer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alejandro/Desktop/pathTracer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Linking CXX executable pathTracer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/pathTracer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -382,6 +382,6 @@ CMakeFiles/pathTracer.dir/clean:
 .PHONY : CMakeFiles/pathTracer.dir/clean
 
 CMakeFiles/pathTracer.dir/depend:
-	cd /home/alejandro/Desktop/Grafica/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alejandro/Desktop/Grafica /home/alejandro/Desktop/Grafica /home/alejandro/Desktop/Grafica/build /home/alejandro/Desktop/Grafica/build /home/alejandro/Desktop/Grafica/build/CMakeFiles/pathTracer.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/alejandro/Desktop/pathTracer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alejandro/Desktop/pathTracer /home/alejandro/Desktop/pathTracer /home/alejandro/Desktop/pathTracer/build /home/alejandro/Desktop/pathTracer/build /home/alejandro/Desktop/pathTracer/build/CMakeFiles/pathTracer.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/pathTracer.dir/depend
 

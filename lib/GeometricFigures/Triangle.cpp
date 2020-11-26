@@ -1,4 +1,4 @@
-#include "Triangle.h"
+#include "Triangle.hpp"
 
 triangleVertexUV::triangleVertexUV(float _u1, float _v1, float _u2, float _v2, float _u3, float _v3)
 {

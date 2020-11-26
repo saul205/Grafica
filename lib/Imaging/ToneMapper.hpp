@@ -1,10 +1,10 @@
 #ifndef TONE_MAPPER_H
 #define TONE_MAPPER_H
 
-#include "Transformation.h"
+#include "Transformation.hpp"
 #include "math.h"
-#include "Image.h"
-#include "Lab.h"
+#include "Image.hpp"
+#include "Lab.hpp"
 
 class ToneMapper{
   

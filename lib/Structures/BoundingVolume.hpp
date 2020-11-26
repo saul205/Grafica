@@ -1,7 +1,7 @@
 #ifndef BOUNDINGVOLUME_H
 #define BOUNDINGVOLUME_H
 
-#include "Figure.h"
+#include "Figure.hpp"
 #include <vector>
 #include <algorithm>
 #include <memory>

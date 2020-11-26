@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include "Scene.h"
+#include "Scene.hpp"
 
 void createFaceScene(Scene &escena){
     for(int j = 0; j < 10; j++){

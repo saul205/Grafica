@@ -1,11 +1,11 @@
 #ifndef FIGURE_H
 #define FIGURE_H
 
-#include "Ray.h"
-#include "DotDir.h"
-#include "BoundingBox.h"
-#include "Image.h"
-#include "Transformation.h"
+#include "Ray.hpp"
+#include "DotDir.hpp"
+#include "BoundingBox.hpp"
+#include "Image.hpp"
+#include "Transformation.hpp"
 
 struct BRDF{
     rgb kt,ks,kd;

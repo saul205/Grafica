@@ -1,4 +1,4 @@
-#include "Rgb.h"
+#include "Rgb.hpp"
 
 rgb::rgb(float _r, float _g, float _b)
 {

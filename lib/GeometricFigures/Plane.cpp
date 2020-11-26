@@ -1,4 +1,4 @@
-#include "Plane.h"
+#include "Plane.hpp"
 
 Plane::Plane(DotDir _v1, DotDir _v2, DotDir _center, float _height, float _width)
 {

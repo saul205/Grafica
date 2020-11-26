@@ -1,4 +1,4 @@
-#include "BoundingVolume.h"
+#include "BoundingVolume.hpp"
 
 BoundingVolume::PrimitiveInfo::PrimitiveInfo(int index, const BoundingBox &_bound)
 {

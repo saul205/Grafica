@@ -1,7 +1,7 @@
 #ifndef LAB_H
 #define LAB_H
 
-#include "Image.h"
+#include "Image.hpp"
 
 struct lab{
 

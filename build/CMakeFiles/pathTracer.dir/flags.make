@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/alejandro/Desktop/Grafica -I/home/alejandro/Desktop/Grafica/lib/Basics -I/home/alejandro/Desktop/Grafica/lib/GeometricFigures -I/home/alejandro/Desktop/Grafica/lib/Imaging -I/home/alejandro/Desktop/Grafica/lib/Sensor -I/home/alejandro/Desktop/Grafica/lib/Structures
+CXX_INCLUDES = -I/home/alejandro/Desktop/pathTracer -I/home/alejandro/Desktop/pathTracer/lib/Basics -I/home/alejandro/Desktop/pathTracer/lib/GeometricFigures -I/home/alejandro/Desktop/pathTracer/lib/Imaging -I/home/alejandro/Desktop/pathTracer/lib/Sensor -I/home/alejandro/Desktop/pathTracer/lib/Structures
 
-CXX_FLAGS = -O3 -O3 -pthread -g -std=gnu++14
+CXX_FLAGS =  -O3 -pthread -g -std=gnu++14
 

@@ -1,4 +1,4 @@
-#include "TriangleMesh.h"
+#include "TriangleMesh.hpp"
 
 void TriangleMesh::transform(Transformation t)
 {

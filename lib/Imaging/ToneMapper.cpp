@@ -1,4 +1,4 @@
-#include "ToneMapper.h"
+#include "ToneMapper.hpp"
 
 void ToneMapper::clamping(Image &img)
 {

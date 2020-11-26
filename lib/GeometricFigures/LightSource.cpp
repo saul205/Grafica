@@ -1,4 +1,4 @@
-#include "LightSource.h"
+#include "LightSource.hpp"
 
 LightSource::LightSource(rgb _i, DotDir _position)
 {

@@ -1,7 +1,7 @@
 #ifndef TRANSFORMATION_H
 #define TRANSFORMATION_H
 
-#include "DotDir.h"
+#include "DotDir.hpp"
 
 class Transformation{
   private:

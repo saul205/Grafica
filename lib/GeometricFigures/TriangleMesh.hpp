@@ -2,11 +2,11 @@
 #define TRIANGLEMESH_H
 
 #include <fstream>
-#include "DotDir.h"
+#include "DotDir.hpp"
 #include <vector>
-#include "Triangle.h"
+#include "Triangle.hpp"
 #include <iostream>
-#include "Transformation.h"
+#include "Transformation.hpp"
 
 class TriangleMesh{
 

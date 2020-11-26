@@ -1,4 +1,4 @@
-#include "Sensor.h"
+#include "Sensor.hpp"
 
 // Obtiene las probabilidades correspondientes al comportamiento del material
 void getMaterialProbabilities(shared_ptr<Figure> f, float &pk, float &ps, float &pt, bool bounce)

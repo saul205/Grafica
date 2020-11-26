@@ -1,4 +1,4 @@
-#include "Scene.h"
+#include "Scene.hpp"
 
 // Recibe tamaño de la imagen + target y front vector
 Scene::Scene(float width, float height, DotDir target, DotDir front, float col_res)

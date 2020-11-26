@@ -1,8 +1,8 @@
 #ifndef LIGHTSOURCE_H
 #define LIGHTSOURCE_H
 
-#include "DotDir.h"
-#include "Rgb.h"
+#include "DotDir.hpp"
+#include "Rgb.hpp"
 
 class LightSource{
     private:

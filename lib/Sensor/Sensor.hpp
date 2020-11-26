@@ -1,14 +1,14 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include "ConcurrentQueue.h"
-#include "Transformation.h"
-#include "Plane.h"
-#include "Ray.h"
-#include "Sphere.h"
-#include "Image.h"
-#include "LightSource.h"
-#include "BoundingVolume.h"
+#include "ConcurrentQueue.hpp"
+#include "Transformation.hpp"
+#include "Plane.hpp"
+#include "Ray.hpp"
+#include "Sphere.hpp"
+#include "Image.hpp"
+#include "LightSource.hpp"
+#include "BoundingVolume.hpp"
 #include <memory>
 #include <chrono>
 #include <thread>

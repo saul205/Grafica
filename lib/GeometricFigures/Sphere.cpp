@@ -1,4 +1,4 @@
-#include "Sphere.h"
+#include "Sphere.hpp"
 
 // Los parámetros center, axis y city deben cumplir
 // checkRadius(center, axis, city)

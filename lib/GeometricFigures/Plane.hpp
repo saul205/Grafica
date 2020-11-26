@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "Figure.h"
+#include "Figure.hpp"
 
 class Plane : public Figure {
     private:

@@ -1,13 +1,13 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "BoundingVolume.h"
-#include "Sensor.h"
-#include "Plane.h"
-#include "Sphere.h"
-#include "Triangle.h"
-#include "ToneMapper.h"
-#include "TriangleMesh.h"
+#include "BoundingVolume.hpp"
+#include "Sensor.hpp"
+#include "Plane.hpp"
+#include "Sphere.hpp"
+#include "Triangle.hpp"
+#include "ToneMapper.hpp"
+#include "TriangleMesh.hpp"
 
 class Scene {
     private:

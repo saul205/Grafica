@@ -1,4 +1,4 @@
-#include "Ray.h"
+#include "Ray.hpp"
 
 Ray::Ray(DotDir _origen, DotDir direccion)
 {

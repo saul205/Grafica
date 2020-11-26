@@ -1,4 +1,4 @@
-#include "Image.h"
+#include "Image.hpp"
 
 Image::Image(std::string _cabecera, std::string _name, int _width, int _height, int _c, float _max)
 {

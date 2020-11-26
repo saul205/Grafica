@@ -1,4 +1,4 @@
-#include "ConcurrentQueue.h"
+#include "ConcurrentQueue.hpp"
 
 cuadrante::cuadrante(int xmin, int xmax, int ymin, int ymax)
 {

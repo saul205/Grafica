@@ -1,4 +1,4 @@
-#include "Figure.h"
+#include "Figure.hpp"
 
 BRDF::BRDF()
 {

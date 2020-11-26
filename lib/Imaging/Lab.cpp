@@ -1,4 +1,4 @@
-#include "Lab.h"
+#include "Lab.hpp"
 
 lab::lab(float _l, float _a, float _b){
     l = _l;

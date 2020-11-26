@@ -1,4 +1,4 @@
-#include "DotDir.h"
+#include "DotDir.hpp"
 
 DotDir::DotDir(float x, float y, float z, float w)
 {
