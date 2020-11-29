@@ -101,6 +101,11 @@ void cornellBox(Scene& escena){
     esfera2->setDielectrico();
     esfera2->refractionIndex = 1.55;
 
+    Image imagen = leer("../practica2/imagenes/seymour_park/seymour_park.ppm");
+    ToneMapper tm;
+    tm.Filmic(imagen);
+    int n = escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,3,1), 3, 3, imagen);
+    escena.getFigure(n)->setDifBDRF(rgb(1,1,1));
     //x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
     //std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
     //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));
@@ -120,7 +125,7 @@ int main(int argc, char** argv){
     Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,8,0));
 
     cornellBox(scene);
-    scene.render("render", atoi(argv[1]), 8);
+    scene.render("render", atoi(argv[1]), 16);
 
     return 0;
 }

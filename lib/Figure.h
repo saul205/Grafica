@@ -56,7 +56,7 @@ class Figure {
             emission = _color;
         }
 
-        rgb getEmission(DotDir& interseccion){
+        rgb getEmission(const DotDir& interseccion){
             if(!hasTexture){
                 return emission;
             } else {
@@ -81,7 +81,10 @@ class Figure {
             return material.ks;
         }
 
-        rgb getDifRgb(){
+        rgb getDifRgb(const DotDir& interseccion){
+            if(hasTexture){
+                return getTexture(interseccion) * material.kd;
+            }
             return material.kd;
         }
 

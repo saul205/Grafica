@@ -84,7 +84,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                                 wi = getCosineSamplingRay(roussianRoulette(), roussianRoulette());
                                 float coseno = abs(dotProduct(normalLocal, wi));
-                                emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb()*(coseno/(pi*pk)));
+                                emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb(interseccion)*(coseno/(pi*pk)));
                             }else if(p < pk + ps){              // Especular
 
                                 wi = getSpecularRay(normalLocal, incide);

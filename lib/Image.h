@@ -39,7 +39,7 @@ public:
     }
 
     rgb getRGB(int h, int w){
-        return data[h*width + w];
+        return data[h*width + w] / max;
     }
 
     int getWidth(){
