@@ -101,6 +101,13 @@ class Scene {
             return figuras.size() - 1;
         }
 
+        int addTriangle(DotDir v1, DotDir v2, DotDir v3, const Image& textura, triangleVertexUV t){
+            std::shared_ptr<Figure> triangle(new Triangle(v1, v2, v3, t));
+            triangle->setTexture(textura);
+            figuras.push_back(triangle);
+            return figuras.size() - 1;
+        }
+
         int addTriangle(std::shared_ptr<Figure> triangle){
             figuras.push_back(triangle);
             return figuras.size() - 1;

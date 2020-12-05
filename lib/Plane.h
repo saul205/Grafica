@@ -110,7 +110,7 @@ class Plane : public Figure {
             DotDir v = interseccion - center;
             
             float p1 = 1 - (dotProduct(v, v1) + height / 2)/ height;
-            float p2 = (dotProduct(v, v2) + width / 2)/ width;
+            float p2 = 1 - (dotProduct(v, v2) + width / 2)/ width;
 
             return textura.getRGB(p1*textura.getHeight(), p2*textura.getWidth());
         };

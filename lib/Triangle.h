@@ -19,8 +19,8 @@ struct triangleVertexUV{
             -         -             Dejar coordenadas por default
             -      -                    A = (0,0)
             -    -                      B = (1,0)
-            -  -                        C = (1,1)
-            C
+            -  -                        C = (0,1)
+            C               
 
         Para hacer un plano hacer un triángulo por defecto y otro:
 
@@ -85,7 +85,14 @@ class Triangle : public Figure {
             v2 = _v2;
             v0v1 = v1 - v0;
             v0v2 = v2 - v0;
+            normal = normalization(crossProduct(v0v1, v0v2));
             tvUV = _tvUV;
+            center = DotDir(
+                (v1.getX() + v2.getX() + v0.getX()) / 3,
+                (v1.getY() + v2.getY() + v0.getY()) / 3,
+                (v1.getZ() + v2.getZ() + v0.getZ()) / 3,
+                1
+            );
         }
 
         // Möller–Trumbore intersection algorithm, decide si el rayo intersecta o no con el triángulo
@@ -144,12 +151,44 @@ class Triangle : public Figure {
 
             float xTexture = (1.0f - u - v)*tvUV.u1 + u*tvUV.u2 + v*tvUV.u3;
             float yTexture = (1.0f - u - v)*tvUV.v1 + u*tvUV.v2 + v*tvUV.v3;
+            
+            if(xTexture > 1){
+                xTexture = 1;
+            }
+
+            if(yTexture > 1){
+                yTexture = 1;
+            }
+
             xTexture = xTexture*we;
             yTexture = yTexture*he;
 
             rgb dev = textura.getRGB(yTexture, xTexture);
             
             return dev;
+
+            /*DotDir pv0 = p - v0;
+
+            float den = v0v1[0] * v0v2[1] - v0v2[0] * v0v1[1];
+            float u = (pv0[0] * v0v2[1] - v0v2[0] * pv0[1]) / den;
+            float v = (pv0[1] * v0v1[0] - v0v1[1] * pv0[0]) / den;
+            float w = 1.0f - u - v;
+
+            float x = w*tvUV.u1 + u*tvUV.u2 + v*tvUV.u3;
+            float y = w*tvUV.v1 + u*tvUV.v2 + v*tvUV.v3;
+
+            if(x > 1){
+                x = 1;
+            }
+
+            if(y > 1){
+                y = 1;
+            }*/
+
+            /*rgb dev = textura.getRGB(y*textura.getHeight(), x*textura.getWidth());
+            return dev;*/
+
+
 
         }
 

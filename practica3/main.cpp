@@ -90,13 +90,13 @@ void cornellBox(Scene& escena){
     
     //Image imagen = leer("./IMGS/seymour_park.ppm");
 
-    int x = escena.addSphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,2.5,0), rgb(0,0,0));
+    int x = escena.addSphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,2.5,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera = escena.getFigure(x);
     esfera->setDifBDRF(rgb(0.1,0.1,0.35));
     esfera->setSpecBDRF(rgb(0.1,0.1,0.1));
     //esfera->setTexture(imagen);
 
-    x = escena.addSphere(DotDir(1.25,-1.5,1,1), DotDir(0,1,0,0), DotDir(0.75,-1.5,1,0), rgb(0,0,0));
+    x = escena.addSphere(DotDir(1.25,-1.5,1,1), DotDir(0,1,0,0), DotDir(0.75,-1.5,1,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
     esfera2->setDielectrico();
     esfera2->refractionIndex = 1.55;
@@ -106,6 +106,20 @@ void cornellBox(Scene& escena){
     tm.Filmic(imagen);
     int n = escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,3,1), 3, 3, imagen);
     escena.getFigure(n)->setDifBDRF(rgb(1,1,1));
+
+
+    /*n = escena.addTriangle(DotDir(0.5, 0.5, 2, 1), DotDir(-0.5, 0.5, 2, 1), DotDir(0.5, -0.5, 2, 1), imagen);
+    escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.4));
+
+    triangleVertexUV t(1, 1, 0, 1, 1, 0);
+    n = escena.addTriangle(DotDir(-0.5, -0.5, 2, 1), DotDir(0.5, -0.5, 2, 1), DotDir(-0.5, 0.5, 2, 1), imagen, t);
+    escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.4));*/
+
+    n = escena.addSphere(DotDir(1,1,1,1), DotDir(0,1,0,0), DotDir(0.5,1,1,1), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera3 = escena.getFigure(n);
+    esfera3->setDifBDRF(rgb(0.1,0.1,0.35));
+    esfera3->setSpecBDRF(rgb(0.1,0.1,0.1));
+
     //x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
     //std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
     //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));
@@ -116,16 +130,29 @@ void cornellBox(Scene& escena){
 
 int main(int argc, char** argv){
 
-    if(argc != 2){
-        cout << "Se debe introducir un único parámetro, correspondiente a los ppp del path tracer." << endl;
+    if(argc < 2 || argc > 10){
+        cout << "Formato de ejecución: main <ppp> [-width] [-height] [-name] [-color] [-threads]" << endl;
         exit(0);
     }
 
-    float W = 1900, H = 1900;
-    Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,8,0));
+    float W = 1080, H = 1080;
+    float col_res = 255;
+    string name = "render";
+    int threads = 1;
+
+    for(int i = 2; i < argc; i++){
+        if(!strcmp(argv[i], "-width")){++i; W = atof(argv[i]);}
+        else if(!strcmp(argv[i], "-height")){++i; H = atof(argv[i]);}
+        else if(!strcmp(argv[i], "-name")){++i; name = argv[i];}
+        else if(!strcmp(argv[i], "-color")){++i; col_res = atof(argv[i]);}
+        else if(!strcmp(argv[i], "-threads")){++i; threads = atoi(argv[i]);}
+        else{++i;}
+    }
+
+    Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,8,0), col_res);
 
     cornellBox(scene);
-    scene.render("render", atoi(argv[1]), 16);
+    scene.render(name, atoi(argv[1]), threads);
 
     return 0;
 }

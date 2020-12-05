@@ -64,7 +64,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             // Cambia la dirección de la normal si es necesario 
                             DotDir base[3], wi;
                             minTObject->getBase(interseccion, base[0], base[1], base[2]);
-                            if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0 )
+                            if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0 && !minTObject->material.dielectrico)
                                 base[2] = -base[2];
 
                             // Calcula las transformaciones entre mundo y local                         
@@ -84,7 +84,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
 
                                 wi = getCosineSamplingRay(roussianRoulette(), roussianRoulette());
                                 float coseno = abs(dotProduct(normalLocal, wi));
-                                emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb(interseccion)*(coseno/(pi*pk)));
+                                emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb(interseccion)*(coseno/(pk)));
                             }else if(p < pk + ps){              // Especular
 
                                 wi = getSpecularRay(normalLocal, incide);
