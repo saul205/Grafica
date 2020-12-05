@@ -115,10 +115,13 @@ void cornellBox(Scene& escena){
     n = escena.addTriangle(DotDir(-0.5, -0.5, 2, 1), DotDir(0.5, -0.5, 2, 1), DotDir(-0.5, 0.5, 2, 1), imagen, t);
     escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.4));*/
 
-    n = escena.addSphere(DotDir(1,1,1,1), DotDir(0,1,0,0), DotDir(0.5,1,1,1), rgb(0,0,0));
+    n = escena.addSphere(DotDir(0,-1,1,1), DotDir(0,1,0,0), DotDir(-0.5,-1,1,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera3 = escena.getFigure(n);
-    esfera3->setDifBDRF(rgb(0.1,0.1,0.35));
-    esfera3->setSpecBDRF(rgb(0.1,0.1,0.1));
+    esfera3->setSpecBDRF(rgb(0.7,0.7,0.7));
+
+    x = escena.addSphere(DotDir(1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,2.5,1), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
+    esfera4->setSpecBDRF(rgb(0.7,0.7,0.7));
 
     //x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
     //std::shared_ptr<Figure> esfera3 = escena.getFigure(x);

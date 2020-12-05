@@ -77,6 +77,7 @@ DotDir getCosineSamplingRay(float r1, float r2){
 }
 
 // Obtiene el rayo especular a partir de la normal y el incidente
+// http://paulbourke.net/geometry/reflected/
 DotDir getSpecularRay(DotDir normal, DotDir wo){
     return wo - 2.0f*(dotProduct(wo,normal))*normal;
 }
