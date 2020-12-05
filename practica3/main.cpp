@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <cstring>
 #include "../lib/Scene.h"
 
 void createFaceScene(Scene &escena){
@@ -15,7 +16,7 @@ void createFaceScene(Scene &escena){
     escena.addPlane(DotDir(0, 1, 0, 0), DotDir(0, 0, 1, 0),    DotDir(10, 4, 0, 1),    14, 10,    rgb(0,255,0));
     //escena.addPlane(DotDir(0, 0, 1, 0), DotDir(1, 0, 0, 0),     DotDir(0, -3, 0, 1),    20, 20,     rgb(0,0,255));
     //escena.addPlane(DotDir(0, 1, 0, 0), DotDir(1, 0, 0, 0),     DotDir(0, 0, 0, 1),     20, 20,     rgb(124,50,255));
-    Image imagen = leer("../practica2/imagenes/seymour_park/seymour_park.ppm");
+    Image imagen = leer("/home/alejandro/Desktop/pathTracer/img/seymour_park.ppm");
     ToneMapper tm;
     tm.Filmic(imagen);
     escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0, 4, 0, 1), 14, 20, imagen);
@@ -60,8 +61,8 @@ void escenaComprobacion(Scene& escena){
 
 void cornellBox(Scene& escena){
 
-    std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.5,0.5,0.5));
+    std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
+    plano->setDifBDRF(rgb(0,1,1));
     escena.addPlane(plano);
 
     //std::shared_ptr<Figure> plano6(new Plane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,-4.1,1), 4, 4));
@@ -90,7 +91,7 @@ void cornellBox(Scene& escena){
     
     //Image imagen = leer("./IMGS/seymour_park.ppm");
 
-    int x = escena.addSphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,2.5,1), rgb(0,0,0));
+   /* int x = escena.addSphere(DotDir(-1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,2.5,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera = escena.getFigure(x);
     esfera->setDifBDRF(rgb(0.1,0.1,0.35));
     esfera->setSpecBDRF(rgb(0.1,0.1,0.1));
@@ -99,13 +100,14 @@ void cornellBox(Scene& escena){
     x = escena.addSphere(DotDir(1.25,-1.5,1,1), DotDir(0,1,0,0), DotDir(0.75,-1.5,1,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera2 = escena.getFigure(x);
     esfera2->setDielectrico();
-    esfera2->refractionIndex = 1.55;
+    esfera2->refractionIndex = 1.55;*/
 
-    Image imagen = leer("../practica2/imagenes/seymour_park/seymour_park.ppm");
+    Image imagen = leer("/home/alejandro/Desktop/textura-enlosable-perfecta-altamente-detallada-piso-parquet-madera-amarillo_226262-379.ppm");
     ToneMapper tm;
     tm.Filmic(imagen);
-    int n = escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,3,1), 3, 3, imagen);
-    escena.getFigure(n)->setDifBDRF(rgb(1,1,1));
+    escribirbmp("yuuuhu.bmp",imagen,255);
+    //int n = escena.addPlane(DotDir(0,1,0,0), DotDir(1,0,0,0), DotDir(0,0,3,1), 3, 3, imagen);
+    //escena.getFigure(n)->setDifBDRF(rgb(1,1,1));
 
 
     /*n = escena.addTriangle(DotDir(0.5, 0.5, 2, 1), DotDir(-0.5, 0.5, 2, 1), DotDir(0.5, -0.5, 2, 1), imagen);
@@ -115,14 +117,17 @@ void cornellBox(Scene& escena){
     n = escena.addTriangle(DotDir(-0.5, -0.5, 2, 1), DotDir(0.5, -0.5, 2, 1), DotDir(-0.5, 0.5, 2, 1), imagen, t);
     escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.4));*/
 
-    n = escena.addSphere(DotDir(0,-1,1,1), DotDir(0,1,0,0), DotDir(-0.5,-1,1,1), rgb(0,0,0));
+    int n = escena.addSphere(DotDir(-1.5,-1.15,1,1), DotDir(0,1,0,0), DotDir(-2,-1.15,1,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera3 = escena.getFigure(n);
-    esfera3->setSpecBDRF(rgb(0.7,0.7,0.7));
+    esfera3->setSpecBDRF(rgb(0.6,0.6,0.6));
+    esfera3->setRefBDRF(rgb(0.6,0.6,0.6));
+    esfera3->refractionIndex = 1.55;
 
-    x = escena.addSphere(DotDir(1,-1.5,2.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,2.5,1), rgb(0,0,0));
+    int x = escena.addSphere(DotDir(1,-1.5,0.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,0.5,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
-    esfera4->setSpecBDRF(rgb(0.7,0.7,0.7));
+    esfera4->setDifBDRF(rgb(0,0.7,0.7));
 
+    
     //x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(1.5,-1.5,1.5,0), rgb(0,0,0));
     //std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
     //esfera3->setSepcBDRF(rgb(0.1,0.1,0.1));

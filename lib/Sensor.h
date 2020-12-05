@@ -64,7 +64,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             // Cambia la dirección de la normal si es necesario 
                             DotDir base[3], wi;
                             minTObject->getBase(interseccion, base[0], base[1], base[2]);
-                            if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0 && !minTObject->material.dielectrico)
+                            if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0 && (minTObject->material.kd.maximo() > 0.f))
                                 base[2] = -base[2];
 
                             // Calcula las transformaciones entre mundo y local                         
@@ -83,18 +83,17 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             if(p < pk){                         //Difuso
 
                                 wi = getCosineSamplingRay(roussianRoulette(), roussianRoulette());
-                                float coseno = abs(dotProduct(normalLocal, wi));
-                                emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb(interseccion)*(coseno/(pk)));
+                                emisionAcumulada = emisionAcumulada*(minTObject->getDifRgb(interseccion) / pk);
                             }else if(p < pk + ps){              // Especular
-
+  
+                                interseccion = interseccion + DotDir(0,0,-10E-5,0); // Por precisión float
                                 wi = getSpecularRay(normalLocal, incide);
                                 emisionAcumulada = emisionAcumulada*(minTObject->getSpecRgb() / ps);
                             }else if(p < pk + ps + pt){         // Refraccion
 
                                 wi = getRefractedRay(incide, normalLocal, minTObject->refractionIndex);
                                 emisionAcumulada = emisionAcumulada*(minTObject->getRefRgb() / pt);
-                            }
-                            else{                               // Absorcion
+                            } else{                             // Absorcion
                                 intersecta = false;
                             }
 
