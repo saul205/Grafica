@@ -64,7 +64,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                             // Cambia la dirección de la normal si es necesario 
                             DotDir base[3], wi;
                             minTObject->getBase(interseccion, base[0], base[1], base[2]);
-                            if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0 && (minTObject->material.kd.maximo() > 0.f))
+                            if(dotProduct(base[2], rayoMundoRebotes.getDir()) > 0)
                                 base[2] = -base[2];
 
                             // Calcula las transformaciones entre mundo y local                         

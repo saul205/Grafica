@@ -119,8 +119,7 @@ void cornellBox(Scene& escena){
 
     int n = escena.addSphere(DotDir(-1.5,-1.15,1,1), DotDir(0,1,0,0), DotDir(-2,-1.15,1,1), rgb(0,0,0));
     std::shared_ptr<Figure> esfera3 = escena.getFigure(n);
-    esfera3->setSpecBDRF(rgb(0.6,0.6,0.6));
-    esfera3->setRefBDRF(rgb(0.6,0.6,0.6));
+    esfera3->setDielectrico();
     esfera3->refractionIndex = 1.55;
 
     int x = escena.addSphere(DotDir(1,-1.5,0.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,0.5,1), rgb(0,0,0));
