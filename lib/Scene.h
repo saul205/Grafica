@@ -16,12 +16,13 @@ class Scene {
         float color_res;
 
         std::vector<shared_ptr<Figure>> figuras;
+        std::vector<LightSource> luces;
 
     public:
 
-        Scene(float width, float height, DotDir c1, DotDir c2, DotDir c3, DotDir c4, float col_res = 255){
+       Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 255){
             imagen = Image("P3", "IMG", width, height, col_res, col_res);
-            renderer = Sensor(c1, c2, c3, c4, width, height);
+            renderer = Sensor(30.0f, width/height, target, width, height, front);
             color_res = col_res;
         }
 
@@ -58,10 +59,11 @@ class Scene {
             return figuras.size() - 1;
         }
 
-        int addSphere(DotDir c, DotDir axe, DotDir reference, rgb color){
+        int addSphere(DotDir c, DotDir axe, DotDir reference, rgb color, bool em = false){
             if(checkRadius(axe, c, reference) ){
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setRgb(color);
+                esfera->setEmission(em);
                 figuras.push_back(esfera);
                 return figuras.size() - 1;
             } else {
@@ -70,11 +72,10 @@ class Scene {
             }
         }
 
-        int addSphere(DotDir c, DotDir axe, DotDir reference, const Image& textura, bool em = false){
+        int addSphere(DotDir c, DotDir axe, DotDir reference, const Image& textura){
             if(checkRadius(axe, c, reference) ){
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setTexture(textura);
-                esfera->setEmission(em);
                 figuras.push_back(esfera);
                 return figuras.size() - 1;
             } else {
@@ -98,19 +99,31 @@ class Scene {
             return figuras.size() - 1;
         }
 
+        int addTriangle(DotDir v1, DotDir v2, DotDir v3, const Image& textura, triangleVertexUV t){
+            std::shared_ptr<Figure> triangle(new Triangle(v1, v2, v3, t));
+            triangle->setTexture(textura);
+            figuras.push_back(triangle);
+            return figuras.size() - 1;
+        }
+
         int addTriangle(std::shared_ptr<Figure> triangle){
             figuras.push_back(triangle);
             return figuras.size() - 1;
+        }
+
+        int addLight(DotDir position, rgb emision){
+            luces.push_back(LightSource(emision, position));
+            return luces.size() - 1;
         }
 
         void render(string output, int AA, int hilos = 1, int mode = 1){
             BoundingVolume bv(figuras);
             cout << "N Figuras: " << figuras.size() << endl;
             cout << "N Nodos: " << bv.getSize() << endl;
-            renderer.lanzarRayos(bv, imagen, AA, hilos);
+            renderer.lanzarRayos(bv, luces, imagen, AA, hilos);
 
             ToneMapper tm;
-            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 100.0f, 1/2.2f);
+            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 50.0f, 1/4.0f);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

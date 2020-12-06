@@ -13,6 +13,8 @@ class DotDir {
     float c[4];
   public:
 
+     DotDir operator-() const;
+     friend bool operator==(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator*(float t, const DotDir& dd1);
@@ -76,6 +78,18 @@ class DotDir {
        return c[i];
      }
 };
+
+DotDir DotDir::operator-() const{
+  return DotDir(-c[0], -c[1], -c[2], c[3]); 
+}
+
+bool operator==(const DotDir& dd1, const DotDir& dd2){
+  // Dirección + Dirección = Dirección OK, w = 0
+  // Punto + Punto = NO HACER NO OK, w = 0
+  // Dirección + Punto = Punto OK, w = 1
+  // Punto + Dirección = Punto OK, w = 1
+  return dd1.c[0] == dd2.c[0] && dd1.c[1] == dd2.c[1] && dd1.c[2] == dd2.c[2] && dd1.c[3] == dd2.c[3];
+}
 
 DotDir operator+(const DotDir& dd1, const DotDir& dd2){
   // Dirección + Dirección = Dirección OK, w = 0

@@ -7,27 +7,22 @@
 class LightSource{
     private:
 
-        float intensity;
         DotDir position;
-        rgb color;
+        rgb emission;
 
     public:
 
-        LightSource(float _i, DotDir _position){
-            intensity = _i;
+        LightSource(rgb _i, DotDir _position){
+            emission = _i;
             position = _position;
-        }
-
-        float getIntensity(){
-            return intensity;
         }
 
         DotDir getPosition(){
             return position;
         }
 
-        rgb getColor(){
-            return color;
+        rgb getEmission(){
+            return emission;
         }
 };
 

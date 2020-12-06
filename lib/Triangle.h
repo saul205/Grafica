@@ -85,7 +85,14 @@ class Triangle : public Figure {
             v2 = _v2;
             v0v1 = v1 - v0;
             v0v2 = v2 - v0;
+            normal = normalization(crossProduct(v0v1, v0v2));
             tvUV = _tvUV;
+            center = DotDir(
+                (v1.getX() + v2.getX() + v0.getX()) / 3,
+                (v1.getY() + v2.getY() + v0.getY()) / 3,
+                (v1.getZ() + v2.getZ() + v0.getZ()) / 3,
+                1
+            );
         }
 
         // Möller–Trumbore intersection algorithm, decide si el rayo intersecta o no con el triángulo
@@ -146,6 +153,11 @@ class Triangle : public Figure {
             float yTexture = (1.0f - u - v)*tvUV.v1 + u*tvUV.v2 + v*tvUV.v3;
             xTexture = xTexture*we;
             yTexture = yTexture*he;
+
+            if(yTexture > textura.getHeight()) yTexture = textura.getHeight();
+            if(xTexture > textura.getWidth()) xTexture = textura.getWidth();
+            if(yTexture < 0) yTexture = 0;
+            if(xTexture < 0) xTexture = 0;
 
             rgb dev = textura.getRGB(yTexture, xTexture);
             
