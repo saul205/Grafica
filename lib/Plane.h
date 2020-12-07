@@ -49,7 +49,6 @@ class Plane : public Figure {
             t = num / den;
 
             p = ray.getOrigen() + t * ray.getDir();
-            //cout << p.toString() << "  " << t << endl;
             DotDir v = p - center;
             
             float p1 = dotProduct(v, v2n);
@@ -61,8 +60,6 @@ class Plane : public Figure {
 
             return false;
         }
-
-        //--------------------GETTERS-------------------------
 
         BoundingBox getBound() override {
             DotDir x = center + (width / 2 * v2n) + (height / 2 * v1n);
@@ -83,6 +80,8 @@ class Plane : public Figure {
                 DotDir(minX, minY, minZ, 1)
                 );
         }
+
+        //--------------------GETTERS-------------------------
 
         DotDir getNormal(){
             return normal;
@@ -105,6 +104,12 @@ class Plane : public Figure {
                 base1 = normalization(base1);
         }
 
+        //--------------------SETTERS-------------------------
+
+        void setNormal(DotDir _normal){
+            normal = _normal;
+        }
+  
         rgb getTexture(const DotDir& interseccion) override {
 
             DotDir v = interseccion - center;
@@ -112,16 +117,13 @@ class Plane : public Figure {
             float p1 = 1 - (dotProduct(v, v1) + height / 2)/ height;
             float p2 = 1 - (dotProduct(v, v2) + width / 2)/ width;
 
+            if(p1 > textura.getHeight() - 1) p1 = textura.getHeight() -1;
+            if(p2 > textura.getWidth() - 1) p2 = textura.getWidth() - 1;
+            if(p1 < 0) p1 = 0;
+            if(p2 < 0) p2 = 0;
+
             return textura.getRGB(p1*textura.getHeight(), p2*textura.getWidth());
         };
-
-        //--------------------SETTERS-------------------------
-
-        void setNormal(DotDir _normal){
-            normal = _normal;
-        }
-  
-        
 
 };
 

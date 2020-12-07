@@ -34,7 +34,6 @@ class ConcurrentBoundedQueue{
 
         ConcurrentBoundedQueue(){ }
 
-        // Encola el cuadrante enq
         void enqueue(cuadrante enq) {
             std::unique_lock<std::mutex> lck (mtx,std::defer_lock);
             lck.lock();
@@ -42,7 +41,7 @@ class ConcurrentBoundedQueue{
             lck.unlock();
         };
 
-        // Desencola un cuadrante
+
         bool dequeue(cuadrante& frente) {
             bool extraido = false;
 	        std::unique_lock<std::mutex> lck (mtx,std::defer_lock);

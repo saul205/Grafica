@@ -7,8 +7,8 @@
 class LightSource{
     private:
 
-        rgb emission;
         DotDir position;
+        rgb emission;
 
     public:
 

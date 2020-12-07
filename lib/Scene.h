@@ -1,12 +1,12 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "BoundingVolume.h"
-#include "Sensor.h"
-#include "Plane.h"
-#include "Sphere.h"
-#include "Triangle.h"
-#include "ToneMapper.h"
+#include "../lib/BoundingVolume.h"
+#include "../lib/Sensor.h"
+#include "../lib/Plane.h"
+#include "../lib/Sphere.h"
+#include "../lib/Triangle.h"
+#include "../lib/ToneMapper.h"
 #include "TriangleMesh.h"
 
 class Scene {
@@ -20,9 +20,7 @@ class Scene {
 
     public:
 
-
-        // Recibe tamaño de la imagen + target y front vector
-        Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 255){
+       Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 255){
             imagen = Image("P3", "IMG", width, height, col_res, col_res);
             renderer = Sensor(30.0f, width/height, target, width, height, front);
             color_res = col_res;
@@ -61,10 +59,11 @@ class Scene {
             return figuras.size() - 1;
         }
 
-        int addSphere(DotDir c, DotDir axe, DotDir reference, rgb color){
+        int addSphere(DotDir c, DotDir axe, DotDir reference, rgb color, bool em = false){
             if(checkRadius(axe, c, reference) ){
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setRgb(color);
+                esfera->setEmission(em);
                 figuras.push_back(esfera);
                 return figuras.size() - 1;
             } else {
@@ -73,11 +72,10 @@ class Scene {
             }
         }
 
-        int addSphere(DotDir c, DotDir axe, DotDir reference, const Image& textura, bool em = false){
+        int addSphere(DotDir c, DotDir axe, DotDir reference, const Image& textura){
             if(checkRadius(axe, c, reference) ){
                 std::shared_ptr<Figure> esfera(new Sphere(c, axe, reference));
                 esfera->setTexture(textura);
-                esfera->setEmission(em);
                 figuras.push_back(esfera);
                 return figuras.size() - 1;
             } else {
@@ -125,7 +123,7 @@ class Scene {
             renderer.lanzarRayos(bv, luces, imagen, AA, hilos);
 
             ToneMapper tm;
-            tm.gammaCurveAndClamping(imagen,  imagen.getMaximo() / 20.0f, 1/4.f);
+            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 50.0f, 1/4.0f);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);
@@ -138,8 +136,7 @@ class Scene {
             int size = t.getSize();
             for(float i = 0; i < size; i++){
                 Triangle tri = t[i];
-                tri.setDifBDRF(rgb(0.3, 0, 0.3));
-                tri.setSpecBDRF(rgb(0.2, 0, 0.2));
+                tri.setRgb(rgb(i, i, i) / size * 255);
                 //tri.setRgb(rgb(255, 255, 255));
                 figuras.push_back(std::make_shared<Triangle>(tri));
             }

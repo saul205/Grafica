@@ -19,8 +19,8 @@ struct triangleVertexUV{
             -         -             Dejar coordenadas por default
             -      -                    A = (0,0)
             -    -                      B = (1,0)
-            -  -                        C = (0,1)
-            C               
+            -  -                        C = (1,1)
+            C
 
         Para hacer un plano hacer un triángulo por defecto y otro:
 
@@ -151,53 +151,24 @@ class Triangle : public Figure {
 
             float xTexture = (1.0f - u - v)*tvUV.u1 + u*tvUV.u2 + v*tvUV.u3;
             float yTexture = (1.0f - u - v)*tvUV.v1 + u*tvUV.v2 + v*tvUV.v3;
-            
-            if(xTexture > 1){
-                xTexture = 1;
-            }
-
-            if(yTexture > 1){
-                yTexture = 1;
-            }
-
             xTexture = xTexture*we;
             yTexture = yTexture*he;
+
+            if(yTexture > textura.getHeight() - 1) yTexture = textura.getHeight() - 1;
+            if(xTexture > textura.getWidth() - 1) xTexture = textura.getWidth() - 1;
+            if(yTexture < 0) yTexture = 0;
+            if(xTexture < 0) xTexture = 0;
 
             rgb dev = textura.getRGB(yTexture, xTexture);
             
             return dev;
 
-            /*DotDir pv0 = p - v0;
-
-            float den = v0v1[0] * v0v2[1] - v0v2[0] * v0v1[1];
-            float u = (pv0[0] * v0v2[1] - v0v2[0] * pv0[1]) / den;
-            float v = (pv0[1] * v0v1[0] - v0v1[1] * pv0[0]) / den;
-            float w = 1.0f - u - v;
-
-            float x = w*tvUV.u1 + u*tvUV.u2 + v*tvUV.u3;
-            float y = w*tvUV.v1 + u*tvUV.v2 + v*tvUV.v3;
-
-            if(x > 1){
-                x = 1;
-            }
-
-            if(y > 1){
-                y = 1;
-            }*/
-
-            /*rgb dev = textura.getRGB(y*textura.getHeight(), x*textura.getWidth());
-            return dev;*/
-
-
-
         }
 
-        // Devuelve el centro del triangulo
         DotDir getCenter() override {
             return center;
         }
 
-        // Devuelve una base creada en el punto de intersección del triangulo
         void getBase(DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) override {
             base2 = normal;
             base1 = crossProduct(base2, v0v1);
@@ -211,7 +182,6 @@ class Triangle : public Figure {
                 base1 = normalization(base1);
         }
 
-        // Devuelve una bounding box que cubre el triangulo
         BoundingBox getBound() override {
 
             float maxX = max( max(v0.getX(), v1.getX()), v2.getX());
@@ -228,7 +198,6 @@ class Triangle : public Figure {
                 );
         }
 
-        // Aplica una transformación sobre el triángulo
         void transform(Transformation t) override {
             v0 = t * v0;
             v1 = t * v1;

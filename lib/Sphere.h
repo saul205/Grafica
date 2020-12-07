@@ -74,7 +74,7 @@ class Sphere : public Figure{
 
             return true;
           } else {                    // La cámara está dentro de la esfera
-            return (sol1 > sol2) ? sol1 : sol2;
+            return false;
           }
         }
         
@@ -83,17 +83,24 @@ class Sphere : public Figure{
     rgb getTexture(const DotDir& interseccion) override {
 
       DotDir interseccionLocal = UCSToLocalTransformation*interseccion;
-      // cout << interseccionLocal.toString()<< endl;
 
       float azimuth = -atan2(interseccionLocal.getZ() - centerLocal.getZ() , interseccionLocal.getX() - centerLocal.getX());
       float u = (azimuth + pi) / (2*pi);
-      
+
+      float w = interseccionLocal.getY() / radius;
+      // Clampea para evitar problemas punto flotante
+      if(w < -1.f) w = -1.f;
+      else if(w > 1.f) w = 1.f;
       // Inclinación DESDE EL POLO NORTE, entre 0 y pi
-      float inclination = acos(interseccionLocal.getY() / radius);
+      float inclination = acos(w);
       float v = inclination / pi;
 
       u = u*textura.getWidth();
       v = v*textura.getHeight();
+      if(v > textura.getHeight() - 1) v = textura.getHeight() - 1;
+      if(u > textura.getWidth() - 1) u = textura.getWidth() - 1;
+      if(u < 0.f) u = 0.f;
+      if(v < 0.f) v = 0.f;
 
       rgb dev = textura.getRGB(v, u);
       return dev;
@@ -127,9 +134,12 @@ class Sphere : public Figure{
       base1 = crossProduct(base2, sphereAxis);
       base0 = crossProduct(base2, base1);
 
-      base2 = normalization(base2);
-      base0 = normalization(base0);
-      base1 = normalization(base1);
+      if(base2.mod() > 0)
+        base2 = normalization(base2);
+      if(base0.mod() > 0)
+        base0 = normalization(base0);
+      if(base1.mod() > 0)
+        base1 = normalization(base1);
     }
 
     DotDir getAxis(){
@@ -150,6 +160,8 @@ class Sphere : public Figure{
 
     BoundingBox getBound(){
 
+      //cout << sphereCenter.getX() + radius << " " << sphereCenter.getX() - radius << endl;
+      //cout << sphereCenter.getY() + radius << " " << sphereCenter.getY() - radius << endl;
       return BoundingBox(
         DotDir(sphereCenter.getX() + radius, sphereCenter.getY() + radius, sphereCenter.getZ() + radius, 1),
         DotDir(sphereCenter.getX() - radius, sphereCenter.getY() - radius, sphereCenter.getZ() - radius, 1)
@@ -168,7 +180,7 @@ bool checkRadius(DotDir axis, DotDir center, DotDir city){
   return (abs(radius.mod() - 0.5*(axis.mod())) < 0.0001) ? true : false;
 }
 
-// Esto es de la practica 1
+
 class PlanetaryStation{
   private:
 

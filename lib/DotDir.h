@@ -14,12 +14,10 @@ class DotDir {
   public:
 
      DotDir operator-() const;
+     friend bool operator==(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
-     friend DotDir operator+(const DotDir& dd1, const float& f);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator*(float t, const DotDir& dd1);
-     friend DotDir operator*(const DotDir& dd1, float t);
-     friend DotDir operator/(const DotDir& dd1, float div);
      friend float dotProduct(const DotDir& dd1, const DotDir& dd2);
      friend DotDir crossProduct(const DotDir& dd1, const DotDir& dd2);
      friend DotDir normalization(const DotDir& dd);
@@ -33,7 +31,6 @@ class DotDir {
          c[3] = w;
      }
 
-     // GETTERS de los componentes
      float getX() const {
        return c[0];
      }
@@ -49,8 +46,7 @@ class DotDir {
      float getW() const {
        return c[3];
      }
-    
-     //Establece valores en las componentes
+
      void setDotDir(float x, float y, float z, float w){
          c[0] = x;
          c[1] = y;
@@ -58,18 +54,14 @@ class DotDir {
          c[3] = w;
      }
 
-     //Devuelve el modulo
      float mod() const {
          return sqrt(c[0] * c[0] + c[1] * c[1] + c[2] * c[2]);
      }
 
-     //Imprime una cadena con el vector
      string toString() const{
        return to_string(c[0]) + ", " + to_string(c[1]) + ", " + to_string(c[2]) + ", " + to_string(c[3]);
      }
 
-     //i >= 0 AND i <= 3
-     // Devuelve el dato de la componente i-ésima.
      float operator[](const int i) const {
        if(i < 0 || i > 3){
          return 0;
@@ -78,8 +70,6 @@ class DotDir {
        return c[i];
      }
 
-     //i >= 0 AND i <= 3
-     // Devuelve el dato de la componente i-ésima.
      float operator[](int i) {
        if(i < 0 || i > 3){
          return 0;
@@ -89,22 +79,18 @@ class DotDir {
      }
 };
 
-// Niega el punto
 DotDir DotDir::operator-() const{
   return DotDir(-c[0], -c[1], -c[2], c[3]); 
 }
 
-//Divide alas componentes de un vector por div
-DotDir operator/(const DotDir& dd1, float div){
-  return DotDir(dd1.c[0] / div, dd1.c[1] / div, dd1.c[2] / div, dd1.c[3]);
+bool operator==(const DotDir& dd1, const DotDir& dd2){
+  // Dirección + Dirección = Dirección OK, w = 0
+  // Punto + Punto = NO HACER NO OK, w = 0
+  // Dirección + Punto = Punto OK, w = 1
+  // Punto + Dirección = Punto OK, w = 1
+  return dd1.c[0] == dd2.c[0] && dd1.c[1] == dd2.c[1] && dd1.c[2] == dd2.c[2] && dd1.c[3] == dd2.c[3];
 }
 
-// Suma de DotDir y float
-DotDir operator+(const DotDir& dd1, const float& f){
-  return DotDir(dd1.c[0] + f, dd1.c[1] + f, dd1.c[2] + f, dd1.c[3]);
-}
-
-// Suma de DotDir
 DotDir operator+(const DotDir& dd1, const DotDir& dd2){
   // Dirección + Dirección = Dirección OK, w = 0
   // Punto + Punto = NO HACER NO OK, w = 0
@@ -113,18 +99,12 @@ DotDir operator+(const DotDir& dd1, const DotDir& dd2){
   return DotDir(dd1.c[0] + dd2.c[0], dd1.c[1] + dd2.c[1], dd1.c[2] + dd2.c[2], dd1.c[3] + dd2.c[3]);
 }
 
-//Resta de DotDir
 DotDir operator-(const DotDir& dd1, const DotDir& dd2){
   // Dirección - Dirección = Dirección OK, w = 0
   // Punto - Punto = Dirección OK, w = 0
   // Dirección - Punto = NO HACER NO OK, w = - 1
   // Punto - Dirección = Punto OK, w = 1
   return DotDir(dd1.c[0] - dd2.c[0], dd1.c[1] - dd2.c[1], dd1.c[2] - dd2.c[2], dd1.c[3] - dd2.c[3]);
-}
-
-// Multiplicación de DotDir por float
-DotDir operator*(const DotDir& dd1, float t){
-  return DotDir(dd1.c[0] * t, dd1.c[1] * t, dd1.c[2] * t, dd1.c[3]);
 }
 
 DotDir operator*(float t, const DotDir& dd1){
@@ -151,7 +131,11 @@ DotDir crossProduct(const DotDir& dd1, const DotDir& dd2){
 // Devuelve el vector correspondiente a la normalización de la dirección d
 DotDir normalization(const DotDir& dd){
   float modulo = dd.mod();
-  return DotDir(dd.c[0]/modulo, dd.c[1]/modulo, dd.c[2]/modulo, dd.c[3]);
+  if(modulo != 0)
+    return DotDir(dd.c[0]/modulo, dd.c[1]/modulo, dd.c[2]/modulo, dd.c[3]);
+  else
+    return DotDir(0,0,0,dd.c[3]);
+  
 }
 
 // Calcula el ángulo entre dos vectores

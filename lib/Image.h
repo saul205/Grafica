@@ -39,7 +39,7 @@ public:
     }
 
     rgb getRGB(int h, int w){
-        return data[h*width + w] / max;
+        return data[h*width + w];
     }
 
     int getWidth(){
@@ -185,7 +185,6 @@ void escribir(std::string nombre, Image& img, const int col_res){
         write += std::to_string(col_res) + "\n";
         f << write;
         
-        // Escribe las filas de la imagen
         for(int i = 0; i < img.getHeight(); ++i){
             f << img.toStringRow(i, col_res, maximo) << "\n";
         }

@@ -20,8 +20,6 @@ class BoundingBox{
             top.setDotDir(-FLT_MAX, -FLT_MAX, -FLT_MAX, 1);
         }
 
-        // Crea una bounding box definida por los componentes máximos y mínimos
-        // de cada uno de los puntos para las tres coordenadas espaciales
         BoundingBox(DotDir _top, DotDir _bottom) {
             top.setDotDir(std::max(_top.getX(), _bottom.getX()),
                           std::max(_top.getY(), _bottom.getY()),
@@ -34,11 +32,10 @@ class BoundingBox{
                              1 );
         }
 
-        // Devuelve cierto si y solo si el rayo intersecta a la bounding box.
-        // Además, si esto ocurre, t vale la distancia del origen del rayo al 
-        // punto de intersección
         bool intersects(Ray ray, float& t) {
 
+            //cout << top[0] << ", " << top[1] << ", " << top[2] << endl;
+            //cout << bottom[0] << ", " << bottom[1] << ", " << bottom[2] << endl;
             float tNearX = (bottom.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
             float tFarX = (top.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
 
@@ -67,9 +64,6 @@ class BoundingBox{
             return true;
         }
 
-        // Devuelve cierto si y solo si el rayo intersecta a la bounding box.
-        // Además, si esto ocurre, t vale la distancia del origen del rayo al 
-        // punto de intersección
         bool intersects(Ray ray, float& t) const {
             
             float tNearX = (bottom.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
@@ -83,6 +77,11 @@ class BoundingBox{
 
             float tNear = max(max(min(tNearX, tFarX), min(tNearY ,tFarY)), min(tNearZ ,tFarZ));
             float tFar = min(min(max(tNearX, tFarX), max(tNearY ,tFarY)), max(tNearZ ,tFarZ));
+
+            /*cout << "Xnear: " << tNearX << endl << "Xfar: " << tFarX << endl;
+            cout << "Ynear: " << tNearY << endl << "Yfar: " << tFarY << endl;
+            cout << "Znear: " << tNearZ << endl << "Zfar: " << tFarZ << endl;
+            cout << "Near: " << tNear << endl << "Far: " << tFar << endl;*/
 
             if(tFar < tNear) return false;
 
@@ -115,8 +114,6 @@ class BoundingBox{
             return bottom;
         }
 
-        // Devuelve el eje a partir, el que es mayor de los tres
-        // Devuelve 0, 1 o 2
         int MaxAxe(){
             float x = top.getX() - bottom.getX();
             float y = top.getY() - bottom.getY();
@@ -132,7 +129,7 @@ class BoundingBox{
 
 };
 
-// Devuelve una bounding box que contiene box1 y box2
+
 BoundingBox Union(const BoundingBox& box1, const BoundingBox& box2){
     return BoundingBox(DotDir(std::max(box1.top.getX(), box2.top.getX()),
                                 std::max(box1.top.getY(), box2.top.getY()),
@@ -145,8 +142,23 @@ BoundingBox Union(const BoundingBox& box1, const BoundingBox& box2){
                                 1));
 }
 
-// Devuelve una bounding box que contiene box1 y box2
 BoundingBox Union(const BoundingBox& box1, const DotDir& box2){
+
+    /*cout << box2.toString() << endl;
+    cout << box1.top.toString() << endl;
+    cout << box1.bottom.toString() << endl;
+
+    cout << DotDir(std::max(box1.top.getX(), box2.getX()),
+                                std::max(box1.top.getY(), box2.getY()),
+                                std::max(box1.top.getZ(), box2.getZ()),
+                                1).toString() << endl;
+
+    cout << DotDir(std::min(box1.bottom.getX(), box2.getX()),
+                                std::min(box1.bottom.getY(), box2.getY()),
+                                std::min(box1.bottom.getZ(), box2.getZ()),
+                                1).toString() << endl;
+
+    cout << endl;*/
 
     return BoundingBox(DotDir(std::max(box1.top.getX(), box2.getX()),
                                 std::max(box1.top.getY(), box2.getY()),
