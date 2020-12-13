@@ -14,12 +14,12 @@ int main(){
     Image imagen = leer(file);
 
     ToneMapper tm;
-    tm.Reinhard(imagen, 1);
+    tm.Filmic(imagen, 10.0f, 2.0f);
 
     std::cout << "Introduce una archivo destino: " << std::endl;
     std::cin >> file2;
 
-    escribirbmp(file2, imagen, 255);
+    escribir(file2, imagen, 255);
 
     return 0;
 }

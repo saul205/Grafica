@@ -82,6 +82,7 @@ class ToneMapper{
 
     void gammaCurveAndClamping(Image& img, const float clamping, const float gamma = 2.2){
         const float maximo = img.getMaximo();
+        cout << "Max: " << clamping << endl;
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 rgb colores = img.get(i * img.getWidth() + j);
@@ -147,12 +148,12 @@ class ToneMapper{
     }
 
     float eq(float x, 
-             float A = 1.5, 
+             float A = 0.8, 
              float B = 0.5, 
-             float C = 0.1, 
+             float C = 0.35, 
              float D = 0.2, 
-             float E = 0.02, 
-             float F = 0.3){
+             float E = 0.1, 
+             float F = 0.15){
 
         return ((x *(A*x + C*B) + D*E) / (x*(A*x + B) + D*F)) - E/F;
     } 

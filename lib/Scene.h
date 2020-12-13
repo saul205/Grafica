@@ -20,7 +20,7 @@ class Scene {
 
     public:
 
-       Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 255){
+       Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 1e5){
             imagen = Image("P3", "IMG", width, height, col_res, col_res);
             renderer = Sensor(30.0f, width/height, target, width, height, front);
             color_res = col_res;
@@ -121,9 +121,6 @@ class Scene {
             cout << "N Figuras: " << figuras.size() << endl;
             cout << "N Nodos: " << bv.getSize() << endl;
             renderer.lanzarRayos(bv, luces, imagen, AA, hilos);
-
-            ToneMapper tm;
-            tm.gammaCurveAndClamping(imagen, imagen.getMaximo() / 50.0f, 1/4.0f);
 
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);

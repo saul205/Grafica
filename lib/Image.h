@@ -31,6 +31,7 @@ public:
     }
 
     void set(int index, int r, int g, int b){
+        //cout << " r: " << r * max / c << " g: " << g * max/ c << " b: " << b * max/ c << endl;
         data[index] = rgb(r * max / c, g * max/ c, b * max/ c);
     }
 
