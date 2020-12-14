@@ -73,7 +73,7 @@ void cornellBoxBasica(Scene& escena){
     plano4->setDifBDRF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
-    escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
+    escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(50,50,50), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
     plano5->setDifBDRF(rgb(0.7,0.7,0.7));

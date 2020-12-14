@@ -57,7 +57,21 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                     bool intersecta = true;
                     while(intersecta) {
                         
-                        intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
+                        //intersecta = scene.intersect(rayoMundoRebotes, minTObject, interseccion, intersecciones);
+                        intersecta = false;
+                        DotDir inters, interseccion;
+                        float minT = INFINITY, newT = INFINITY;
+                        for(int i = 0; i < scene.figuras.size(); i++){
+                            // Si no intersecta no se modifica newT
+                            if(scene.figuras[i]->intersects(rayoMundoRebotes, newT, inters)){
+                                if(newT < minT){
+                                    minT = newT;
+                                    minTObject = scene.figuras[i];
+                                    interseccion = inters;
+                                    intersecta = true;
+                                }
+                            }
+                        }
 
                         if(intersecta && minTObject->hasEmission()) {
 

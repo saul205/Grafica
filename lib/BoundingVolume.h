@@ -191,11 +191,13 @@ class BoundingVolume{
         float getSize(){
             return nodos.size();
         }
+
+        std::vector<std::shared_ptr<Figure>> figuras;
        
     private:
 
         std::shared_ptr<Node> root;
-        std::vector<std::shared_ptr<Figure>> figuras;
+        
         std::vector<LinearNode> nodos;
 
         int flattenTree(std::shared_ptr<Node> nodo, int& offset){

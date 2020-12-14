@@ -98,28 +98,25 @@ class Triangle : public Figure {
         // Möller–Trumbore intersection algorithm, decide si el rayo intersecta o no con el triángulo
         bool intersects(Ray ray, float& t, DotDir& p) override {
     
-            const float epsilon = 10e-7;
-            DotDir h = crossProduct(ray.getDir(), v0v2);
-            float det = dotProduct(v0v1, h);
+            DotDir hVect = crossProduct(ray.getDir(), v0v2);
+            float det = dotProduct(v0v1, hVect);
     
-            if (det > -epsilon && det < epsilon) return false;    // Rayo paralelo al triángulo
+            if (det > -10e-7 && det < 10e-7) return false;    // Rayo paralelo al triángulo
     
-            float invDet = 1.0/det;
-            DotDir s = ray.getOrigen() - v0;
-            float u = invDet * dotProduct(s,h);
+            float invDet = 1.f / det;
+            DotDir sVect = ray.getOrigen() - v0;
+            float u = invDet * dotProduct(sVect, hVect);
             
-            if (u < 0.0 || u > 1.0) return false;
-            
-            DotDir q = crossProduct(s, v0v1);
-            float v = invDet * dotProduct(ray.getDir(), q);
+            DotDir qVect = crossProduct(sVect, v0v1);
+            float v = invDet * dotProduct(ray.getDir(), qVect);
     
-            if (v < 0.0 || u + v > 1.0) return false;
+            if (u < 0.f || u > 1.f || v < 0.f || u + v > 1.f) return false;
     
             // Sabemos que intersecta el rayo al triángulo en este punto
             // porque las coordenadas baricentricas u y v cumplen las restricciones
-            t = invDet * dotProduct(v0v2, q);
+            t = invDet * dotProduct(v0v2, qVect);
     
-            if (t > epsilon){ 
+            if (t > 10e-7){ 
                 p = ray.getOrigen() + t * ray.getDir();
                 return true;
             } else { 
