@@ -78,6 +78,9 @@ public:
         std::string ret = "";
         int index = width*row;
         for (int i = 0; i < width; ++i){
+            if(data[index + i].r == col_res){
+                cout << "Blanco" << (int)(data[index + i].r*(col_res / new_max)) << endl;
+            }
             ret += std::to_string((int)(data[index + i].r*(col_res / new_max))) + " ";
             ret += std::to_string((int)(data[index + i].g*(col_res / new_max))) + " ";
             ret += std::to_string((int)(data[index + i].b*(col_res / new_max)));
@@ -174,6 +177,8 @@ void escribir(std::string nombre, Image& img, const int col_res){
 
         std::string write = "";
         float maximo = img.getMaximo();
+        
+        cout << "Maximo: " << maximo << endl;
 
         if(img.getCabecera() != ""){
             write += img.getCabecera() + "\n";

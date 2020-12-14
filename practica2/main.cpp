@@ -14,7 +14,7 @@ int main(){
     Image imagen = leer(file);
 
     ToneMapper tm;
-    tm.Filmic(imagen, 10.0f, 2.0f);
+    tm.gammaCurveAndClamping(imagen, imagen.getMaximo() * 0.10f, 1 / 2.5f);
 
     std::cout << "Introduce una archivo destino: " << std::endl;
     std::cin >> file2;

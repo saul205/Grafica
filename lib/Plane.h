@@ -113,17 +113,20 @@ class Plane : public Figure {
         rgb getTexture(const DotDir& interseccion) override {
 
             DotDir v = interseccion - center;
-            
+
             float p1 = 1 - (dotProduct(v, v1) + height / 2)/ height;
             float p2 = 1 - (dotProduct(v, v2) + width / 2)/ width;
+
+            p1 = p1 * textura.getHeight();
+            p2 = p2 * textura.getWidth();
 
             if(p1 > textura.getHeight() - 1) p1 = textura.getHeight() -1;
             if(p2 > textura.getWidth() - 1) p2 = textura.getWidth() - 1;
             if(p1 < 0) p1 = 0;
             if(p2 < 0) p2 = 0;
 
-            return textura.getRGB(p1*textura.getHeight(), p2*textura.getWidth());
-        };
+            return textura.getRGB(p1, p2);
+        }
 
 };
 
