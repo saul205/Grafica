@@ -84,11 +84,9 @@ class Scene {
             }
         }
 
-        int addTriangle(DotDir v1, DotDir v2, DotDir v3, rgb color){
+        int addTriangle(DotDir v1, DotDir v2, DotDir v3){
             std::shared_ptr<Figure> triangle(new Triangle(v1, v2, v3));
-            triangle->setRgb(color);
             figuras.push_back(triangle);
-
             return figuras.size() - 1;
         }
 

@@ -14,7 +14,7 @@
 #include <random>
 #include <functional>
 
-const int sizeCuadrante = 5;
+const int sizeCuadrante = 1;
 const float fov = 1;
 
 void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int antiAliasing, const BoundingVolume &scene, vector<LightSource> luces,
@@ -91,8 +91,10 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                     DotDir punto;
 
                                     bool luzIntersecta = scene.intersect(newShadowRay, minTObject, punto, intersecciones);
-                                    if(!luzIntersecta || (punto - interseccion).mod() > shadowRay.mod())
-                                        emisionFinalRayo = emisionFinalRayo + emisionAcumulada*(luces[light].getEmission() / (shadowRay.mod() * shadowRay.mod()));
+                                    if(!luzIntersecta || (punto - interseccion).mod() > shadowRay.mod()){
+                                        float evaluar = luces.size() * fabs(dotProduct(base[2], shadowRay / shadowRay.mod())) / pi;
+                                        emisionFinalRayo = emisionFinalRayo + emisionAcumulada*evaluar*(luces[light].getEmission() / (shadowRay.mod() * shadowRay.mod()));
+                                    }
                                 }
  
                             }else if(p < pk + ps){      // Specular

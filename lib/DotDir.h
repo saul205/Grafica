@@ -18,6 +18,7 @@ class DotDir {
      friend DotDir operator-(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator+(const DotDir& dd1, const DotDir& dd2);
      friend DotDir operator*(float t, const DotDir& dd1);
+     friend DotDir operator/(const DotDir& dd1, float t);
      friend float dotProduct(const DotDir& dd1, const DotDir& dd2);
      friend DotDir crossProduct(const DotDir& dd1, const DotDir& dd2);
      friend DotDir normalization(const DotDir& dd);
@@ -113,6 +114,10 @@ DotDir operator*(float t, const DotDir& dd1){
   // Dirección - Punto = NO HACER NO OK, w = - 1
   // Punto - Dirección = Punto OK, w = 1
   return DotDir(dd1.c[0] * t, dd1.c[1] * t, dd1.c[2] * t, dd1.c[3]);
+}
+
+DotDir operator/(const DotDir& dd1, float t){
+  return DotDir(dd1.c[0] / t, dd1.c[1] / t, dd1.c[2] / t, dd1.c[3]);
 }
 
 // Devuelve el producto escalar de los vectores d1 y d2.

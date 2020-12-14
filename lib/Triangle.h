@@ -19,7 +19,7 @@ struct triangleVertexUV{
             -         -             Dejar coordenadas por default
             -      -                    A = (0,0)
             -    -                      B = (1,0)
-            -  -                        C = (1,1)
+            -  -                        C = (0,1)
             C
 
         Para hacer un plano hacer un triángulo por defecto y otro:
