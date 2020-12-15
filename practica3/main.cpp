@@ -55,7 +55,7 @@ void texturas(Scene& escena){
     escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.7));
 }
 
-void cornellBoxBasica(Scene& escena){
+void cornellBoxCanstick(Scene& escena){
 
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
     plano->setDifBDRF(rgb(0.7,0.7,0.7));
@@ -79,30 +79,24 @@ void cornellBoxBasica(Scene& escena){
     plano5->setDifBDRF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
-    int x = 0;
-    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(0,0,0));
-    std::shared_ptr<Figure> esfera = escena.getFigure(x);
-    esfera->setDielectrico();
-    esfera->refractionIndex = 1.55;
-
-    x = escena.addSphere(DotDir(-1,-1.5,3,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,3,0), rgb(0,0,0));
-    std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
-    esfera4->setDifBDRF(rgb(0.2,0.2,0.7));
-    esfera4->setSpecBDRF(rgb(0.2,0.2,0.2));
+    TriangleMesh t;
+    t.read("../canstick.ply");
+    t.scale(10, 10, 10);
+    t.move(DotDir(0, 0, 2, 1));
+    escena.addTriangleMesh(t);
 }
 
-void cornellBoxEspejos(Scene& escena){
+void cornellBoxConvergencia(Scene& escena){
+
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
     plano->setDifBDRF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setSpecBDRF(rgb(0.7,0.7,0.7));
     plano2->setDifBDRF(rgb(1,0.2,0.2));
     escena.addPlane(plano2);
 
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setSpecBDRF(rgb(0.7,0.7,0.7));
     plano3->setDifBDRF(rgb(0.2,1,0.2));
     escena.addPlane(plano3);
 
@@ -113,13 +107,25 @@ void cornellBoxEspejos(Scene& escena){
     escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
-    plano5->setSpecBDRF(rgb(0.7,0.7,0.7));
-    plano5->setDifBDRF(rgb(0.3,0.3,0.3));
+    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
     int x = 0;
-    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(10e5,10e5,10e5), true);
+    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
+    esfera3->setSpecBDRF(rgb(0.5,0.5,0.5));
 
+    x = escena.addSphere(DotDir(-1,-1.5,3,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,3,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
+    esfera4->setSpecBDRF(rgb(0.5,0.5,0.5));
+
+    x = escena.addSphere(DotDir(-1,1,1.5,1), DotDir(0,1,0,0), DotDir(-1.5,1,1.5,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera5 = escena.getFigure(x);
+    esfera5->setSpecBDRF(rgb(0.5,0.5,0.5));
+
+    x = escena.addSphere(DotDir(1,1,3,1), DotDir(0,1,0,0), DotDir(0.5,1,3,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera6 = escena.getFigure(x);
+    esfera6->setSpecBDRF(rgb(0.5,0.5,0.5));
 }
 
 
@@ -131,7 +137,7 @@ int main(int argc, char** argv){
     }
 
     float W = 1080, H = 1080;
-    float col_res = 1e5;
+    float col_res = 1e9;
     string name = "render";
     int threads = 1;
 
@@ -146,7 +152,7 @@ int main(int argc, char** argv){
 
     Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,8,0), col_res);
 
-    cornellBoxEspejos(scene);
+    cornellBoxConvergencia(scene);
     scene.render(name, atoi(argv[1]), threads);
 
     return 0;

@@ -28,9 +28,13 @@ class Plane : public Figure {
             v1n = normalization(v1);
         }
 
-        // Debe tener una normal
+        // Debe tener una normal precalculada
         // Si no instersecta o está detrás de la cámara devuelve falso y no modifica t,
-        // en caso contrario devuelve cierto y t = - (c + o*n) / (d*n)
+        // La ecuación que define un plano en función de un punto y la normal es (p - p0).n
+        // En este caso el punto p0 es el centro del plano en coordenadas del mundo.
+        // Despejando junto a la ecuación del rayo queda que t = (c - o)·n / d·n
+        // Para asegurar que el punto cae dentro edl plano finito se calcula la proyección
+        // y comprueba que queda dentro de los límites
         bool intersects(Ray ray, float& t, DotDir& p) override {
     
             float den = dotProduct(ray.getDir(), normal);
