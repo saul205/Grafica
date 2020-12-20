@@ -52,7 +52,7 @@ class Sphere : public Figure{
         if(doSquareRoot < 0) {         // Sin soluciones
           return false;
 
-        } else if(doSquareRoot == 0) { // Una solución, t es tangente a la esfera
+        } else if(doSquareRoot < 10e-7) { // Una solución, t es tangente a la esfera
           float answer = (-b)/(2.0f);  // a = 1 y la raíz es 0
           if(answer > 0){
             t = answer;
