@@ -123,7 +123,7 @@ class Scene {
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);
             }else{
-                escribirbmp(output + ".bmp", imagen, color_res);
+                escribirbmp(output + ".bmp", imagen);
             }
         }
 
@@ -131,7 +131,7 @@ class Scene {
             int size = t.getSize();
             for(float i = 0; i < size; i++){
                 Triangle tri = t[i];
-                tri.setDifBDRF(rgb(0.7, 0.7, 0.7));
+                tri.setDifBRDF(rgb(0.7, 0.7, 0.7));
                 figuras.push_back(std::make_shared<Triangle>(tri));
             }
         }

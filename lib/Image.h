@@ -196,8 +196,9 @@ void escribir(std::string nombre, Image& img, const int col_res){
     }
 }
 
-void escribirbmp(std::string nombre, Image& img, const int col_res){
+void escribirbmp(std::string nombre, Image& img){
 
+    const int col_res = 255;
     std::ofstream f(nombre);
     if(f.is_open()){
 
