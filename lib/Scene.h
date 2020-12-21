@@ -22,7 +22,7 @@ class Scene {
 
        Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 1e5){
             imagen = Image("P3", "IMG", width, height, col_res, col_res);
-            renderer = Sensor(30.0f, width/height, target, width, height, front);
+            renderer = Sensor(90.0f, width/height, target, width, height, front);
             color_res = col_res;
         }
 

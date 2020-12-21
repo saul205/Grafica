@@ -6,7 +6,7 @@
 #include "../lib/ToneMapper.h"
 
 
-int main(){
+int main(int argc, char** argv){
 
     std::string file, file2;
     std::cout << "Introduce una imagen: " << std::endl;
@@ -14,12 +14,12 @@ int main(){
     Image imagen = leer(file);
 
     ToneMapper tm;
-    tm.gammaCurveAndClamping(imagen, imagen.getMaximo() * 0.10f, 1 / 2.5f);
+    tm.Filmic(imagen);
 
     std::cout << "Introduce una archivo destino: " << std::endl;
     std::cin >> file2;
 
-    escribir(file2, imagen, 100000);
+    escribir(file2, imagen, 255);
 
     return 0;
 }

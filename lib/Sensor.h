@@ -137,7 +137,7 @@ class Sensor{
         Sensor(float fov, float aspect, DotDir target, float planeWidth, float planeHeight, DotDir _f = DotDir(0,0,1,0)) :
                 planeW(planeWidth), planeH(planeHeight) {
 
-            float ufRatio = tan(pi * 30 / (2.0f * 180));
+            float ufRatio = tan(pi * fov / (2.0f * 180));
             cout << ufRatio << endl;
             
             DotDir _u = DotDir(0,ufRatio * _f.mod(),0,0);

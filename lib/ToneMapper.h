@@ -95,14 +95,14 @@ class ToneMapper{
         }
     }
 
-    void Reinhard(Image& img, float exp, float white = 2, const float gamma = 2.2){
+    void Reinhard(Image& img, float white = 1){
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 rgb colores = img.get(i * img.getWidth() + j);
                 
-                colores.r = pow(colores.r * exp * (1 + colores.r * exp / white) / (1 + colores.r / exp), 1 / gamma);
-                colores.g = pow(colores.g * exp * (1 + colores.g * exp / white) / (1 + colores.g / exp), 1 / gamma);
-                colores.b = pow(colores.b * exp * (1 + colores.b * exp / white) / (1 + colores.b / exp), 1 / gamma);
+                colores.r = colores.r * (1 + colores.r / (white * white)) / (1 + colores.r);
+                colores.g = colores.g * (1 + colores.g / (white * white)) / (1 + colores.g);
+                colores.b = colores.b * (1 + colores.b / (white * white)) / (1 + colores.b);
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }
@@ -147,12 +147,12 @@ class ToneMapper{
     }
 
     float eq(float x, 
-             float A = 0.8, 
+             float A = 0.5, 
              float B = 0.5, 
-             float C = 0.35, 
+             float C = 0.1, 
              float D = 0.2, 
-             float E = 0.1, 
-             float F = 0.15){
+             float E = 0.02, 
+             float F = 0.30){
 
         return ((x *(A*x + C*B) + D*E) / (x*(A*x + B) + D*F)) - E/F;
     } 
