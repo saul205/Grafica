@@ -7,76 +7,76 @@
 void texturas(Scene& escena){
 
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setDifBDRF(rgb(1,0.2,0.2));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
     escena.addPlane(plano2);
     
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setDifBDRF(rgb(0.2,1,0.2));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
-    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
-    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
     Image imagen = leer("seymour_park.ppm");
     ToneMapper tm;
     tm.gammaCurveAndClamping(imagen, imagen.getMaximo() * 0.15, 1 / 2.2f);
 
-    int x = escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(-1.999,0,2,1), 2, 2, imagen);
+    int x = escena.addPlane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-1.999,0,2,1), 2, 2, imagen);
     std::shared_ptr<Figure> plano6 = escena.getFigure(x);
-    plano6->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano6->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano6);
 
     x = escena.addSphere(DotDir(-1,-1.5,3,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,3,0), imagen);
     std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
-    esfera3->setDifBDRF(rgb(0.7,0.7,0.7));
+    esfera3->setDifBRDF(rgb(0.7,0.7,0.7));
     x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), imagen);
     std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
-    esfera4->setDifBDRF(rgb(0.7,0.7,0.7));
+    esfera4->setDifBRDF(rgb(0.7,0.7,0.7));
 
     triangleVertexUV t1(0, 0, 0.5, 0, 0, 1);
     int n = escena.addTriangle(DotDir(1, 0.5, 2, 1), DotDir(0.1, 0.5, 2, 1), DotDir(1, -0.5, 2, 1), imagen, t1);
-    escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.7));
+    escena.getFigure(n)->setDifBRDF(rgb(0.7, 0.7, 0.7));
     triangleVertexUV t2(1, 0, 0.5, 0, 1, 1);
     n = escena.addTriangle(DotDir(-1, 0.5, 2, 1), DotDir(-0.1, 0.5, 2, 1), DotDir(-1, -0.5, 2, 1), imagen, t2);
-    escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.7));
+    escena.getFigure(n)->setDifBRDF(rgb(0.7, 0.7, 0.7));
     triangleVertexUV t3(1, 1, 0.5, 0, 0, 1);
     n = escena.addTriangle(DotDir(-0.9, -0.5, 2, 1), DotDir(0, 0.5, 2, 1), DotDir(0.9, -0.5, 2, 1), imagen, t3);
-    escena.getFigure(n)->setDifBDRF(rgb(0.7, 0.7, 0.7));
+    escena.getFigure(n)->setDifBRDF(rgb(0.7, 0.7, 0.7));
 }
 
 void cornellBoxCanstick(Scene& escena){
 
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setDifBDRF(rgb(1,0.2,0.2));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
     escena.addPlane(plano2);
 
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setDifBDRF(rgb(0.2,1,0.2));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
-    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(50,50,50), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
-    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
     TriangleMesh t;
@@ -89,25 +89,25 @@ void cornellBoxCanstick(Scene& escena){
 void triangleScene(Scene& escena){
 
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setDifBDRF(rgb(1,0.2,0.2));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
     escena.addPlane(plano2);
 
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setDifBDRF(rgb(0.2,1,0.2));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
-    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(50,50,50), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
-    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
     TriangleMesh t;
@@ -120,67 +120,67 @@ void triangleScene(Scene& escena){
 void cornellBoxConvergencia(Scene& escena){
 
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setDifBDRF(rgb(1,0.2,0.2));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
     escena.addPlane(plano2);
 
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setDifBDRF(rgb(0.2,1,0.2));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
-    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(10e5,10e5,10e5), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
-    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
     int x = 0;
     x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
-    esfera3->setSpecBDRF(rgb(0.5,0.5,0.5));
+    esfera3->setSpecBRDF(rgb(0.5,0.5,0.5));
 
     x = escena.addSphere(DotDir(-1,-1.5,3,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,3,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
-    esfera4->setSpecBDRF(rgb(0.5,0.5,0.5));
+    esfera4->setSpecBRDF(rgb(0.5,0.5,0.5));
 
     x = escena.addSphere(DotDir(-1,1,1.5,1), DotDir(0,1,0,0), DotDir(-1.5,1,1.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera5 = escena.getFigure(x);
-    esfera5->setSpecBDRF(rgb(0.5,0.5,0.5));
+    esfera5->setSpecBRDF(rgb(0.5,0.5,0.5));
 
     x = escena.addSphere(DotDir(1,1,3,1), DotDir(0,1,0,0), DotDir(0.5,1,3,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera6 = escena.getFigure(x);
-    esfera6->setSpecBDRF(rgb(0.5,0.5,0.5));
+    esfera6->setSpecBRDF(rgb(0.5,0.5,0.5));
 }
 
 void cornellBoxBasica(Scene& escena){
 
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setDifBDRF(rgb(1,0.2,0.2));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
     escena.addPlane(plano2);
 
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setDifBDRF(rgb(0.2,1,0.2));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
-    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
     escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(50,50,50), true);
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
-    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
     int x = 0;
@@ -191,42 +191,86 @@ void cornellBoxBasica(Scene& escena){
 
     x = escena.addSphere(DotDir(-1,-1.5,3,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,3,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
-    esfera4->setDifBDRF(rgb(0.2,0.2,0.7));
-    esfera4->setSpecBDRF(rgb(0.2,0.2,0.2));
+    esfera4->setDifBRDF(rgb(0.2,0.2,0.7));
+    esfera4->setSpecBRDF(rgb(0.2,0.2,0.2));
 }
 
-void cornellBoxDifusa(Scene& escena){
+void cornellBoxBasicaPunt(Scene& escena){
 
     std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
-    plano->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano);
 
     std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
-    plano2->setDifBDRF(rgb(1,0.2,0.2));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
     escena.addPlane(plano2);
 
     std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
-    plano3->setDifBDRF(rgb(0.2,1,0.2));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
     escena.addPlane(plano3);
 
     std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
-    plano4->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano4);
 
-    escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(50,50,50), true);
+    escena.addLight(DotDir(0,1.995,2,1), rgb(50,50,50));
 
     std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
-    plano5->setDifBDRF(rgb(0.7,0.7,0.7));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
     escena.addPlane(plano5);
 
     int x = 0;
     x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera = escena.getFigure(x);
-    esfera->setDifBDRF(rgb(0.7,0.7,0.7));
+    esfera->setDielectrico();
+    esfera->refractionIndex = 1.55;
 
     x = escena.addSphere(DotDir(-1,-1.5,3,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,3,0), rgb(0,0,0));
     std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
-    esfera4->setDifBDRF(rgb(0.2,0.2,0.7));
+    esfera4->setDifBRDF(rgb(0.2,0.2,0.7));
+    esfera4->setSpecBRDF(rgb(0.2,0.2,0.2));
+}
+
+void cornellBoxDifusa(Scene& escena){
+
+    std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano);
+
+    std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
+    escena.addPlane(plano2);
+
+    std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
+    escena.addPlane(plano3);
+
+    std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano4);
+
+    escena.addPlane(DotDir(-1,0,0,0), DotDir(0,0,1,0), DotDir(0,1.995,2,1), 2, 2, rgb(50,50,50), true);
+
+    std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano5);
+
+    int x = 0;
+    x = escena.addSphere(DotDir(1,-1.5,1.5,1), DotDir(0,1,0,0), DotDir(0.5,-1.5,1.5,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera3 = escena.getFigure(x);
+    esfera3->setDifBRDF(rgb(0.2,0.7,0.7));
+
+    x = escena.addSphere(DotDir(-1,-1.5,3,1), DotDir(0,1,0,0), DotDir(-1.5,-1.5,3,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera4 = escena.getFigure(x);
+    esfera4->setDifBRDF(rgb(0.7,0.2,0.7));
+
+    x = escena.addSphere(DotDir(-1,1,1.5,1), DotDir(0,1,0,0), DotDir(-1.5,1,1.5,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera5 = escena.getFigure(x);
+    esfera5->setDifBRDF(rgb(0.7,0.7,0.2));
+
+    x = escena.addSphere(DotDir(1,1,3,1), DotDir(0,1,0,0), DotDir(0.5,1,3,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera6 = escena.getFigure(x);
+    esfera6->setDifBRDF(rgb(0.2,0.2,0.7));
 
 }
 
@@ -252,7 +296,7 @@ int main(int argc, char** argv){
         else{++i;}
     }
 
-    Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,2,0), col_res);
+    Scene scene(W, H, DotDir(0,0,1,1), DotDir(0,0,8,0), col_res);
 
     switch (escena)
     {
@@ -274,6 +318,10 @@ int main(int argc, char** argv){
 
     case 4:
         triangleScene(scene);
+        break;
+
+    case 5:
+        cornellBoxBasicaPunt(scene);
         break;
 
     default:

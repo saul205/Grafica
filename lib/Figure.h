@@ -92,15 +92,15 @@ class Figure {
             return material.kt;
         }
 
-        void setDifBDRF(rgb difuso){
+        void setDifBRDF(rgb difuso){
             material.kd = difuso;
         }
 
-        void setSpecBDRF(rgb spec){
+        void setSpecBRDF(rgb spec){
             material.ks = spec;
         }
 
-        void setRefBDRF(rgb ref){
+        void setRefBRDF(rgb ref){
             material.kt = ref;
         }
 

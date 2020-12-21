@@ -22,7 +22,7 @@ class Scene {
 
        Scene(float width, float height, DotDir target, DotDir front = DotDir(0,0,1,0), float col_res = 1e5){
             imagen = Image("P3", "IMG", width, height, col_res, col_res);
-            renderer = Sensor(90.0f, width/height, target, width, height, front);
+            renderer = Sensor(30.0f, width/height, target, width, height, front);
             color_res = col_res;
         }
 
@@ -123,7 +123,7 @@ class Scene {
             if(mode == 1){
                 escribir(output + ".ppm", imagen, color_res);
             }else{
-                escribirbmp(output + ".bmp", imagen, color_res);
+                escribirbmp(output + ".bmp", imagen);
             }
         }
 
@@ -131,7 +131,7 @@ class Scene {
             int size = t.getSize();
             for(float i = 0; i < size; i++){
                 Triangle tri = t[i];
-                tri.setDifBDRF(rgb(0.7, 0.7, 0.7));
+                tri.setDifBRDF(rgb(0.7, 0.7, 0.7));
                 figuras.push_back(std::make_shared<Triangle>(tri));
             }
         }
