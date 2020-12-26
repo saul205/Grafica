@@ -93,7 +93,7 @@ void lanzarRayosParalelizado(Image& newImagen, ConcurrentBoundedQueue& cbq, int 
                                     bool luzIntersecta = scene.intersect(newShadowRay, minTObject, punto, intersecciones);
                                     if(!luzIntersecta || (punto - interseccion).mod() > shadowRay.mod()){
                                         float evaluar = luces.size() * fabs(dotProduct(base[2], shadowRay / shadowRay.mod())) / pi;
-                                        emisionFinal = emisionFinal + emisionAcumulada*evaluar*(luces[light].getEmission() / max(shadowRay.mod() * shadowRay.mod(), 1.0f));
+                                        emisionFinal = emisionFinal + emisionAcumulada*evaluar*(luces[light].getEmission() / ((shadowRay.mod() + 1) * (shadowRay.mod() + 1)));
                                     }
                                 }
  
