@@ -274,6 +274,36 @@ void cornellBoxDifusa(Scene& escena){
 
 }
 
+void cornellBoxBasicaPunt2(Scene& escena){
+
+    std::shared_ptr<Figure> plano(new Plane(DotDir(0,1,0,0), DotDir(-1,0,0,0), DotDir(0,0,4,1), 4, 4));
+    plano->setDifBRDF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano);
+
+    std::shared_ptr<Figure> plano2(new Plane(DotDir(0,1,0,0), DotDir(0,0,1,0), DotDir(2,0,2,1), 4, 4));
+    plano2->setDifBRDF(rgb(1,0.2,0.2));
+    escena.addPlane(plano2);
+
+    std::shared_ptr<Figure> plano3(new Plane(DotDir(0,1,0,0), DotDir(0,0,-1,0), DotDir(-2,0,2,1), 4, 4));
+    plano3->setDifBRDF(rgb(0.2,1,0.2));
+    escena.addPlane(plano3);
+
+    std::shared_ptr<Figure> plano4(new Plane(DotDir(-1,0,0,0), DotDir(0,0,-1,0), DotDir(0,-2,2,1), 4, 4));
+    plano4->setDifBRDF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano4);
+
+    escena.addLight(DotDir(0,1.995,2,1), rgb(50,50,50));
+
+    std::shared_ptr<Figure> plano5(new Plane(DotDir(0,0,1,0), DotDir(1,0,0,0), DotDir(0,2,2,1), 4, 4));
+    plano5->setDifBRDF(rgb(0.7,0.7,0.7));
+    escena.addPlane(plano5);
+
+    int x = 0;
+    x = escena.addSphere(DotDir(0,-0.75,1.5,1), DotDir(0,1,0,0), DotDir(-0.5,-0.75,1.5,0), rgb(0,0,0));
+    std::shared_ptr<Figure> esfera = escena.getFigure(x);
+    esfera->setSpecBRDF(rgb(0.5,0.5,0.5));
+}
+
 int main(int argc, char** argv){
 
     if(argc < 2 || argc > 12){
@@ -322,6 +352,10 @@ int main(int argc, char** argv){
 
     case 5:
         cornellBoxBasicaPunt(scene);
+        break;
+
+    case 6: 
+        cornellBoxBasicaPunt2(scene);
         break;
 
     default:
