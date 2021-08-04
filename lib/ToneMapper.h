@@ -41,11 +41,7 @@ class ToneMapper{
                 colores.r = colores.r / maximo;
                 colores.g = colores.g / maximo;
                 colores.b = colores.b / maximo;
-
-                if(colores.g == maximo){
-                    std::cout << i * img.getWidth() + j << std::endl;
-                }
-
+                
                 img.setRGB(i * img.getWidth() + j, colores);
             }
         }
@@ -147,24 +143,35 @@ class ToneMapper{
     }
 
     float eq(float x, 
-             float A = 0.22, 
-             float B = 0.3, 
-             float C = .1, 
-             float D = 0.2, 
+             float A = 0.002, 
+             float B = 0.1, 
+             float C = 0.1, 
+             float D = 100, 
              float E = 0.01, 
-             float F = .3){
+             float F = .5){
+            
+        float a = ((x *(A*x + C*B) + D*E) / (x*(A*x + B) + D*F)) - E/F;
+        if(a <= 0) return 0;
 
-        return ((x *(A*x + C*B) + D*E) / (x*(A*x + B) + D*F)) - E/F;
+        return a;
     } 
 
     void Filmic(Image& img, float W = 11.2, float exp = 2.0) {
         for(int i = 0; i < img.getHeight(); ++i){
             for(int j = 0; j < img.getWidth(); ++j){
                 rgb colores = img.get(i * img.getWidth() + j);
+
+                //cout << exp * (eq(colores.r)) * (1 / eq(W)) << endl;
+                //cout << exp * (eq(colores.g)) * (1 / eq(W)) << endl;
+                //cout << exp * (eq(colores.b)) * (1 / eq(W)) << endl << endl;
                 
-                colores.r = (exp * eq(colores.r)) * (1 / eq(W));
-                colores.g = (exp * eq(colores.g)) * (1 / eq(W));
-                colores.b = (exp * eq(colores.b)) * (1 / eq(W));
+                colores.r = pow(exp * (eq(colores.r)) * (1 / eq(W)), 1/2.2);
+                colores.g = pow(exp * (eq(colores.g)) * (1 / eq(W)), 1/2.2);
+                colores.b = pow(exp * (eq(colores.b)) * (1 / eq(W)), 1/2.2);
+
+                //colores.r = eq(exp * colores.r) * (1 / eq(W));
+                //colores.g = eq(exp * colores.g) * (1 / eq(W));
+                //colores.b = eq(exp * colores.b) * (1 / eq(W));
 
                 img.setRGB(i * img.getWidth() + j, colores);
             }

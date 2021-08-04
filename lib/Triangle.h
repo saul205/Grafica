@@ -168,7 +168,7 @@ class Triangle : public Figure {
 
         void getBase(DotDir interseccion, DotDir& base0, DotDir& base1, DotDir& base2) override {
             base2 = normal;
-            base1 = crossProduct(base2, v0v1);
+            base1 = v0v1;
             base0 = crossProduct(base2, base1);
 
             if(base2.mod() != 1)

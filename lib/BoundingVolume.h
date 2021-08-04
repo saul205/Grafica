@@ -14,7 +14,6 @@ class BoundingVolume{
             primitiveIndex = index;
             bound = _bound;
             centroid = bound.getCenter();
-            //cout << "Centroid " << centroid.toString() << endl;
         }
 
         int primitiveIndex;
@@ -66,9 +65,6 @@ class BoundingVolume{
                 newT = INFINITY;
                 intersecciones ++;
                 bool intersecta = nodos[nodeIndex].bound.intersects(ray, newT);
-                /*if(intersecta && ray.getDir().getX() > -0.001 && ray.getDir().getX() < 0.001 && ray.getDir().getY() > -0.001 && ray.getDir().getY() < 0.001){
-                    cout << nodeIndex << " " << newT << "   " << minT << endl;
-                }*/
                 if(intersecta && newT < minT){
                     if(nodos[nodeIndex].primitives.size() > 0){
                         DotDir point;
@@ -87,7 +83,7 @@ class BoundingVolume{
                         }
                     }
                     else{
-                        //cout << "Soy " << nodeIndex << " añado " << nodeIndex + 1 << " | " << nodos[nodeIndex].secondChildOffset << endl;
+                        
                         nodosAVisitar.push_back(nodos[nodeIndex].secondChildOffset);
                         nodosAVisitar.push_back(nodos[nodeIndex].firstChildOffset);
                     }
@@ -97,7 +93,6 @@ class BoundingVolume{
             if(minTObject >= 0){
                 figura = figuras[minTObject];
             }
-            //if(!intersect) cout << " Se va" << endl;
             return intersect;
         }
 
@@ -120,13 +115,6 @@ class BoundingVolume{
             nodos.reserve(totalNodes);
             int offset = 0;
             int offset2 = flattenTree(root, offset);
-
-            /*cout << "Total nodes: " << totalNodes << endl;
-            for(LinearNode l : nodos){
-                cout << l.primitives.size() << endl;
-                cout << l.bound.getTop().toString() << endl;
-                cout << l.bound.getBottom().toString() << endl;
-            }*/
         }
 
         std::shared_ptr<Node> recursiveBuild(std::vector<PrimitiveInfo> &primitiveInfo, int start, int end, int &totalNodes){
@@ -138,8 +126,6 @@ class BoundingVolume{
             for(int i = start; i < end; i++){
                 bounds = Union(bounds, primitiveInfo[i].bound);
             }
-
-            //cout << start << " -> " << end << endl << bounds.getTop().toString() << endl << bounds.getBottom().toString() << endl;
 
             if(nPrimitives == 1){
                 nodo->InitLeaf(bounds);

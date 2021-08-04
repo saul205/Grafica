@@ -34,8 +34,6 @@ class BoundingBox{
 
         bool intersects(Ray ray, float& t) {
 
-            //cout << top[0] << ", " << top[1] << ", " << top[2] << endl;
-            //cout << bottom[0] << ", " << bottom[1] << ", " << bottom[2] << endl;
             float tNearX = (bottom.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
             float tFarX = (top.getX() - ray.getOrigen().getX()) / ray.getDir().getX();
 
@@ -54,9 +52,6 @@ class BoundingBox{
 
             if(tNear >= 0){
                 t = tNear;
-                if(t < 6){
-                    cout << t << endl;
-                }
             }else{
                 t = 0;
             }
@@ -77,11 +72,6 @@ class BoundingBox{
 
             float tNear = max(max(min(tNearX, tFarX), min(tNearY ,tFarY)), min(tNearZ ,tFarZ));
             float tFar = min(min(max(tNearX, tFarX), max(tNearY ,tFarY)), max(tNearZ ,tFarZ));
-
-            /*cout << "Xnear: " << tNearX << endl << "Xfar: " << tFarX << endl;
-            cout << "Ynear: " << tNearY << endl << "Yfar: " << tFarY << endl;
-            cout << "Znear: " << tNearZ << endl << "Zfar: " << tFarZ << endl;
-            cout << "Near: " << tNear << endl << "Far: " << tFar << endl;*/
 
             if(tFar < tNear) return false;
 
@@ -143,22 +133,6 @@ BoundingBox Union(const BoundingBox& box1, const BoundingBox& box2){
 }
 
 BoundingBox Union(const BoundingBox& box1, const DotDir& box2){
-
-    /*cout << box2.toString() << endl;
-    cout << box1.top.toString() << endl;
-    cout << box1.bottom.toString() << endl;
-
-    cout << DotDir(std::max(box1.top.getX(), box2.getX()),
-                                std::max(box1.top.getY(), box2.getY()),
-                                std::max(box1.top.getZ(), box2.getZ()),
-                                1).toString() << endl;
-
-    cout << DotDir(std::min(box1.bottom.getX(), box2.getX()),
-                                std::min(box1.bottom.getY(), box2.getY()),
-                                std::min(box1.bottom.getZ(), box2.getZ()),
-                                1).toString() << endl;
-
-    cout << endl;*/
 
     return BoundingBox(DotDir(std::max(box1.top.getX(), box2.getX()),
                                 std::max(box1.top.getY(), box2.getY()),
